@@ -15,7 +15,7 @@ else
 fi
 ```
 
-### 启用稀疏检出
+### 启用稀疏检出（排除模式）
 
 如果当前未启用，按以下步骤操作：
 
@@ -24,15 +24,23 @@ fi
 git checkout -- .
 git clean -fd
 
-# 2. 启用稀疏检出
-git sparse-checkout init --cone
+# 2. 启用稀疏检出（非 cone 模式，支持排除语法）
+git sparse-checkout init
 
-# 3. 设置只检出代码文件，排除 images/ 目录
-git sparse-checkout set fetch_cards.py README.md pyproject.toml
+# 3. 设置排除规则：只排除 images/ 目录，保留其他所有文件
+cat > .git/info/sparse-checkout << 'EOF'
+/*
+!images/
+EOF
 
 # 4. 重新检出
 git checkout main
 ```
+
+**排除模式说明**：
+- `/*` - 包含所有文件和目录
+- `!images/` - 排除 images/ 目录
+- 这样会自动包含根目录下所有代码文件，无需逐个列出
 
 ### 稀疏检出下的工作
 
@@ -60,11 +68,20 @@ git checkout main
 ### 需要查看图片时
 
 ```bash
-# 临时添加特定卡包到本地
-git sparse-checkout add images/zh-TW/cards-by-set/A1
+# 临时添加特定卡包到本地（在排除模式下）
+cat > .git/info/sparse-checkout << 'EOF'
+/*
+!images/
+images/zh-TW/cards-by-set/A1/
+EOF
+git checkout main
 
-# 使用完成后清理（可选）
-git sparse-checkout set fetch_cards.py README.md pyproject.toml
+# 使用完成后恢复（可选）
+cat > .git/info/sparse-checkout << 'EOF'
+/*
+!images/
+EOF
+git checkout main
 ```
 
 ## 项目背景

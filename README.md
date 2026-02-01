@@ -69,7 +69,7 @@ uv run python fetch_cards.py --help
 
 ## 开发指南
 
-### 稀疏检出（Sparse Checkout）
+### 稀疏检出（Sparse Checkout）- 排除模式
 
 由于本仓库包含大量图片文件（`images/` 目录），为避免下载整个仓库，建议使用 **Git 稀疏检出** 模式：
 
@@ -79,11 +79,14 @@ git clone --filter=blob:none --no-checkout https://github.com/shelken/ptcgp-asse
 
 cd ptcgp-assets
 
-# 2. 启用稀疏检出
-git sparse-checkout init --cone
+# 2. 启用稀疏检出（非 cone 模式，支持排除语法）
+git sparse-checkout init
 
-# 3. 指定只需要的文件/目录（不包含 images/）
-git sparse-checkout set fetch_cards.py README.md pyproject.toml
+# 3. 设置排除规则：只排除 images/ 目录，保留其他所有文件
+cat > .git/info/sparse-checkout << 'EOF'
+/*
+!images/
+EOF
 
 # 4. 检出 main 分支（只下载你指定的文件）
 git checkout main
@@ -91,14 +94,25 @@ git checkout main
 
 **效果**：本地只有工作所需的脚本和配置，没有 `images/` 目录，节省磁盘空间和下载时间。
 
+**排除模式说明**：
+- `/*` - 包含所有文件和目录
+- `!images/` - 排除 images/ 目录
+- 自动包含根目录下所有代码文件，无需逐个列出
+
 ### 临时查看图片目录
 
 如果需要临时查看某个卡包的图片：
 
 ```bash
-# 临时添加特定目录到本地
-git sparse-checkout add images/zh-TW/cards-by-set/A1
+# 临时添加特定目录到本地（在排除模式下）
+cat > .git/info/sparse-checkout << 'EOF'
+/*
+!images/
+images/zh-TW/cards-by-set/A1/
+EOF
+git checkout main
 
+# 使用完成后恢复
 # 或者恢复完整仓库
 git sparse-checkout disable
 ```
