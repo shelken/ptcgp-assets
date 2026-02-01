@@ -69,6 +69,9 @@ class PTCGPDownloader:
         # 失败的 URL 列表，格式: (set_code, url)
         self.failed_items: List[tuple] = []
 
+        # 缺失的 URL 列表（404），格式: (set_code, url)
+        self.missing_items: List[tuple] = []
+
     async def fetch_sets(
         self, session: aiohttp.ClientSession, series: str
     ) -> List[CardSet]:
@@ -209,8 +212,8 @@ class PTCGPDownloader:
                 if success:
                     self.stats["downloaded"] += 1
                 elif is_404:
-                    # 404不算失败，只是不存在
-                    pass
+                    # 404：记录为缺失
+                    self.missing_items.append((card_set.set_code, url))
                 else:
                     self.stats["failed"] += 1
                     self.failed_items.append((card_set.set_code, url))
@@ -324,13 +327,18 @@ class PTCGPDownloader:
             print()
 
             # 计算总任务数
+            # 对于探测模式（卡牌数为0的集合），预估每个语言50张
+            PROBE_ESTIMATE = 50
             total_tasks = 0
             for card_set in all_sets:
                 total_cards = card_set.set_n_cards + card_set.set_n_secrets
+                if total_cards == 0:
+                    # 探测模式：使用预估数量
+                    total_cards = PROBE_ESTIMATE
                 total_tasks += total_cards * len(self.languages)
 
             self.stats["total"] = total_tasks
-            print(f"预计需要处理 {total_tasks} 张图片")
+            print(f"预计需要处理 {total_tasks} 张图片（探测模式按预估计算）")
             print()
 
             # 创建进度条
@@ -352,6 +360,23 @@ class PTCGPDownloader:
         print(f"  失败: {self.stats['failed']}")
         print(f"  总计: {self.stats['total']}")
         print("=" * 50)
+
+        # 输出缺失的 URL（404），按 set 分组
+        if self.missing_items:
+            print(f"\n缺失的链接 (404) ({len(self.missing_items)} 个):")
+
+            # 按 set_code 分组
+            from collections import defaultdict
+
+            grouped = defaultdict(list)
+            for set_code, url in self.missing_items:
+                grouped[set_code].append(url)
+
+            # 按 set_code 排序输出
+            for set_code in sorted(grouped.keys()):
+                print(f"\n  [{set_code}] ({len(grouped[set_code])} 个):")
+                for url in grouped[set_code]:
+                    print(f"    - {url}")
 
         # 输出失败的 URL，按 set 分组
         if self.failed_items:
