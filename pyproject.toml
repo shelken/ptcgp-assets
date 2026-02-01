@@ -1,0 +1,15 @@
+[project]
+name = "ptcgp-fetcher"
+version = "0.1.0"
+description = "PTCGP 卡牌图片爬虫 - 高性能异步下载"
+requires-python = ">=3.12"
+dependencies = [
+    "aiohttp>=3.9.0",
+    "aiodns>=3.0.0",
+    "aiofiles>=23.0.0",
+    "tenacity>=8.2.0",
+    "tqdm>=4.66.0",
+]
+
+[project.scripts]
+fetch-cards = "fetch_cards:main"
