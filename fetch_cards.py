@@ -145,15 +145,21 @@ class PTCGPDownloader:
         url: str,
         filepath: Path,
         pbar: tqdm,
-    ) -> bool:
-        """下载单张图片"""
+    ) -> tuple[bool, bool]:
+        """下载单张图片
+
+        Returns:
+            (success, is_404):
+            - success: 是否成功下载
+            - is_404: 是否是404错误
+        """
         try:
             async with session.get(
                 url, timeout=aiohttp.ClientTimeout(total=60)
             ) as response:
                 if response.status == 404:
-                    # 图片不存在，不算失败
-                    return False
+                    # 图片不存在
+                    return False, True
 
                 response.raise_for_status()
 
@@ -165,9 +171,9 @@ class PTCGPDownloader:
                     async for chunk in response.content.iter_chunked(8192):
                         await f.write(chunk)
 
-                return True
+                return True, False
         except Exception:
-            # 失败直接返回 False，不重试（由 tenacity 控制重试）
+            # 失败直接抛出，由 tenacity 控制重试
             raise
 
     async def process_card(
@@ -177,31 +183,74 @@ class PTCGPDownloader:
         number: int,
         lang: str,
         pbar: tqdm,
-    ):
-        """处理单张卡牌下载"""
+    ) -> tuple[bool, bool]:
+        """处理单张卡牌下载
+
+        Returns:
+            (success, is_404):
+            - success: 是否成功下载
+            - is_404: 是否是404错误
+        """
         filepath = self.get_image_path(lang, card_set.set_code, number)
 
         # 检查文件是否已存在
         if filepath.exists():
             self.stats["skipped"] += 1
             pbar.update(1)
-            return
+            return True, False
 
         url = self.get_image_url(card_set.id, number, lang)
 
         async with self.semaphore:
             try:
-                success = await self.download_image(session, url, filepath, pbar)
+                success, is_404 = await self.download_image(
+                    session, url, filepath, pbar
+                )
                 if success:
                     self.stats["downloaded"] += 1
+                elif is_404:
+                    # 404不算失败，只是不存在
+                    pass
                 else:
                     self.stats["failed"] += 1
                     self.failed_items.append((card_set.set_code, url))
+                return success, is_404
             except Exception:
                 self.stats["failed"] += 1
                 self.failed_items.append((card_set.set_code, url))
+                return False, False
             finally:
                 pbar.update(1)
+
+    async def probe_cards(
+        self,
+        session: aiohttp.ClientSession,
+        card_set: CardSet,
+        lang: str,
+        pbar: tqdm,
+        max_number: int = 200,
+    ):
+        """探测模式：从1开始递增获取，遇到404停止或达到上限"""
+        consecutive_404 = 0
+        max_consecutive_404 = 3  # 连续3个404停止
+
+        for number in range(1, max_number + 1):
+            success, is_404 = await self.process_card(
+                session, card_set, number, lang, pbar
+            )
+
+            if is_404:
+                consecutive_404 += 1
+                if consecutive_404 >= max_consecutive_404:
+                    # 连续404达到阈值，停止探测
+                    break
+            else:
+                # 重置404计数
+                consecutive_404 = 0
+
+            if number >= max_number:
+                # 达到上限
+                break
 
     async def process_set(
         self,
@@ -212,14 +261,25 @@ class PTCGPDownloader:
         """处理单个卡牌集合"""
         total_cards = card_set.set_n_cards + card_set.set_n_secrets
 
-        tasks = []
-        for lang in self.languages:
-            for number in range(1, total_cards + 1):
-                task = self.process_card(session, card_set, number, lang, pbar)
+        if total_cards == 0:
+            # 使用探测模式
+            tasks = []
+            for lang in self.languages:
+                task = self.probe_cards(session, card_set, lang, pbar)
                 tasks.append(task)
 
-        if tasks:
-            await asyncio.gather(*tasks, return_exceptions=True)
+            if tasks:
+                await asyncio.gather(*tasks, return_exceptions=True)
+        else:
+            # 使用批量模式
+            tasks = []
+            for lang in self.languages:
+                for number in range(1, total_cards + 1):
+                    task = self.process_card(session, card_set, number, lang, pbar)
+                    tasks.append(task)
+
+            if tasks:
+                await asyncio.gather(*tasks, return_exceptions=True)
 
     async def run(self):
         """运行下载器"""
