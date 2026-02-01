@@ -67,6 +67,55 @@ uv run python fetch_cards.py --help
 
 此机制确保即使 API 数据不完整，也能尽可能获取可用资源。
 
+## 开发指南
+
+### 稀疏检出（Sparse Checkout）
+
+由于本仓库包含大量图片文件（`images/` 目录），为避免下载整个仓库，建议使用 **Git 稀疏检出** 模式：
+
+```bash
+# 1. 克隆仓库，但只获取元数据，不下载文件内容
+git clone --filter=blob:none --no-checkout https://github.com/shelken/ptcgp-assets.git
+
+cd ptcgp-assets
+
+# 2. 启用稀疏检出
+git sparse-checkout init --cone
+
+# 3. 指定只需要的文件/目录（不包含 images/）
+git sparse-checkout set fetch_cards.py README.md pyproject.toml
+
+# 4. 检出 main 分支（只下载你指定的文件）
+git checkout main
+```
+
+**效果**：本地只有工作所需的脚本和配置，没有 `images/` 目录，节省磁盘空间和下载时间。
+
+### 临时查看图片目录
+
+如果需要临时查看某个卡包的图片：
+
+```bash
+# 临时添加特定目录到本地
+git sparse-checkout add images/zh-TW/cards-by-set/A1
+
+# 或者恢复完整仓库
+git sparse-checkout disable
+```
+
+### 提交新文件
+
+稀疏检出模式下可以正常提交代码：
+
+```bash
+# 修改或添加文件（如 fetch_cards.py）
+git add fetch_cards.py
+git commit -m "fix: xxx"
+git push origin main
+```
+
+**注意**：推送后，远程仓库会正常更新，但不会影响本地的稀疏检出设置。
+
 ## 已知问题
 
 由于 PokeOS 自身数据源缺失，**A 系列**存在以下卡牌无法下载：
