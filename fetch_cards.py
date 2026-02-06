@@ -9,19 +9,31 @@ import asyncio
 import os
 import sys
 from collections import defaultdict
-from pathlib import Path
-from typing import List, Dict, Any, Optional
 from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Set, Tuple
 
-import aiohttp
 import aiofiles
-from tqdm.asyncio import tqdm
+import aiohttp
+
+# 黑名单：需要从备选源下载的卡牌 (set_code, number)
+BLACKLIST: Set[Tuple[str, int]] = {
+    ("A1a", 63),  # 主源缺失
+    ("A1a", 80),  # 主源交换81
+    ("A1a", 81),  # 主源交换80
+    ("A2a", 75),  # 主源缺失
+    ("A2a", 85),  # 主源错误
+} | {("PROMO-A", i) for i in range(109, 118)}  # 主源缺失
+
+# 备选源配置
+FALLBACK_BASE_URL = "https://raw.githubusercontent.com/marcelpanse/tcg-pocket-collection-tracker/main/frontend/public/images"
 from tenacity import (
     retry,
+    retry_if_exception_type,
     stop_after_attempt,
     wait_exponential,
-    retry_if_exception_type,
 )
+from tqdm.asyncio import tqdm
 
 
 @dataclass
@@ -40,6 +52,7 @@ class PTCGPDownloader:
 
     BASE_API_URL = "https://api.pokeos.com/api/tcg/set"
     IMAGE_BASE_URL = "https://s3.pokeos.com/pokeos-uploads/tcg/pocket"
+    FALLBACK_BASE_URL = "https://raw.githubusercontent.com/marcelpanse/tcg-pocket-collection-tracker/main/frontend/public/images"
 
     def __init__(
         self,
@@ -71,6 +84,9 @@ class PTCGPDownloader:
 
         # 缺失的 URL 列表（404），格式: (set_code, url)
         self.missing_items: List[tuple] = []
+
+        # 从备选源下载的 URL 列表
+        self.fallback_items: List[tuple] = []
 
     async def fetch_sets(
         self, session: aiohttp.ClientSession, series: str
@@ -115,7 +131,9 @@ class PTCGPDownloader:
             print(f"[错误] 获取系列 {series} 失败: {e}")
             return []
 
-    def get_image_path(self, lang: str, set_code: str, number: int) -> Path:
+    def get_image_path(
+        self, lang: str, set_code: str, number: int, ext: str = "png"
+    ) -> Path:
         """获取图片保存路径"""
         return (
             self.base_dir
@@ -123,7 +141,7 @@ class PTCGPDownloader:
             / lang
             / "cards-by-set"
             / set_code
-            / f"{number}.png"
+            / f"{number}.{ext}"
         )
 
     def get_image_url(self, set_id: str, number: int, lang: str) -> str:
@@ -135,6 +153,13 @@ class PTCGPDownloader:
         }
         lang_code = lang_map.get(lang, lang)
         return f"{self.IMAGE_BASE_URL}/{set_id}/src/{number}_{lang_code}.png"
+
+    def get_fallback_url(self, set_code: str, number: int) -> str:
+        """获取备选源图片 URL（英文 webp）"""
+        # 备用源中 PROMO- 开头的都改为 P- 格式
+        if set_code.upper().startswith("PROMO-"):
+            set_code = "P-" + set_code[6:]
+        return f"{self.FALLBACK_BASE_URL}/en-US/{set_code}-{number}.webp"
 
     @retry(
         stop=stop_after_attempt(3),
@@ -179,6 +204,48 @@ class PTCGPDownloader:
             # 失败直接抛出，由 tenacity 控制重试
             raise
 
+    async def download_from_fallback(
+        self,
+        session: aiohttp.ClientSession,
+        set_code: str,
+        number: int,
+        lang: str,
+        pbar: tqdm,
+    ) -> bool:
+        """从备选源下载图片（英文 webp）"""
+        # 构建备选源 URL（英文）
+        url = self.get_fallback_url(set_code, number)
+        # 保存为 .webp 格式
+        filepath = self.get_image_path(lang, set_code, number, ext="webp")
+
+        try:
+            async with self.semaphore:
+                async with session.get(
+                    url, timeout=aiohttp.ClientTimeout(total=60)
+                ) as response:
+                    if response.status == 404:
+                        return False
+
+                    response.raise_for_status()
+
+                    # 确保目录存在
+                    filepath.parent.mkdir(parents=True, exist_ok=True)
+
+                    # 流式写入文件
+                    async with aiofiles.open(filepath, "wb") as f:
+                        async for chunk in response.content.iter_chunked(8192):
+                            await f.write(chunk)
+
+                    self.stats["downloaded_fallback"] = (
+                        self.stats.get("downloaded_fallback", 0) + 1
+                    )
+                    self.fallback_items.append((set_code, number, lang, url))
+                    return True
+        except Exception:
+            return False
+        finally:
+            pbar.update(1)
+
     async def process_card(
         self,
         session: aiohttp.ClientSession,
@@ -186,14 +253,43 @@ class PTCGPDownloader:
         number: int,
         lang: str,
         pbar: tqdm,
+        is_probe_mode: bool = False,
     ) -> tuple[bool, bool]:
         """处理单张卡牌下载
+
+        Args:
+            is_probe_mode: 是否为探测模式（探测模式的 404 是正常的，不记录为缺失）
 
         Returns:
             (success, is_404):
             - success: 是否成功下载
             - is_404: 是否是404错误
         """
+        # 检查是否在黑名单中
+        is_blacklisted = (card_set.set_code, number) in BLACKLIST
+
+        if is_blacklisted:
+            # 黑名单卡牌：先删除可能存在的旧 PNG 文件，然后从备选源下载 webp
+            png_path = self.get_image_path(lang, card_set.set_code, number, ext="png")
+            if png_path.exists():
+                try:
+                    png_path.unlink()
+                    print(f"  [黑名单] 删除旧文件: {png_path}")
+                except Exception as e:
+                    print(f"  [警告] 无法删除旧文件 {png_path}: {e}")
+
+            # 从备选源下载（英文 webp）
+            success = await self.download_from_fallback(
+                session, card_set.set_code, number, lang, pbar
+            )
+            if not success:
+                self.stats["failed"] = self.stats.get("failed", 0) + 1
+                self.failed_items.append(
+                    (card_set.set_code, f"fallback:{card_set.set_code}-{number}")
+                )
+            return success, False
+
+        # 正常流程：先尝试主源
         filepath = self.get_image_path(lang, card_set.set_code, number)
 
         # 检查文件是否已存在
@@ -210,20 +306,36 @@ class PTCGPDownloader:
                     session, url, filepath, pbar
                 )
                 if success:
+                    # 主源下载成功
                     self.stats["downloaded"] += 1
+                    pbar.update(1)
+                    return True, False
                 elif is_404:
-                    # 404：记录为缺失
-                    self.missing_items.append((card_set.set_code, url))
+                    # 主源 404
+                    if is_probe_mode:
+                        # 探测模式：404 是正常的探测结果，不尝试备用源，不记录缺失
+                        pbar.update(1)
+                        return False, True
+                    else:
+                        # 批量模式：尝试备选源兜底
+                        fallback_success = await self.download_from_fallback(
+                            session, card_set.set_code, number, lang, pbar
+                        )
+                        if not fallback_success:
+                            # 备选源也失败，记录为缺失
+                            self.missing_items.append((card_set.set_code, url))
+                        return fallback_success, False
                 else:
+                    # 其他失败
                     self.stats["failed"] += 1
                     self.failed_items.append((card_set.set_code, url))
-                return success, is_404
+                    pbar.update(1)
+                    return False, False
             except Exception:
                 self.stats["failed"] += 1
                 self.failed_items.append((card_set.set_code, url))
-                return False, False
-            finally:
                 pbar.update(1)
+                return False, False
 
     async def probe_cards(
         self,
@@ -239,7 +351,7 @@ class PTCGPDownloader:
 
         for number in range(1, max_number + 1):
             success, is_404 = await self.process_card(
-                session, card_set, number, lang, pbar
+                session, card_set, number, lang, pbar, is_probe_mode=True
             )
 
             if is_404:
@@ -355,7 +467,8 @@ class PTCGPDownloader:
         # 输出统计
         print("\n" + "=" * 50)
         print("下载完成!")
-        print(f"  成功下载: {self.stats['downloaded']}")
+        print(f"  主源下载: {self.stats['downloaded']}")
+        print(f"  备选源下载: {self.stats.get('downloaded_fallback', 0)}")
         print(f"  已存在跳过: {self.stats['skipped']}")
         print(f"  失败: {self.stats['failed']}")
         print(f"  总计: {self.stats['total']}")
@@ -377,6 +490,23 @@ class PTCGPDownloader:
                 print(f"\n  [{set_code}] ({len(grouped[set_code])} 个):")
                 for url in grouped[set_code]:
                     print(f"    - {url}")
+
+        # 输出备选源下载成功的 URL，按 set 分组
+        if self.fallback_items:
+            print(f"\n备选源下载成功 ({len(self.fallback_items)} 个):")
+
+            # 按 set_code 分组
+            from collections import defaultdict
+
+            grouped = defaultdict(list)
+            for set_code, number, lang, url in self.fallback_items:
+                grouped[set_code].append((number, lang, url))
+
+            # 按 set_code 排序输出
+            for set_code in sorted(grouped.keys()):
+                print(f"\n  [{set_code}] ({len(grouped[set_code])} 个):")
+                for number, lang, url in sorted(grouped[set_code]):
+                    print(f"    - #{number} [{lang}]: {url}")
 
         # 输出失败的 URL，按 set 分组
         if self.failed_items:
