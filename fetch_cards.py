@@ -61,12 +61,14 @@ class PTCGPDownloader:
         series_list: List[str],
         max_concurrency: int = 20,
         max_retries: int = 3,
+        verbose: bool = False,
     ):
         self.base_dir = base_dir
         self.languages = languages
         self.series_list = series_list
         self.max_concurrency = max_concurrency
         self.max_retries = max_retries
+        self.verbose = verbose
 
         # 并发控制
         self.semaphore = asyncio.Semaphore(max_concurrency)
@@ -74,19 +76,22 @@ class PTCGPDownloader:
         # 统计
         self.stats = {
             "downloaded": 0,
+            "downloaded_fallback": 0,
+            "converted_png": 0,
+            "convert_failed": 0,
             "skipped": 0,
             "failed": 0,
             "total": 0,
         }
 
-        # 失败的 URL 列表，格式: (set_code, url)
-        self.failed_items: List[tuple] = []
+        # 失败项列表，格式: (set_code, number, lang, detail)
+        self.failed_items: List[Tuple[str, int, str, str]] = []
 
-        # 缺失的 URL 列表（404），格式: (set_code, url)
-        self.missing_items: List[tuple] = []
+        # 缺失项列表（404），格式: (set_code, number, lang, url)
+        self.missing_items: List[Tuple[str, int, str, str]] = []
 
-        # 从备选源下载的 URL 列表
-        self.fallback_items: List[tuple] = []
+        # 从备选源下载的列表，格式: (set_code, number, lang, url)
+        self.fallback_items: List[Tuple[str, int, str, str]] = []
 
     async def fetch_sets(
         self, session: aiohttp.ClientSession, series: str
@@ -161,6 +166,53 @@ class PTCGPDownloader:
             set_code = "P-" + set_code[6:]
         return f"{self.FALLBACK_BASE_URL}/en-US/{set_code}-{number}.webp"
 
+    def convert_webp_to_png(
+        self,
+        webp_path: Path,
+        png_path: Path,
+        set_code: str,
+        number: int,
+        lang: str,
+        source_url: str,
+    ) -> bool:
+        """将 webp 转换为 png（仅在 png 缺失时调用）"""
+        try:
+            import importlib
+
+            pil_image = importlib.import_module("PIL.Image")
+        except Exception:
+            self.stats["convert_failed"] += 1
+            if self.verbose:
+                print(
+                    f"[转换失败] {set_code} #{number} [{lang}] Pillow 不可用 | url: {source_url}"
+                )
+            else:
+                print(f"[转换失败] {set_code} #{number} [{lang}] Pillow 不可用")
+            return False
+
+        try:
+            png_path.parent.mkdir(parents=True, exist_ok=True)
+            with pil_image.open(webp_path) as img:
+                img.save(png_path, "PNG")
+
+            self.stats["converted_png"] += 1
+            if self.verbose:
+                print(
+                    f"[转换成功] {set_code} #{number} [{lang}] webp -> png | url: {source_url}"
+                )
+            else:
+                print(f"[转换成功] {set_code} #{number} [{lang}] webp -> png")
+            return True
+        except Exception as e:
+            self.stats["convert_failed"] += 1
+            if self.verbose:
+                print(
+                    f"[转换失败] {set_code} #{number} [{lang}] webp -> png | url: {source_url} | 错误: {e}"
+                )
+            else:
+                print(f"[转换失败] {set_code} #{number} [{lang}] webp -> png")
+            return False
+
     @retry(
         stop=stop_after_attempt(3),
         wait=wait_exponential(multiplier=1, min=1, max=10),
@@ -217,30 +269,53 @@ class PTCGPDownloader:
         url = self.get_fallback_url(set_code, number)
         # 保存为 .webp 格式
         filepath = self.get_image_path(lang, set_code, number, ext="webp")
+        png_path = self.get_image_path(lang, set_code, number, ext="png")
+
+        # 本地已有 webp：跳过网络下载，仅在 png 缺失时尝试转换
+        if filepath.exists():
+            if not png_path.exists():
+                self.convert_webp_to_png(
+                    webp_path=filepath,
+                    png_path=png_path,
+                    set_code=set_code,
+                    number=number,
+                    lang=lang,
+                    source_url=url,
+                )
+            return True
 
         try:
-            async with self.semaphore:
-                async with session.get(
-                    url, timeout=aiohttp.ClientTimeout(total=60)
-                ) as response:
-                    if response.status == 404:
-                        return False
+            async with session.get(
+                url, timeout=aiohttp.ClientTimeout(total=60)
+            ) as response:
+                if response.status == 404:
+                    return False
 
-                    response.raise_for_status()
+                response.raise_for_status()
 
-                    # 确保目录存在
-                    filepath.parent.mkdir(parents=True, exist_ok=True)
+                # 确保目录存在
+                filepath.parent.mkdir(parents=True, exist_ok=True)
 
-                    # 流式写入文件
-                    async with aiofiles.open(filepath, "wb") as f:
-                        async for chunk in response.content.iter_chunked(8192):
-                            await f.write(chunk)
+                # 流式写入文件
+                async with aiofiles.open(filepath, "wb") as f:
+                    async for chunk in response.content.iter_chunked(8192):
+                        await f.write(chunk)
 
-                    self.stats["downloaded_fallback"] = (
-                        self.stats.get("downloaded_fallback", 0) + 1
+                self.stats["downloaded_fallback"] += 1
+                self.fallback_items.append((set_code, number, lang, url))
+
+                # 简单策略：若 png 不存在，则尝试将已下载的 webp 转换为 png
+                if not png_path.exists():
+                    self.convert_webp_to_png(
+                        webp_path=filepath,
+                        png_path=png_path,
+                        set_code=set_code,
+                        number=number,
+                        lang=lang,
+                        source_url=url,
                     )
-                    self.fallback_items.append((set_code, number, lang, url))
-                    return True
+
+                return True
         except Exception:
             return False
         finally:
@@ -269,8 +344,26 @@ class PTCGPDownloader:
         is_blacklisted = (card_set.set_code, number) in BLACKLIST
 
         if is_blacklisted:
-            # 黑名单卡牌：先删除可能存在的旧 PNG 文件，然后从备选源下载 webp
+            # 黑名单卡牌优先使用本地 fallback 资源，避免重复网络下载
+            webp_path = self.get_image_path(lang, card_set.set_code, number, ext="webp")
             png_path = self.get_image_path(lang, card_set.set_code, number, ext="png")
+
+            # 本地已有 webp：不再请求备用源；若缺 png 则尝试转换
+            if webp_path.exists():
+                if not png_path.exists():
+                    self.convert_webp_to_png(
+                        webp_path=webp_path,
+                        png_path=png_path,
+                        set_code=card_set.set_code,
+                        number=number,
+                        lang=lang,
+                        source_url=self.get_fallback_url(card_set.set_code, number),
+                    )
+                self.stats["skipped"] += 1
+                pbar.update(1)
+                return True, False
+
+            # 本地没有 webp，说明需要首次从备用源拉取；先删除旧 png（若有）避免保留错误版本
             if png_path.exists():
                 try:
                     png_path.unlink()
@@ -278,14 +371,19 @@ class PTCGPDownloader:
                 except Exception as e:
                     print(f"  [警告] 无法删除旧文件 {png_path}: {e}")
 
-            # 从备选源下载（英文 webp）
-            success = await self.download_from_fallback(
-                session, card_set.set_code, number, lang, pbar
-            )
+            async with self.semaphore:
+                success = await self.download_from_fallback(
+                    session, card_set.set_code, number, lang, pbar
+                )
             if not success:
                 self.stats["failed"] = self.stats.get("failed", 0) + 1
                 self.failed_items.append(
-                    (card_set.set_code, f"fallback:{card_set.set_code}-{number}")
+                    (
+                        card_set.set_code,
+                        number,
+                        lang,
+                        self.get_fallback_url(card_set.set_code, number),
+                    )
                 )
             return success, False
 
@@ -323,17 +421,19 @@ class PTCGPDownloader:
                         )
                         if not fallback_success:
                             # 备选源也失败，记录为缺失
-                            self.missing_items.append((card_set.set_code, url))
+                            self.missing_items.append(
+                                (card_set.set_code, number, lang, url)
+                            )
                         return fallback_success, False
                 else:
                     # 其他失败
                     self.stats["failed"] += 1
-                    self.failed_items.append((card_set.set_code, url))
+                    self.failed_items.append((card_set.set_code, number, lang, url))
                     pbar.update(1)
                     return False, False
             except Exception:
                 self.stats["failed"] += 1
-                self.failed_items.append((card_set.set_code, url))
+                self.failed_items.append((card_set.set_code, number, lang, url))
                 pbar.update(1)
                 return False, False
 
@@ -377,6 +477,19 @@ class PTCGPDownloader:
         total_cards = card_set.set_n_cards + card_set.set_n_secrets
 
         if total_cards == 0:
+            mode_desc = "探测模式"
+            expected_desc = f"每语言最多 200 张，语言数 {len(self.languages)}"
+        else:
+            mode_desc = "批量模式"
+            expected_desc = (
+                f"每语言 {total_cards} 张，共 {total_cards * len(self.languages)} 张"
+            )
+
+        print(
+            f"[开始] 系列 {card_set.series} / 子包 {card_set.set_code} | {mode_desc} | {expected_desc}"
+        )
+
+        if total_cards == 0:
             # 使用探测模式
             tasks = []
             for lang in self.languages:
@@ -396,13 +509,16 @@ class PTCGPDownloader:
             if tasks:
                 await asyncio.gather(*tasks, return_exceptions=True)
 
+        print(f"[完成] 系列 {card_set.series} / 子包 {card_set.set_code}")
+
     async def run(self):
         """运行下载器"""
-        print(f"开始下载 PTCGP 卡牌图片...")
+        print("开始下载 PTCGP 卡牌图片...")
         print(f"目标目录: {self.base_dir}")
         print(f"语言: {', '.join(self.languages)}")
         print(f"系列: {', '.join(self.series_list)}")
         print(f"并发数: {self.max_concurrency}")
+        print(f"详细日志: {'开启' if self.verbose else '关闭'}")
         print()
 
         # 创建 aiohttp 会话，启用连接池和 HTTP/2
@@ -430,6 +546,17 @@ class PTCGPDownloader:
                 sets = await self.fetch_sets(session, series)
                 all_sets.extend(sets)
                 print(f"系列 {series}: 找到 {len(sets)} 个集合")
+
+                if sets:
+                    print(f"系列 {series} 子包列表:")
+                    for s in sorted(sets, key=lambda x: x.set_code):
+                        total_cards = s.set_n_cards + s.set_n_secrets
+                        if total_cards == 0:
+                            print(f"  - {s.set_code}: 探测模式（API 返回 0）")
+                        else:
+                            print(
+                                f"  - {s.set_code}: {s.set_n_cards}+{s.set_n_secrets}={total_cards} 张"
+                            )
 
             if not all_sets:
                 print("没有找到任何卡牌集合")
@@ -468,62 +595,64 @@ class PTCGPDownloader:
         print("\n" + "=" * 50)
         print("下载完成!")
         print(f"  主源下载: {self.stats['downloaded']}")
-        print(f"  备选源下载: {self.stats.get('downloaded_fallback', 0)}")
+        print(f"  备选源下载: {self.stats['downloaded_fallback']}")
+        print(f"  webp->png 转换成功: {self.stats['converted_png']}")
+        print(f"  webp->png 转换失败: {self.stats['convert_failed']}")
         print(f"  已存在跳过: {self.stats['skipped']}")
         print(f"  失败: {self.stats['failed']}")
         print(f"  总计: {self.stats['total']}")
         print("=" * 50)
 
-        # 输出缺失的 URL（404），按 set 分组
+        # 输出缺失项（主源 404 且备选源也失败）
         if self.missing_items:
-            print(f"\n缺失的链接 (404) ({len(self.missing_items)} 个):")
-
-            # 按 set_code 分组
-            from collections import defaultdict
-
+            print(f"\n缺失项 (404) ({len(self.missing_items)} 个):")
             grouped = defaultdict(list)
-            for set_code, url in self.missing_items:
-                grouped[set_code].append(url)
+            for set_code, number, lang, url in self.missing_items:
+                grouped[set_code].append((number, lang, url))
 
-            # 按 set_code 排序输出
             for set_code in sorted(grouped.keys()):
-                print(f"\n  [{set_code}] ({len(grouped[set_code])} 个):")
-                for url in grouped[set_code]:
-                    print(f"    - {url}")
+                items = sorted(grouped[set_code])
+                if self.verbose:
+                    print(f"\n  [{set_code}] ({len(items)} 个):")
+                    for number, lang, url in items:
+                        print(f"    - #{number} [{lang}]: {url}")
+                else:
+                    cards = ", ".join(f"#{number}[{lang}]" for number, lang, _ in items)
+                    print(f"  [{set_code}] ({len(items)} 个): {cards}")
 
-        # 输出备选源下载成功的 URL，按 set 分组
+        # 输出备选源下载成功项
         if self.fallback_items:
             print(f"\n备选源下载成功 ({len(self.fallback_items)} 个):")
-
-            # 按 set_code 分组
-            from collections import defaultdict
-
             grouped = defaultdict(list)
             for set_code, number, lang, url in self.fallback_items:
                 grouped[set_code].append((number, lang, url))
 
-            # 按 set_code 排序输出
             for set_code in sorted(grouped.keys()):
-                print(f"\n  [{set_code}] ({len(grouped[set_code])} 个):")
-                for number, lang, url in sorted(grouped[set_code]):
-                    print(f"    - #{number} [{lang}]: {url}")
+                items = sorted(grouped[set_code])
+                if self.verbose:
+                    print(f"\n  [{set_code}] ({len(items)} 个):")
+                    for number, lang, url in items:
+                        print(f"    - #{number} [{lang}]: {url}")
+                else:
+                    cards = ", ".join(f"#{number}[{lang}]" for number, lang, _ in items)
+                    print(f"  [{set_code}] ({len(items)} 个): {cards}")
 
-        # 输出失败的 URL，按 set 分组
+        # 输出失败项
         if self.failed_items:
-            print(f"\n失败的链接 ({len(self.failed_items)} 个):")
-
-            # 按 set_code 分组
-            from collections import defaultdict
-
+            print(f"\n失败项 ({len(self.failed_items)} 个):")
             grouped = defaultdict(list)
-            for set_code, url in self.failed_items:
-                grouped[set_code].append(url)
+            for set_code, number, lang, detail in self.failed_items:
+                grouped[set_code].append((number, lang, detail))
 
-            # 按 set_code 排序输出
             for set_code in sorted(grouped.keys()):
-                print(f"\n  [{set_code}] ({len(grouped[set_code])} 个):")
-                for url in grouped[set_code]:
-                    print(f"    - {url}")
+                items = sorted(grouped[set_code])
+                if self.verbose:
+                    print(f"\n  [{set_code}] ({len(items)} 个):")
+                    for number, lang, detail in items:
+                        print(f"    - #{number} [{lang}]: {detail}")
+                else:
+                    cards = ", ".join(f"#{number}[{lang}]" for number, lang, _ in items)
+                    print(f"  [{set_code}] ({len(items)} 个): {cards}")
 
 
 def main():
@@ -568,6 +697,11 @@ def main():
         default=3,
         help="单文件最大重试次数 (默认: 3)",
     )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="显示详细日志（包括具体 URL）",
+    )
 
     args = parser.parse_args()
 
@@ -583,6 +717,7 @@ def main():
         series_list=series_list,
         max_concurrency=args.concurrency,
         max_retries=args.max_retries,
+        verbose=args.verbose,
     )
 
     try:
