@@ -20,6 +20,7 @@ metadata/cards/zh-TW/cards.extra.json
 - 与 flibustier 原版不一致时，以本目录产物为准。
 - flibustier 原版只作为结构和历史格式参考，不作为数值真值。
 - `name`、`packs` 使用当前游戏语言。
+- `image` 稳定来源是卡牌表行的 `IllustrationID + ".webp"`：Pokémon 读 `PokemonCard.IllustrationID`，Trainer/Fossil 读 `TrainerCard.IllustrationID`；不要用 `CardID + CharacterID + Rarity` 拼接。
 - 同一张卡如果同时属于普通卡包和高级扩充包，`packs` 会同时列出；这是正确数据。
 - Pokémon 的 `evolvesFrom` 一律保留；没有进化来源时写 `null`。
 - 当前阶段特别排除 `goodWith`：不生成，也不在父集合校验中展示差异。
