@@ -1,0 +1,122 @@
+import json
+import tempfile
+import unittest
+from pathlib import Path
+
+from scripts.update_cards_extra import convert_export, write_cards_extra
+
+
+class UpdateCardsExtraTests(unittest.TestCase):
+    def test_converts_pokemon_and_fossil_to_flibustier_compatible_shape(self):
+        export = {
+            "schemaVersion": 1,
+            "language": "zh-TW",
+            "cards": [
+                {
+                    "kind": "pokemon",
+                    "set": "A1",
+                    "number": 1,
+                    "name": "妙蛙種子",
+                    "rarity": "C",
+                    "image": "cPK_10_000010_00_FUSHIGIDANE_C.webp",
+                    "packs": ["最強的基因 超夢"],
+                    "pokemon": {
+                        "element": "Grass",
+                        "stage": "Basic",
+                        "health": 70,
+                        "retreatCost": 1,
+                        "weakness": "Fire",
+                        "evolvesFrom": None,
+                    },
+                },
+                {
+                    "kind": "trainer",
+                    "set": "A1",
+                    "number": 216,
+                    "name": "貝殼化石",
+                    "rarity": "C",
+                    "image": "cTR_10_000080_00_KAINOKASEKI_C.webp",
+                    "packs": ["最強的基因 皮卡丘"],
+                    "trainer": {"type": "Fossil"},
+                },
+            ],
+        }
+
+        self.assertEqual(
+            convert_export(export),
+            [
+                {
+                    "set": "A1",
+                    "number": 1,
+                    "name": "妙蛙種子",
+                    "rarity": "C",
+                    "image": "cPK_10_000010_00_FUSHIGIDANE_C.webp",
+                    "packs": ["最強的基因 超夢"],
+                    "element": "grass",
+                    "type": "pokemon",
+                    "stage": "basic",
+                    "health": 70,
+                    "retreatCost": 1,
+                    "weakness": "Fire",
+                },
+                {
+                    "set": "A1",
+                    "number": 216,
+                    "name": "貝殼化石",
+                    "rarity": "C",
+                    "image": "cTR_10_000080_00_KAINOKASEKI_C.webp",
+                    "packs": ["最強的基因 皮卡丘"],
+                    "type": "Fossil",
+                    "stage": "basic",
+                },
+            ],
+        )
+
+    def test_rejects_duplicate_set_number(self):
+        export = {
+            "schemaVersion": 1,
+            "language": "zh-TW",
+            "cards": [
+                {
+                    "kind": "trainer",
+                    "set": "A1",
+                    "number": 1,
+                    "name": "A",
+                    "rarity": "C",
+                    "image": "a.webp",
+                    "packs": [],
+                    "trainer": {"type": "Item"},
+                },
+                {
+                    "kind": "trainer",
+                    "set": "A1",
+                    "number": 1,
+                    "name": "B",
+                    "rarity": "C",
+                    "image": "b.webp",
+                    "packs": [],
+                    "trainer": {"type": "Item"},
+                },
+            ],
+        }
+
+        with self.assertRaisesRegex(ValueError, "duplicate card key: A1 #1"):
+            convert_export(export)
+
+    def test_writes_to_language_directory_atomically(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = write_cards_extra(
+                Path(tmp),
+                "zh-TW",
+                [{"set": "A1", "number": 1, "name": "妙蛙種子"}],
+            )
+
+            self.assertEqual(output, Path(tmp) / "metadata/cards/zh-TW/cards.extra.json")
+            self.assertEqual(
+                json.loads(output.read_text()),
+                [{"set": "A1", "number": 1, "name": "妙蛙種子"}],
+            )
+
+
+if __name__ == "__main__":
+    unittest.main()
