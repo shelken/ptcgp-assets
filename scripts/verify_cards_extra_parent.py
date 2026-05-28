@@ -12,7 +12,7 @@ from typing import Any
 
 BASELINE_URL = "https://raw.githubusercontent.com/flibustier/pokemon-tcg-pocket-database/main/dist/cards.extra.json"
 BASELINE_PATH = Path("/tmp/cards.extra.json")
-DEFAULT_CANDIDATE = Path("metadata/cards/zh-TW/cards.extra.json")
+DEFAULT_CANDIDATE = Path("metadata/cards/en-US/cards.extra.json")
 ENUM_STRING_KEYS = {"rarity", "type"}
 GAME_AUTHORITATIVE_KEYS = {
     "packs",
@@ -69,7 +69,9 @@ def should_compare_string(key: str) -> bool:
     return key in ENUM_STRING_KEYS
 
 
-def compare_field(key: str, baseline_value: Any, candidate: dict[str, Any]) -> dict[str, Any] | None:
+def compare_field(
+    key: str, baseline_value: Any, candidate: dict[str, Any]
+) -> dict[str, Any] | None:
     if key in GAME_AUTHORITATIVE_KEYS:
         return None
 
@@ -79,7 +81,11 @@ def compare_field(key: str, baseline_value: Any, candidate: dict[str, Any]) -> d
     candidate_value = candidate[key]
     if isinstance(baseline_value, list):
         if not isinstance(candidate_value, list):
-            return {"key": key, "baselineType": "list", "candidateType": type(candidate_value).__name__}
+            return {
+                "key": key,
+                "baselineType": "list",
+                "candidateType": type(candidate_value).__name__,
+            }
         if len(baseline_value) != len(candidate_value):
             return {
                 "key": key,
@@ -90,18 +96,28 @@ def compare_field(key: str, baseline_value: Any, candidate: dict[str, Any]) -> d
 
     if isinstance(baseline_value, int) and not isinstance(baseline_value, bool):
         if candidate_value != baseline_value:
-            return {"key": key, "baseline": baseline_value, "candidate": candidate_value}
+            return {
+                "key": key,
+                "baseline": baseline_value,
+                "candidate": candidate_value,
+            }
         return None
 
     if isinstance(baseline_value, str) and should_compare_string(key):
         if candidate_value != baseline_value:
-            return {"key": key, "baseline": baseline_value, "candidate": candidate_value}
+            return {
+                "key": key,
+                "baseline": baseline_value,
+                "candidate": candidate_value,
+            }
         return None
 
     return None
 
 
-def compare_cards(baseline: list[dict[str, Any]], candidate: list[dict[str, Any]]) -> CompareReport:
+def compare_cards(
+    baseline: list[dict[str, Any]], candidate: list[dict[str, Any]]
+) -> CompareReport:
     baseline_by_key = index_cards(baseline)
     candidate_by_key = index_cards(candidate)
     missing_cards: list[dict[str, Any]] = []
@@ -137,7 +153,9 @@ def compare_cards(baseline: list[dict[str, Any]], candidate: list[dict[str, Any]
             )
 
     extra_count = len(set(candidate_by_key) - set(baseline_by_key))
-    return CompareReport(missing_cards=missing_cards, differences=differences, extra_count=extra_count)
+    return CompareReport(
+        missing_cards=missing_cards, differences=differences, extra_count=extra_count
+    )
 
 
 def download_baseline(url: str, path: Path) -> None:
@@ -163,7 +181,9 @@ def print_report(report: CompareReport) -> None:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Verify local cards.extra.json is a parent set of upstream")
+    parser = argparse.ArgumentParser(
+        description="Verify local cards.extra.json is a parent set of upstream"
+    )
     parser.add_argument("--candidate", type=Path, default=DEFAULT_CANDIDATE)
     parser.add_argument("--baseline-url", default=BASELINE_URL)
     parser.add_argument("--baseline-path", type=Path, default=BASELINE_PATH)
