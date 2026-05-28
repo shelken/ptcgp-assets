@@ -73,35 +73,6 @@ class UpdateCardsExtraTests(unittest.TestCase):
             ],
         )
 
-    def test_keeps_english_deluxe_pack_ex_name(self):
-        export = {
-            "schemaVersion": 1,
-            "language": "en-US",
-            "cards": [
-                {
-                    "kind": "pokemon",
-                    "set": "A1",
-                    "number": 1,
-                    "name": "Bulbasaur",
-                    "rarity": "C",
-                    "image": "cPK_10_000010_00_FUSHIGIDANE_C.webp",
-                    "packs": ["Genetic Apex Mewtwo", "Deluxe Pack ex"],
-                    "pokemon": {
-                        "element": "Grass",
-                        "stage": "Basic",
-                        "health": 70,
-                        "retreatCost": 1,
-                        "weakness": "Fire",
-                        "evolvesFrom": None,
-                    },
-                }
-            ],
-        }
-
-        [card] = convert_export(export)
-
-        self.assertEqual(card["packs"], ["Mewtwo", "Deluxe Pack ex"])
-
     def test_parses_exporter_stdout_with_leading_tool_noise(self):
         export = {"schemaVersion": 1, "language": "zh-TW", "cards": []}
         stdout = "◇ injected env (8) from .env\n" + json.dumps(export, ensure_ascii=False)

@@ -22,7 +22,6 @@ metadata/cards/zh-TW/cards.extra.json
 - `name`、`packs` 使用当前游戏语言。
 - `image` 稳定来源是卡牌表行的 `IllustrationID + ".webp"`：Pokémon 读 `PokemonCard.IllustrationID`，Trainer/Fossil 读 `TrainerCard.IllustrationID`；不要用 `CardID + CharacterID + Rarity` 拼接。
 - 同一张卡如果同时属于普通卡包和高级扩充包，`packs` 会同时列出；这是正确数据。
-- `packs` 只去掉普通卡包名前的扩充包名前缀，例如 `Genetic Apex Mewtwo -> Mewtwo`、`最強的基因 超夢 -> 超夢`；高级扩充包名本身要保留，例如英文 `Deluxe Pack ex` 不能截成 `ex`。
 - Pokémon 的 `evolvesFrom` 一律保留；没有进化来源时写 `null`。
 - 当前阶段特别排除 `goodWith`：不生成，也不在父集合校验中展示差异。
 
