@@ -19,6 +19,7 @@ class VerifyCardsExtraParentTests(unittest.TestCase):
                 "retreatCost": 1,
                 "weakness": "Dark",
                 "evolvesFrom": None,
+                "goodWith": ["Grass"],
             },
             {
                 "set": "A1",

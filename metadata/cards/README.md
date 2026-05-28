@@ -22,7 +22,7 @@ metadata/cards/zh-TW/cards.extra.json
 - `name`、`packs` 使用当前游戏语言。
 - 同一张卡如果同时属于普通卡包和高级扩充包，`packs` 会同时列出；这是正确数据。
 - Pokémon 的 `evolvesFrom` 一律保留；没有进化来源时写 `null`。
-- 本轮不生成 `goodWith`。
+- 当前阶段特别排除 `goodWith`：不生成，也不在父集合校验中展示差异。
 
 ## 枚举字段
 
@@ -62,7 +62,7 @@ uv run python scripts/verify_cards_extra_parent.py
 - 按 `(set, number)` 对齐。
 - 本目录产物多出的卡只计数。
 - 本目录产物缺少原版卡时输出 `set`、`number`、`name`。
-- 已确认按游戏内容为准的字段不比较：`packs`、`element`、`stage`、`health`、`retreatCost`、`weakness`、`evolvesFrom`。
+- 已确认按游戏内容为准或当前阶段特别排除的字段不比较：`packs`、`element`、`stage`、`health`、`retreatCost`、`weakness`、`evolvesFrom`、`goodWith`。
 - 其他 list 只比较长度。
 - 其他 number 比较数值。
 - 仍需核验的 enum string 目前只比较：`rarity`、`type`。

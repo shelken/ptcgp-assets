@@ -22,6 +22,7 @@ GAME_AUTHORITATIVE_KEYS = {
     "retreatCost",
     "weakness",
     "evolvesFrom",
+    "goodWith",
 }
 
 
