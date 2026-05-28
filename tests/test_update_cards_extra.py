@@ -58,6 +58,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
                     "health": 70,
                     "retreatCost": 1,
                     "weakness": "Fire",
+                    "evolvesFrom": None,
                 },
                 {
                     "set": "A1",

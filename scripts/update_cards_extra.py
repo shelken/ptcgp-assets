@@ -157,8 +157,7 @@ def convert_pokemon(card: dict[str, Any]) -> dict[str, Any]:
         record["weakness"] = require_str(record["weakness"], "weakness")
 
     evolves_from = pokemon.get("evolvesFrom")
-    if evolves_from is not None:
-        record["evolvesFrom"] = require_str(evolves_from, "evolvesFrom")
+    record["evolvesFrom"] = None if evolves_from is None else require_str(evolves_from, "evolvesFrom")
 
     return ordered_record(record)
 

@@ -227,12 +227,13 @@ evolvesFrom
 
 本轮不生成 `goodWith`。它不阻断最终 JSON；后续若确认游戏内明确来源，再单独补。
 
-允许输出比 flibustier 多 key，但 flibustier 已存在 key 的 value 写法必须兼容它。
+允许输出比 flibustier 多 key。flibustier 原版仅作为结构参考；当游戏导出的 candidate 与 flibustier 值冲突时，以 candidate 为准。
 
 语言本地化字段：
 
 - `name` 使用当前游戏语言
-- `packs` 使用当前游戏语言
+- `packs` 使用当前游戏语言，并只保留 pack 名本身；例如 `最強的基因 皮卡丘 -> 皮卡丘`
+- 如果同一张卡同时属于普通卡包和高级扩充包，`packs` 同时列出这些入口；这是正确数据
 
 ## 映射规则
 
@@ -244,7 +245,7 @@ number   <- ExpansionCollectionNumber.CollectionNumber
 name     <- localized card name
 rarity   <- card row Rarity string
 image    <- card row IllustrationID + ".webp"
-packs    <- same set standard pack localized names
+packs    <- standard pack localized names, normalized to pack name only
 ```
 
 同一 `CardID` 可属于多个 expansion。导出时按 `ExpansionCollectionNumber` 展开为多条最终记录。主键：
@@ -270,7 +271,7 @@ stage       = Basic -> "basic", Stage1/One -> 1, Stage2/Two -> 2
 health      = Pokemon.HP
 retreatCost = Pokemon.RetreatAmount
 weakness    = WeaknessType string or null
-evolvesFrom = evolves-from Pokémon localized name or null
+evolvesFrom = evolves-from Pokémon localized name, or null when absent
 ```
 
 `element` 写法示例：
@@ -288,7 +289,7 @@ Dragon -> dragon
 Colorless -> colorless
 ```
 
-`weakness` 保持 flibustier 写法，例如：
+`weakness` 保持游戏 enum 写法；不做 `Darkness -> Dark` 这类向 flibustier 旧值靠拢的映射。例如：
 
 ```text
 Fire
@@ -298,6 +299,8 @@ Psychic
 Fighting
 Darkness
 Metal
+Grass
+UNSPECIFIED
 null
 ```
 
@@ -373,9 +376,9 @@ TrainerCard.IllustrationID + ".webp"
 - 数字字段是 integer
 - `packs` 是 string array
 - `image` 非空且以 `.webp` 结尾
-- `type` 写法兼容 flibustier
-- `stage` 写法兼容 flibustier
-- `element` 为 lowercase
+- `type` 使用 candidate 规则：`pokemon/supporter/item/tool/Fossil/stadium`
+- `stage` 使用 candidate 规则：`basic/1/2`
+- `element` 使用 candidate 规则：小写 energy type
 - `(set, number)` 不重复
 
 人工/agent 核验：
@@ -388,11 +391,12 @@ flibustier/pokemon-tcg-pocket-database dist/cards.extra.json
 
 核验口径：
 
-- flibustier 已存在 key 的 value 写法必须兼容
+- flibustier 原版只作为结构和历史格式参考
+- candidate 是当前真值；`health`、`retreatCost`、`packs` 等冲突时以 candidate 为准
 - `name` 和 `packs` 允许因语言不同而不同
 - `goodWith` 本轮忽略
 - 游戏有而 flibustier 没有的 key 可以多出
-- 若基础字段冲突，以游戏为准，核验报告列出差异
+- 核验报告列出差异，差异不自动代表 candidate 错误
 
 ## 验证命令
 
