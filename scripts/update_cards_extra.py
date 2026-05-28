@@ -93,7 +93,7 @@ def preview_text(value: str, limit: int = 800) -> str:
 
 def normalize_pack_name(pack_name: str) -> str:
     parts = pack_name.rsplit(" ", 1)
-    if len(parts) == 1:
+    if len(parts) == 1 or parts[1] == "ex":
         return pack_name
     return parts[1]
 
