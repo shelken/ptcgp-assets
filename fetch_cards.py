@@ -99,7 +99,6 @@ class PTCGPDownloader:
         """获取指定系列的卡牌集合列表"""
         url = f"{self.BASE_API_URL}?lang=pocket&group={series}"
         headers = {
-            "Origin": "https://www.pokeos.com/",
             "Accept": "application/json",
         }
 
