@@ -1,9 +1,11 @@
 import json
 import tempfile
+import subprocess
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
-from scripts.update_cards_extra import convert_export, parse_exporter_stdout, write_cards_extra
+from scripts.update_cards_extra import convert_export, parse_exporter_stdout, run_exporter, write_cards_extra
 
 
 class UpdateCardsExtraTests(unittest.TestCase):
@@ -19,7 +21,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
                     "name": "妙蛙種子",
                     "rarity": "C",
                     "image": "cPK_10_000010_00_FUSHIGIDANE_C.webp",
-                    "packs": ["最強的基因 超夢", "高級擴充包ex"],
+                    "packs": ["超夢", "高級擴充包ex"],
                     "pokemon": {
                         "element": "Grass",
                         "stage": "Basic",
@@ -36,7 +38,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
                     "name": "貝殼化石",
                     "rarity": "C",
                     "image": "cTR_10_000080_00_KAINOKASEKI_C.webp",
-                    "packs": ["最強的基因 皮卡丘"],
+                    "packs": ["皮卡丘"],
                     "trainer": {"type": "Fossil"},
                 },
             ],
@@ -72,6 +74,28 @@ class UpdateCardsExtraTests(unittest.TestCase):
                 },
             ],
         )
+
+    def test_preserves_exporter_pack_names_without_guessing_from_language(self):
+        export = {
+            "schemaVersion": 1,
+            "language": "en-US",
+            "cards": [
+                {
+                    "kind": "trainer",
+                    "set": "A4b",
+                    "number": 1,
+                    "name": "Example",
+                    "rarity": "C",
+                    "image": "example.webp",
+                    "packs": ["Deluxe Pack ex"],
+                    "trainer": {"type": "Item"},
+                }
+            ],
+        }
+
+        [card] = convert_export(export)
+
+        self.assertEqual(card["packs"], ["Deluxe Pack ex"])
 
     def test_parses_exporter_stdout_with_leading_tool_noise(self):
         export = {"schemaVersion": 1, "language": "zh-TW", "cards": []}
@@ -117,6 +141,24 @@ class UpdateCardsExtraTests(unittest.TestCase):
 
         with self.assertRaisesRegex(ValueError, "duplicate card key: A1 #1"):
             convert_export(export)
+
+    def test_run_exporter_fails_fast_on_timeout(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "package.json").write_text("{}")
+            (root / "src/cli").mkdir(parents=True)
+            (root / "src/cli/index.ts").write_text("")
+
+            with patch("scripts.update_cards_extra.subprocess.run") as run:
+                run.side_effect = subprocess.TimeoutExpired(
+                    cmd="tsx ptcgp export-metadata",
+                    timeout=120,
+                    output="partial stdout",
+                    stderr="partial stderr",
+                )
+
+                with self.assertRaisesRegex(TimeoutError, "timed out after 120s"):
+                    run_exporter(root)
 
     def test_writes_to_language_directory_atomically(self):
         with tempfile.TemporaryDirectory() as tmp:

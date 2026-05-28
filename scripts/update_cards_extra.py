@@ -18,6 +18,7 @@ EXPORT_COMMAND = [
     "--out",
     "-",
 ]
+EXPORT_TIMEOUT_SECONDS = 120
 
 ENERGY_TYPES = {
     "Grass": "grass",
@@ -91,17 +92,6 @@ def preview_text(value: str, limit: int = 800) -> str:
     return value[:limit] + "...<truncated>"
 
 
-def normalize_pack_name(pack_name: str) -> str:
-    parts = pack_name.rsplit(" ", 1)
-    if len(parts) == 1:
-        return pack_name
-    return parts[1]
-
-
-def normalize_pack_names(value: Any) -> list[str]:
-    return [normalize_pack_name(pack) for pack in require_string_list(value, "packs")]
-
-
 def parse_exporter_stdout(stdout: str, stderr: str, command: str) -> dict[str, Any]:
     decoder = json.JSONDecoder()
     for index, char in enumerate(stdout):
@@ -144,7 +134,7 @@ def convert_pokemon(card: dict[str, Any]) -> dict[str, Any]:
         "name": require_str(card.get("name"), "name"),
         "rarity": require_str(card.get("rarity"), "rarity"),
         "image": require_image(card.get("image")),
-        "packs": normalize_pack_names(card.get("packs")),
+        "packs": require_string_list(card.get("packs"), "packs"),
         "element": map_value(ENERGY_TYPES, pokemon.get("element"), "element"),
         "type": "pokemon",
         "stage": map_value(STAGES, pokemon.get("stage"), "stage"),
@@ -181,7 +171,7 @@ def convert_trainer(card: dict[str, Any]) -> dict[str, Any]:
         "name": require_str(card.get("name"), "name"),
         "rarity": require_str(card.get("rarity"), "rarity"),
         "image": require_image(card.get("image")),
-        "packs": normalize_pack_names(card.get("packs")),
+        "packs": require_string_list(card.get("packs"), "packs"),
         "type": trainer_type,
     }
 
@@ -240,13 +230,22 @@ def run_exporter(frida_test_dir: Path) -> dict[str, Any]:
         raise ValueError(f"frida-test dir missing src/cli/index.ts: {frida_test_dir}")
 
     command_display = " ".join(EXPORT_COMMAND)
-    result = subprocess.run(
-        EXPORT_COMMAND,
-        cwd=frida_test_dir,
-        check=False,
-        text=True,
-        capture_output=True,
-    )
+    try:
+        result = subprocess.run(
+            EXPORT_COMMAND,
+            cwd=frida_test_dir,
+            check=False,
+            text=True,
+            capture_output=True,
+            timeout=EXPORT_TIMEOUT_SECONDS,
+        )
+    except subprocess.TimeoutExpired as error:
+        raise TimeoutError(
+            f"frida-test exporter timed out after {EXPORT_TIMEOUT_SECONDS}s\n"
+            f"command: {command_display}\n"
+            f"stdout preview: {preview_text(error.stdout or '')}\n"
+            f"stderr preview: {preview_text(error.stderr or '')}"
+        ) from error
 
     if result.stderr:
         sys.stderr.write(result.stderr)

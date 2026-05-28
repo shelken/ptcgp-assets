@@ -22,6 +22,7 @@ metadata/cards/zh-TW/cards.extra.json
 - `name`、`packs` 使用当前游戏语言。
 - `image` 稳定来源是卡牌表行的 `IllustrationID + ".webp"`：Pokémon 读 `PokemonCard.IllustrationID`，Trainer/Fossil 读 `TrainerCard.IllustrationID`；不要用 `CardID + CharacterID + Rarity` 拼接。
 - 同一张卡如果同时属于普通卡包和高级扩充包，`packs` 会同时列出；这是正确数据。
+- `packs` 名称在 Frida exporter 内用底层表关系提取：`PackMaster.NameMSID` 得到完整本地化包名，`PackMaster.SkuID` 推出 `ExpansionID`，再用 `Expansion.NameMSID/LongNameMSID` 的本地化值只剥离真实扩充包名前缀；如果包名等于扩充包名，保留完整包名。Python updater 不再按空格猜测。
 - Pokémon 的 `evolvesFrom` 一律保留；没有进化来源时写 `null`。
 - 当前阶段特别排除 `goodWith`：不生成，也不在父集合校验中展示差异。
 
