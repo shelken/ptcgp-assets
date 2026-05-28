@@ -13,7 +13,16 @@ from typing import Any
 BASELINE_URL = "https://raw.githubusercontent.com/flibustier/pokemon-tcg-pocket-database/main/dist/cards.extra.json"
 BASELINE_PATH = Path("/tmp/cards.extra.json")
 DEFAULT_CANDIDATE = Path("metadata/cards/zh-TW/cards.extra.json")
-ENUM_STRING_KEYS = {"rarity", "element", "type", "stage", "weakness"}
+ENUM_STRING_KEYS = {"rarity", "type"}
+GAME_AUTHORITATIVE_KEYS = {
+    "packs",
+    "element",
+    "stage",
+    "health",
+    "retreatCost",
+    "weakness",
+    "evolvesFrom",
+}
 
 
 @dataclass
@@ -60,6 +69,9 @@ def should_compare_string(key: str) -> bool:
 
 
 def compare_field(key: str, baseline_value: Any, candidate: dict[str, Any]) -> dict[str, Any] | None:
+    if key in GAME_AUTHORITATIVE_KEYS:
+        return None
+
     if key not in candidate:
         return {"key": key, "baseline": baseline_value, "candidate": "<missing>"}
 

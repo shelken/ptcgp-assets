@@ -62,7 +62,8 @@ uv run python scripts/verify_cards_extra_parent.py
 - 按 `(set, number)` 对齐。
 - 本目录产物多出的卡只计数。
 - 本目录产物缺少原版卡时输出 `set`、`number`、`name`。
-- list 只比较长度。
-- number 比较数值。
-- enum string 会输出差异，但差异不代表本目录产物错误；当前规则以游戏导出的 candidate 为准。
-- `name`、`image`、`evolvesFrom` 等非 enum string 不比较字符串值。
+- 已确认按游戏内容为准的字段不比较：`packs`、`element`、`stage`、`health`、`retreatCost`、`weakness`、`evolvesFrom`。
+- 其他 list 只比较长度。
+- 其他 number 比较数值。
+- 仍需核验的 enum string 目前只比较：`rarity`、`type`。
+- `name`、`image` 等非 enum string 不比较字符串值。

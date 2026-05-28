@@ -4,7 +4,7 @@ from scripts.verify_cards_extra_parent import compare_cards
 
 
 class VerifyCardsExtraParentTests(unittest.TestCase):
-    def test_reports_missing_extra_and_changed_values(self):
+    def test_reports_missing_extra_and_non_authoritative_changed_values(self):
         baseline = [
             {
                 "set": "A1",
@@ -12,9 +12,13 @@ class VerifyCardsExtraParentTests(unittest.TestCase):
                 "name": "Bulbasaur",
                 "rarity": "C",
                 "packs": ["Mewtwo"],
-                "element": "grass",
+                "element": "Grass",
                 "type": "pokemon",
+                "stage": 0,
                 "health": 50,
+                "retreatCost": 1,
+                "weakness": "Dark",
+                "evolvesFrom": None,
             },
             {
                 "set": "A1",
@@ -36,7 +40,11 @@ class VerifyCardsExtraParentTests(unittest.TestCase):
                 "packs": ["超夢", "高級擴充包ex"],
                 "element": "grass",
                 "type": "pokemon",
+                "stage": "basic",
                 "health": 70,
+                "retreatCost": 2,
+                "weakness": "Darkness",
+                "evolvesFrom": None,
                 "extraKey": "allowed",
             },
             {"set": "A1", "number": 3, "name": "Only in candidate"},
@@ -55,8 +63,6 @@ class VerifyCardsExtraParentTests(unittest.TestCase):
                     "name": "Bulbasaur",
                     "fields": [
                         {"key": "rarity", "baseline": "C", "candidate": "R"},
-                        {"key": "packs", "baselineCount": 1, "candidateCount": 2},
-                        {"key": "health", "baseline": 50, "candidate": 70},
                     ],
                 }
             ],
