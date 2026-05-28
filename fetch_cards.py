@@ -73,16 +73,16 @@ class PTCGPDownloader:
         # 并发控制
         self.semaphore = asyncio.Semaphore(max_concurrency)
 
-        # 统计
-        self.stats = {
-            "downloaded": 0,
-            "downloaded_fallback": 0,
-            "converted_png": 0,
-            "convert_failed": 0,
-            "skipped": 0,
-            "failed": 0,
-            "total": 0,
+        # 统计（按语言分组）
+        self.stats: Dict[str, Dict[str, int]] = {
+            "downloaded": defaultdict(int),
+            "downloaded_fallback": defaultdict(int),
+            "converted_png": defaultdict(int),
+            "convert_failed": defaultdict(int),
+            "skipped": defaultdict(int),
+            "failed": defaultdict(int),
         }
+        self.stats_total = 0
 
         # 失败项列表，格式: (set_code, number, lang, detail)
         self.failed_items: List[Tuple[str, int, str, str]] = []
@@ -92,6 +92,9 @@ class PTCGPDownloader:
 
         # 从备选源下载的列表，格式: (set_code, number, lang, url)
         self.fallback_items: List[Tuple[str, int, str, str]] = []
+
+        # 转换成功的列表，格式: (set_code, number, lang)
+        self.converted_items: List[Tuple[str, int, str]] = []
 
     async def fetch_sets(
         self, session: aiohttp.ClientSession, series: str
@@ -180,7 +183,7 @@ class PTCGPDownloader:
 
             pil_image = importlib.import_module("PIL.Image")
         except Exception:
-            self.stats["convert_failed"] += 1
+            self.stats["convert_failed"][lang] += 1
             if self.verbose:
                 print(
                     f"[转换失败] {set_code} #{number} [{lang}] Pillow 不可用 | url: {source_url}"
@@ -194,7 +197,8 @@ class PTCGPDownloader:
             with pil_image.open(webp_path) as img:
                 img.save(png_path, "PNG")
 
-            self.stats["converted_png"] += 1
+            self.stats["converted_png"][lang] += 1
+            self.converted_items.append((set_code, number, lang))
             if self.verbose:
                 print(
                     f"[转换成功] {set_code} #{number} [{lang}] webp -> png | url: {source_url}"
@@ -203,7 +207,7 @@ class PTCGPDownloader:
                 print(f"[转换成功] {set_code} #{number} [{lang}] webp -> png")
             return True
         except Exception as e:
-            self.stats["convert_failed"] += 1
+            self.stats["convert_failed"][lang] += 1
             if self.verbose:
                 print(
                     f"[转换失败] {set_code} #{number} [{lang}] webp -> png | url: {source_url} | 错误: {e}"
@@ -300,7 +304,7 @@ class PTCGPDownloader:
                     async for chunk in response.content.iter_chunked(8192):
                         await f.write(chunk)
 
-                self.stats["downloaded_fallback"] += 1
+                self.stats["downloaded_fallback"][lang] += 1
                 self.fallback_items.append((set_code, number, lang, url))
 
                 # 简单策略：若 png 不存在，则尝试将已下载的 webp 转换为 png
@@ -358,7 +362,7 @@ class PTCGPDownloader:
                         lang=lang,
                         source_url=self.get_fallback_url(card_set.set_code, number),
                     )
-                self.stats["skipped"] += 1
+                self.stats["skipped"][lang] += 1
                 pbar.update(1)
                 return True, False
 
@@ -375,7 +379,7 @@ class PTCGPDownloader:
                     session, card_set.set_code, number, lang, pbar
                 )
             if not success:
-                self.stats["failed"] = self.stats.get("failed", 0) + 1
+                self.stats["failed"][lang] += 1
                 self.failed_items.append(
                     (
                         card_set.set_code,
@@ -391,7 +395,7 @@ class PTCGPDownloader:
 
         # 检查文件是否已存在
         if filepath.exists():
-            self.stats["skipped"] += 1
+            self.stats["skipped"][lang] += 1
             pbar.update(1)
             return True, False
 
@@ -404,7 +408,7 @@ class PTCGPDownloader:
                 )
                 if success:
                     # 主源下载成功
-                    self.stats["downloaded"] += 1
+                    self.stats["downloaded"][lang] += 1
                     pbar.update(1)
                     return True, False
                 elif is_404:
@@ -426,12 +430,12 @@ class PTCGPDownloader:
                         return fallback_success, False
                 else:
                     # 其他失败
-                    self.stats["failed"] += 1
+                    self.stats["failed"][lang] += 1
                     self.failed_items.append((card_set.set_code, number, lang, url))
                     pbar.update(1)
                     return False, False
             except Exception:
-                self.stats["failed"] += 1
+                self.stats["failed"][lang] += 1
                 self.failed_items.append((card_set.set_code, number, lang, url))
                 pbar.update(1)
                 return False, False
@@ -575,7 +579,7 @@ class PTCGPDownloader:
                     total_cards = PROBE_ESTIMATE
                 total_tasks += total_cards * len(self.languages)
 
-            self.stats["total"] = total_tasks
+            self.stats_total = total_tasks
             print(f"预计需要处理 {total_tasks} 张图片（探测模式按预估计算）")
             print()
 
@@ -591,67 +595,119 @@ class PTCGPDownloader:
                 await asyncio.gather(*tasks, return_exceptions=True)
 
         # 输出统计
-        print("\n" + "=" * 50)
+        print("\n" + "=" * 60)
         print("下载完成!")
-        print(f"  主源下载: {self.stats['downloaded']}")
-        print(f"  备选源下载: {self.stats['downloaded_fallback']}")
-        print(f"  webp->png 转换成功: {self.stats['converted_png']}")
-        print(f"  webp->png 转换失败: {self.stats['convert_failed']}")
-        print(f"  已存在跳过: {self.stats['skipped']}")
-        print(f"  失败: {self.stats['failed']}")
-        print(f"  总计: {self.stats['total']}")
-        print("=" * 50)
+        print()
+
+        # 按语言汇总
+        for lang in self.languages:
+            d = self.stats["downloaded"][lang]
+            f = self.stats["downloaded_fallback"][lang]
+            c = self.stats["converted_png"][lang]
+            cf = self.stats["convert_failed"][lang]
+            s = self.stats["skipped"][lang]
+            fa = self.stats["failed"][lang]
+            total = d + f + c + cf + s + fa
+            print(f"  [{lang}] 共 {total} 张")
+            print(f"    主源下载: {d}")
+            print(f"    备选源下载: {f}")
+            print(f"    webp->png 转换: {c} (失败 {cf})")
+            print(f"    已存在跳过: {s}")
+            if fa > 0:
+                print(f"    失败: {fa}")
+            print()
+
+        # 汇总
+        total_downloaded = sum(self.stats["downloaded"].values())
+        total_fallback = sum(self.stats["downloaded_fallback"].values())
+        total_converted = sum(self.stats["converted_png"].values())
+        total_convert_failed = sum(self.stats["convert_failed"].values())
+        total_skipped = sum(self.stats["skipped"].values())
+        total_failed = sum(self.stats["failed"].values())
+        print("  " + "-" * 30)
+        print(f"  总计: {total_downloaded + total_fallback + total_converted + total_convert_failed + total_skipped + total_failed}")
+        print(f"    主源下载: {total_downloaded}")
+        print(f"    备选源下载: {total_fallback}")
+        print(f"    webp->png 转换: {total_converted} (失败 {total_convert_failed})")
+        print(f"    已存在跳过: {total_skipped}")
+        if total_failed > 0:
+            print(f"    失败: {total_failed}")
+        print("=" * 60)
+
+        # 输出转换明细
+        if self.converted_items:
+            print(f"\n转换明细 ({len(self.converted_items)} 个):")
+            # 按语言分组
+            by_lang_conv: Dict[str, Dict[str, List[int]]] = defaultdict(lambda: defaultdict(list))
+            for set_code, number, lang in self.converted_items:
+                by_lang_conv[lang][set_code].append(number)
+
+            for lang in self.languages:
+                if lang not in by_lang_conv:
+                    continue
+                print(f"\n  [{lang}]")
+                for set_code in sorted(by_lang_conv[lang].keys()):
+                    numbers = sorted(by_lang_conv[lang][set_code])
+                    cards = ", ".join(f"#{n}" for n in numbers)
+                    print(f"    {set_code}: {cards}")
 
         # 输出缺失项（主源 404 且备选源也失败）
         if self.missing_items:
             print(f"\n缺失项 (404) ({len(self.missing_items)} 个):")
-            grouped = defaultdict(list)
+            # 按语言分组
+            by_lang: Dict[str, Dict[str, List[int]]] = defaultdict(lambda: defaultdict(list))
             for set_code, number, lang, url in self.missing_items:
-                grouped[set_code].append((number, lang, url))
+                by_lang[lang][set_code].append(number)
 
-            for set_code in sorted(grouped.keys()):
-                items = sorted(grouped[set_code])
-                if self.verbose:
-                    print(f"\n  [{set_code}] ({len(items)} 个):")
-                    for number, lang, url in items:
-                        print(f"    - #{number} [{lang}]: {url}")
-                else:
-                    cards = ", ".join(f"#{number}[{lang}]" for number, lang, _ in items)
-                    print(f"  [{set_code}] ({len(items)} 个): {cards}")
+            for lang in self.languages:
+                if lang not in by_lang:
+                    continue
+                print(f"\n  [{lang}]")
+                for set_code in sorted(by_lang[lang].keys()):
+                    numbers = sorted(by_lang[lang][set_code])
+                    cards = ", ".join(f"#{n}" for n in numbers)
+                    print(f"    {set_code}: {cards}")
 
         # 输出备选源下载成功项
         if self.fallback_items:
             print(f"\n备选源下载成功 ({len(self.fallback_items)} 个):")
-            grouped = defaultdict(list)
+            # 按语言分组
+            by_lang_fb: Dict[str, Dict[str, List[int]]] = defaultdict(lambda: defaultdict(list))
             for set_code, number, lang, url in self.fallback_items:
-                grouped[set_code].append((number, lang, url))
+                by_lang_fb[lang][set_code].append(number)
 
-            for set_code in sorted(grouped.keys()):
-                items = sorted(grouped[set_code])
-                if self.verbose:
-                    print(f"\n  [{set_code}] ({len(items)} 个):")
-                    for number, lang, url in items:
-                        print(f"    - #{number} [{lang}]: {url}")
-                else:
-                    cards = ", ".join(f"#{number}[{lang}]" for number, lang, _ in items)
-                    print(f"  [{set_code}] ({len(items)} 个): {cards}")
+            for lang in self.languages:
+                if lang not in by_lang_fb:
+                    continue
+                print(f"\n  [{lang}]")
+                for set_code in sorted(by_lang_fb[lang].keys()):
+                    numbers = sorted(by_lang_fb[lang][set_code])
+                    cards = ", ".join(f"#{n}" for n in numbers)
+                    print(f"    {set_code}: {cards}")
 
         # 输出失败项
         if self.failed_items:
             print(f"\n失败项 ({len(self.failed_items)} 个):")
-            grouped = defaultdict(list)
+            # 按语言分组
+            by_lang_fail: Dict[str, Dict[str, List[Tuple[int, str]]]] = defaultdict(
+                lambda: defaultdict(list)
+            )
             for set_code, number, lang, detail in self.failed_items:
-                grouped[set_code].append((number, lang, detail))
+                by_lang_fail[lang][set_code].append((number, detail))
 
-            for set_code in sorted(grouped.keys()):
-                items = sorted(grouped[set_code])
-                if self.verbose:
-                    print(f"\n  [{set_code}] ({len(items)} 个):")
-                    for number, lang, detail in items:
-                        print(f"    - #{number} [{lang}]: {detail}")
-                else:
-                    cards = ", ".join(f"#{number}[{lang}]" for number, lang, _ in items)
-                    print(f"  [{set_code}] ({len(items)} 个): {cards}")
+            for lang in self.languages:
+                if lang not in by_lang_fail:
+                    continue
+                print(f"\n  [{lang}]")
+                for set_code in sorted(by_lang_fail[lang].keys()):
+                    items = by_lang_fail[lang][set_code]
+                    if self.verbose:
+                        print(f"    {set_code}:")
+                        for number, detail in items:
+                            print(f"      #{number}: {detail}")
+                    else:
+                        cards = ", ".join(f"#{n}" for n, _ in items)
+                        print(f"    {set_code}: {cards}")
 
 
 def main():
