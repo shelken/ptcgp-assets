@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.update_cards_extra import convert_export, write_cards_extra
+from scripts.update_cards_extra import convert_export, parse_exporter_stdout, write_cards_extra
 
 
 class UpdateCardsExtraTests(unittest.TestCase):
@@ -19,7 +19,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
                     "name": "妙蛙種子",
                     "rarity": "C",
                     "image": "cPK_10_000010_00_FUSHIGIDANE_C.webp",
-                    "packs": ["最強的基因 超夢"],
+                    "packs": ["最強的基因 超夢", "高級擴充包ex"],
                     "pokemon": {
                         "element": "Grass",
                         "stage": "Basic",
@@ -51,7 +51,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
                     "name": "妙蛙種子",
                     "rarity": "C",
                     "image": "cPK_10_000010_00_FUSHIGIDANE_C.webp",
-                    "packs": ["最強的基因 超夢"],
+                    "packs": ["超夢", "高級擴充包ex"],
                     "element": "grass",
                     "type": "pokemon",
                     "stage": "basic",
@@ -65,12 +65,26 @@ class UpdateCardsExtraTests(unittest.TestCase):
                     "name": "貝殼化石",
                     "rarity": "C",
                     "image": "cTR_10_000080_00_KAINOKASEKI_C.webp",
-                    "packs": ["最強的基因 皮卡丘"],
+                    "packs": ["皮卡丘"],
                     "type": "Fossil",
                     "stage": "basic",
                 },
             ],
         )
+
+    def test_parses_exporter_stdout_with_leading_tool_noise(self):
+        export = {"schemaVersion": 1, "language": "zh-TW", "cards": []}
+        stdout = "◇ injected env (8) from .env\n" + json.dumps(export, ensure_ascii=False)
+
+        self.assertEqual(parse_exporter_stdout(stdout, "", "tsx ptcgp export-metadata"), export)
+
+    def test_parse_error_includes_stdout_and_stderr_preview(self):
+        with self.assertRaisesRegex(ValueError, "stdout preview: not json"):
+            parse_exporter_stdout(
+                "not json",
+                "Error: Expected one MemoryDatabase instance, got 0",
+                "tsx ptcgp export-metadata",
+            )
 
     def test_rejects_duplicate_set_number(self):
         export = {

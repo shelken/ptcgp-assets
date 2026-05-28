@@ -85,6 +85,44 @@ def require_string_list(value: Any, field: str) -> list[str]:
     return value
 
 
+def preview_text(value: str, limit: int = 800) -> str:
+    if len(value) <= limit:
+        return value
+    return value[:limit] + "...<truncated>"
+
+
+def normalize_pack_name(pack_name: str) -> str:
+    parts = pack_name.rsplit(" ", 1)
+    if len(parts) == 1:
+        return pack_name
+    return parts[1]
+
+
+def normalize_pack_names(value: Any) -> list[str]:
+    return [normalize_pack_name(pack) for pack in require_string_list(value, "packs")]
+
+
+def parse_exporter_stdout(stdout: str, stderr: str, command: str) -> dict[str, Any]:
+    decoder = json.JSONDecoder()
+    for index, char in enumerate(stdout):
+        if char != "{":
+            continue
+        try:
+            parsed, _ = decoder.raw_decode(stdout[index:])
+        except json.JSONDecodeError:
+            continue
+        if not isinstance(parsed, dict):
+            raise ValueError("frida-test exporter JSON must be an object")
+        return parsed
+
+    raise ValueError(
+        "frida-test exporter stdout is not JSON\n"
+        f"command: {command}\n"
+        f"stdout preview: {preview_text(stdout)}\n"
+        f"stderr preview: {preview_text(stderr)}"
+    )
+
+
 def map_value(mapping: dict[Any, Any], value: Any, field: str) -> Any:
     if value not in mapping:
         raise ValueError(f"unsupported {field}: {value}")
@@ -106,7 +144,7 @@ def convert_pokemon(card: dict[str, Any]) -> dict[str, Any]:
         "name": require_str(card.get("name"), "name"),
         "rarity": require_str(card.get("rarity"), "rarity"),
         "image": require_image(card.get("image")),
-        "packs": require_string_list(card.get("packs"), "packs"),
+        "packs": normalize_pack_names(card.get("packs")),
         "element": map_value(ENERGY_TYPES, pokemon.get("element"), "element"),
         "type": "pokemon",
         "stage": map_value(STAGES, pokemon.get("stage"), "stage"),
@@ -144,7 +182,7 @@ def convert_trainer(card: dict[str, Any]) -> dict[str, Any]:
         "name": require_str(card.get("name"), "name"),
         "rarity": require_str(card.get("rarity"), "rarity"),
         "image": require_image(card.get("image")),
-        "packs": require_string_list(card.get("packs"), "packs"),
+        "packs": normalize_pack_names(card.get("packs")),
         "type": trainer_type,
     }
 
@@ -202,6 +240,7 @@ def run_exporter(frida_test_dir: Path) -> dict[str, Any]:
     if not (frida_test_dir / "src/cli/index.ts").is_file():
         raise ValueError(f"frida-test dir missing src/cli/index.ts: {frida_test_dir}")
 
+    command_display = " ".join(EXPORT_COMMAND)
     result = subprocess.run(
         EXPORT_COMMAND,
         cwd=frida_test_dir,
@@ -213,16 +252,15 @@ def run_exporter(frida_test_dir: Path) -> dict[str, Any]:
     if result.stderr:
         sys.stderr.write(result.stderr)
     if result.returncode != 0:
-        raise RuntimeError(f"frida-test exporter failed with exit {result.returncode}")
+        raise RuntimeError(
+            "frida-test exporter failed\n"
+            f"command: {command_display}\n"
+            f"exit code: {result.returncode}\n"
+            f"stdout preview: {preview_text(result.stdout)}\n"
+            f"stderr preview: {preview_text(result.stderr)}"
+        )
 
-    try:
-        export = json.loads(result.stdout)
-    except json.JSONDecodeError as error:
-        raise ValueError("frida-test exporter stdout is not JSON") from error
-
-    if not isinstance(export, dict):
-        raise ValueError("frida-test exporter JSON must be an object")
-    return export
+    return parse_exporter_stdout(result.stdout, result.stderr, command_display)
 
 
 def write_cards_extra(root: Path, language: str, cards: list[dict[str, Any]]) -> Path:
