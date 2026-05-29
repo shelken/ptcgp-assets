@@ -1,24 +1,26 @@
-# cards.extra metadata
+# PTCGP metadata
 
-本目录存放从运行中的 PTCGP 游戏导出的卡牌 metadata。
+本目录存放从运行中的 PTCGP 游戏导出的卡牌 metadata。当前更新命令同一次 Frida export 会生成 `cards.extra.json` 与 `sets.json`。
 
 ## 文件
 
 ```text
 metadata/cards/<language>/cards.extra.json
+metadata/sets/<language>/sets.json
 ```
 
 当前已生成：
 
 ```text
 metadata/cards/zh-TW/cards.extra.json
+metadata/sets/<language>/sets.json
 ```
 
 ## 数据准则
 
 - 游戏 `MemoryDatabase` 是事实来源。
 - 与 flibustier 原版不一致时，以本目录产物为准。
-- flibustier 原版只作为结构和历史格式参考，不作为数值真值。
+- flibustier 原版只作为覆盖验证的 baseline，不作为数值真值，也不用于填充本地产物。
 - `name`、`packs` 使用当前游戏语言。
 - `image` 稳定来源是卡牌表行的 `IllustrationID + ".webp"`：Pokémon 读 `PokemonCard.IllustrationID`，Trainer/Fossil 读 `TrainerCard.IllustrationID`；不要用 `CardID + CharacterID + Rarity` 拼接。
 - 同一张卡如果同时属于普通卡包和高级扩充包，`packs` 会同时列出；这是正确数据。
@@ -50,16 +52,18 @@ metadata/cards/zh-TW/cards.extra.json
 ## 校验脚本
 
 ```bash
-uv run python scripts/verify_cards_extra_parent.py
+uv run python scripts/verify_metadata_coverage.py cards-extra
+uv run python scripts/verify_metadata_coverage.py sets
 ```
 
 脚本会把 flibustier 原版下载到：
 
 ```text
 /tmp/cards.extra.json
+/tmp/sets.json
 ```
 
-对比口径：
+cards-extra 对比口径：
 
 - 按 `(set, number)` 对齐。
 - 本目录产物多出的卡只计数。
@@ -69,3 +73,14 @@ uv run python scripts/verify_cards_extra_parent.py
 - 其他 number 比较数值。
 - 仍需核验的 enum string 目前只比较：`rarity`、`type`。
 - `name`、`image` 等非 enum string 不比较字符串值。
+
+sets 对比口径：
+
+- 按 `code` 对齐。
+- 本地产物多出的 set 只计数。
+- 本地产物缺少 baseline set 时输出 `code`、`name`。
+- `releaseDate` 不比较；当前固定输出 `null`。
+- `count` 不比较；卡牌数量以游戏 `MemoryDatabase` 为准。
+- `packs` 非 PROMO 系列只比较列表长度；`PROMO-*` 系列 packs 数量以游戏 `MemoryDatabase` 为准，不比较 baseline 数量。
+- `name` 不比较字符串内容，只要求本地产物存在至少一个非空本地化值。
+- 字段差异输出中的 `baselineName` / `candidateName` 只用于定位对象，不代表 `name` 字符串参与比较。

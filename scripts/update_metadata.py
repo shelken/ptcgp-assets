@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""從 frida-test 匯出 PTCGP 卡牌 metadata，寫入 cards.extra.json。"""
+"""從 frida-test 匯出 PTCGP metadata，寫入 cards.extra.json 與 sets.json。"""
 
 from __future__ import annotations
 
@@ -28,6 +28,18 @@ GAME_LAUNCHED_MESSAGE = (
     "Cold-start attach can freeze Unity/IL2CPP before MemoryDatabase is loaded."
 )
 NORMAL_PACK_MARKER = "_00_000"
+LANGUAGE_KEY_MAP = {
+    "en-US": "en",
+    "zh-TW": "zh",
+    "zh-CN": "zh",
+    "ja-JP": "ja",
+    "ko-KR": "ko",
+    "fr-FR": "fr",
+    "de-DE": "de",
+    "es-ES": "es",
+    "it-IT": "it",
+    "pt-BR": "pt",
+}
 TEXT_TOKEN_RE = re.compile(r"\[Text:([^\s\]]+)([^\]]*)\]")
 TEXT_TOKEN_ATTR_RE = re.compile(r'(\w+)="([^"]*)"')
 
@@ -384,11 +396,14 @@ def pack_expansion_id(pack: dict[str, Any]) -> str | None:
     return optional_str(pack.get("expansionId"), "pack.expansionId")
 
 
-def iter_normal_pack_entries(cards: list[dict[str, Any]]):
-    for card in cards:
-        for pack in require_object_list(card.get("packs"), "packs"):
-            if is_normal_pack(pack):
-                yield pack
+def require_export_packs(export: dict[str, Any]) -> list[dict[str, Any]]:
+    return require_object_list(export.get("packs"), "packs")
+
+
+def iter_normal_pack_entries(packs: list[dict[str, Any]]):
+    for pack in packs:
+        if is_normal_pack(pack):
+            yield pack
 
 
 def build_expansion_names_by_id(export: dict[str, Any]) -> dict[str, list[str]]:
@@ -400,9 +415,9 @@ def build_expansion_names_by_id(export: dict[str, Any]) -> dict[str, list[str]]:
     return result
 
 
-def build_normal_pack_count_by_expansion_id(cards: list[dict[str, Any]]) -> dict[str, int]:
+def build_normal_pack_count_by_expansion_id(packs: list[dict[str, Any]]) -> dict[str, int]:
     pack_ids_by_expansion: dict[str, set[str]] = {}
-    for pack in iter_normal_pack_entries(cards):
+    for pack in iter_normal_pack_entries(packs):
         expansion_id = pack_expansion_id(pack)
         pack_id = require_str(pack.get("packId"), "pack.packId")
         if not expansion_id:
@@ -424,9 +439,9 @@ def pack_lookup_keys(pack: dict[str, Any]) -> list[str]:
     return keys
 
 
-def build_pack_name_lookup(cards: list[dict[str, Any]]) -> dict[str, str]:
+def build_pack_name_lookup(packs: list[dict[str, Any]]) -> dict[str, str]:
     names_by_key: dict[str, str] = {}
-    for pack in iter_normal_pack_entries(cards):
+    for pack in iter_normal_pack_entries(packs):
         raw_name = pack.get("name")
         if not isinstance(raw_name, str):
             continue
@@ -448,10 +463,10 @@ def lookup_best_pack_raw_name(context: ConversionContext, pack: dict[str, Any]) 
     return raw_name
 
 
-def build_full_pack_names_by_expansion_id(cards: list[dict[str, Any]], pack_name_by_key: dict[str, str]) -> dict[str, list[str]]:
+def build_full_pack_names_by_expansion_id(packs: list[dict[str, Any]], pack_name_by_key: dict[str, str]) -> dict[str, list[str]]:
     names_by_expansion: dict[str, list[str]] = {}
     seen: dict[str, set[str]] = {}
-    for pack in iter_normal_pack_entries(cards):
+    for pack in iter_normal_pack_entries(packs):
         expansion_id = pack_expansion_id(pack)
         if not expansion_id:
             continue
@@ -482,7 +497,7 @@ def featured_pack_display_name(pack: dict[str, Any], context: ConversionContext)
     return None
 
 
-def display_pack_name(pack: dict[str, Any], context: ConversionContext) -> str | None:
+def display_pack_name(pack: dict[str, Any], context: ConversionContext, *, use_featured_name: bool = True) -> str | None:
     if not is_normal_pack(pack):
         return None
 
@@ -490,7 +505,7 @@ def display_pack_name(pack: dict[str, Any], context: ConversionContext) -> str |
     expansion_id = pack_expansion_id(pack)
     expansion_names = context.expansion_names_by_id.get(expansion_id or "", [])
     is_multi_pack_expansion = context.normal_pack_count_by_expansion_id.get(expansion_id or "", 0) > 1
-    featured_name = featured_pack_display_name(pack, context) if is_multi_pack_expansion else None
+    featured_name = featured_pack_display_name(pack, context) if use_featured_name and is_multi_pack_expansion else None
     if featured_name:
         return featured_name
 
@@ -518,13 +533,14 @@ def build_conversion_context(export: dict[str, Any], cards: list[dict[str, Any]]
     ):
         raise ValueError("localizationTexts must be an object of strings")
 
-    pack_name_by_key = build_pack_name_lookup(cards)
+    top_level_packs = require_export_packs(export)
+    pack_name_by_key = build_pack_name_lookup(top_level_packs)
 
     return ConversionContext(
         localization_texts=localization_texts,
         expansion_names_by_id=build_expansion_names_by_id(export),
-        normal_pack_count_by_expansion_id=build_normal_pack_count_by_expansion_id(cards),
-        full_pack_names_by_expansion_id=build_full_pack_names_by_expansion_id(cards, pack_name_by_key),
+        normal_pack_count_by_expansion_id=build_normal_pack_count_by_expansion_id(top_level_packs),
+        full_pack_names_by_expansion_id=build_full_pack_names_by_expansion_id(top_level_packs, pack_name_by_key),
         card_name_by_key=build_card_name_lookup(cards, localization_texts),
         pack_name_by_key=pack_name_by_key,
     )
@@ -605,9 +621,17 @@ def natural_key(card: dict[str, Any]) -> tuple[str, int]:
     return (card["set"], card["number"])
 
 
-def convert_export(export: dict[str, Any]) -> list[dict[str, Any]]:
-    if export.get("schemaVersion") != 2:
-        raise ValueError("frida-test exporter schemaVersion must be 2 raw metadata")
+def natural_code_key(code: str) -> list[int | str]:
+    return [int(part) if part.isdigit() else part for part in re.split(r"(\d+)", code)]
+
+
+def natural_text_key(value: str) -> list[int | str]:
+    return natural_code_key(value)
+
+
+def convert_cards_extra(export: dict[str, Any]) -> list[dict[str, Any]]:
+    if export.get("schemaVersion") != 3:
+        raise ValueError("frida-test exporter schemaVersion must be 3 raw metadata")
 
     language = require_str(export.get("language"), "language")
     if "_" in language:
@@ -644,6 +668,143 @@ def convert_export(export: dict[str, Any]) -> list[dict[str, Any]]:
     return sorted(converted, key=natural_key)
 
 
+def language_key(language: str) -> str:
+    if language not in LANGUAGE_KEY_MAP:
+        raise ValueError(f"unsupported language: {language}")
+    return LANGUAGE_KEY_MAP[language]
+
+
+def expansion_display_name(expansion: dict[str, Any]) -> str:
+    code = require_str(expansion.get("expansionId"), "expansion.expansionId")
+    names = require_string_list(expansion.get("names"), "expansion.names")
+    for name in names[:2]:
+        if name.strip():
+            return require_clean_str(name, "expansion.name")
+    # 变更原因：PROMO-A/B 在 MemoryDatabase 中没有本地化名，sets 仍需稳定输出可识别名称。
+    return code
+
+
+def pack_names_for_expansion(top_level_packs: list[dict[str, Any]], context: ConversionContext, code: str) -> list[str]:
+    names = []
+    seen = set()
+    for pack in top_level_packs:
+        if pack_expansion_id(pack) != code or not is_normal_pack(pack):
+            continue
+        name = lookup_best_pack_raw_name(context, pack)
+        if name in seen:
+            continue
+        seen.add(name)
+        names.append(name)
+    return names
+
+
+def set_pack_display_name(
+    pack: dict[str, Any],
+    context: ConversionContext,
+    code: str,
+    set_name: str,
+) -> str | None:
+    if not is_normal_pack(pack):
+        return None
+
+    raw_name = lookup_best_pack_raw_name(context, pack)
+    if code.startswith("PROMO-"):
+        # 变更原因：PROMO pack 的 Vol. 名称是原始业务名，不能被 common-prefix 逻辑裁成数字。
+        return normalized_text(raw_name)
+
+    # 变更原因：ExpansionTable 只有 code 时，sets.json 仍要用 PackMaster 推导出的系列名剥离子包前缀。
+    return pack_display_name(
+        raw_name,
+        [set_name],
+        has_featured_cards=False,
+        related_featured_pack_names=[],
+    )
+
+
+def inferred_set_name_from_pack_names(code: str, expansion: dict[str, Any], pack_names: list[str]) -> str | None:
+    if code.startswith("PROMO-") or not pack_names:
+        return None
+
+    names = [require_clean_str(normalized_text(name), "pack name") for name in pack_names]
+    if len(names) > 1:
+        prefix = common_featured_pack_name_prefix(names)
+        if prefix:
+            return require_clean_str(prefix, "set name")
+        return None
+
+    [raw_name] = pack_names
+    match = re.match(r"^(.+?)\s*[:：]\s*(.+)$", raw_name)
+    expansion_names = require_string_list(expansion.get("names"), "expansion.names")
+    if match:
+        prefix, _ = match.groups()
+        normalized_prefix = normalized_text(prefix)
+        if normalized_prefix in {normalized_text(name) for name in expansion_names if name.strip()}:
+            return require_clean_str(normalized_prefix, "set name")
+
+    return require_clean_str(normalized_text(raw_name), "set name")
+
+
+def set_display_name(expansion: dict[str, Any], pack_names: list[str]) -> str:
+    code = require_str(expansion.get("expansionId"), "expansion.expansionId")
+    inferred_name = inferred_set_name_from_pack_names(code, expansion, pack_names)
+    if inferred_name:
+        return inferred_name
+    return expansion_display_name(expansion)
+
+
+def convert_sets(export: dict[str, Any], cards: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+    """從 raw export 和已轉換 cards 生成 sets.json 結構。"""
+    language = require_str(export.get("language"), "language")
+    name_key = language_key(language)
+    expansions = require_object_list(export.get("expansions"), "expansions")
+    # 变更原因：sets.json.packs 必须来自 PackMaster 顶层列表，缺失时不能回退到错误的 card.packs 聚合。
+    top_level_packs = require_export_packs(export)
+    context = build_conversion_context(export, require_object_list(export.get("cards"), "cards"))
+
+    cards_by_set: dict[str, list[dict[str, Any]]] = {}
+    for card in cards:
+        set_code = require_str(card.get("set"), "card.set")
+        cards_by_set.setdefault(set_code, []).append(card)
+
+    grouped: dict[str, list[dict[str, Any]]] = {}
+    seen_codes: set[str] = set()
+    for expansion in expansions:
+        code = require_str(expansion.get("expansionId"), "expansion.expansionId")
+        if code in seen_codes:
+            raise ValueError(f"duplicate set code: {code}")
+        seen_codes.add(code)
+
+        set_cards = cards_by_set.get(code, [])
+        if not set_cards:
+            continue
+
+        pack_names = pack_names_for_expansion(top_level_packs, context, code)
+        display_name = set_display_name(expansion, pack_names)
+        packs = sorted(
+            {
+                require_clean_str(pack_name, "set pack name")
+                for pack in top_level_packs
+                if pack_expansion_id(pack) == code and is_normal_pack(pack)
+                for pack_name in [set_pack_display_name(pack, context, code, display_name)]
+                if pack_name
+            },
+            key=natural_text_key,
+        )
+        record = {
+            "code": code,
+            "releaseDate": None,
+            "count": len(set_cards),
+            "name": {name_key: display_name},
+            "packs": packs,
+        }
+        grouped.setdefault(code[0], []).append(record)
+
+    return {
+        group_key: sorted(group_items, key=lambda item: natural_code_key(item["code"]))
+        for group_key, group_items in sorted(grouped.items(), key=lambda item: item[0])
+    }
+
+
 def collect_stream(stream: TextIO, chunks: list[str], echo: bool) -> None:
     try:
         for chunk in iter(stream.readline, ""):
@@ -665,7 +826,7 @@ def run_exporter(frida_test_dir: Path) -> dict[str, Any]:
 
     command_display = " ".join(EXPORT_COMMAND)
     # Frida 卡住时必须实时看到内层阶段日志；capture_output 会把关键 stderr 吞到超时后。
-    sys.stderr.write(f"[update-cards-extra] running: {command_display}\n")
+    sys.stderr.write(f"[update-metadata] running: {command_display}\n")
     sys.stderr.flush()
     started_at = time.monotonic()
     process = subprocess.Popen(
@@ -709,7 +870,7 @@ def run_exporter(frida_test_dir: Path) -> dict[str, Any]:
     stdout = "".join(stdout_chunks)
     stderr = "".join(stderr_chunks)
     elapsed = time.monotonic() - started_at
-    sys.stderr.write(f"[update-cards-extra] exporter exited with code {return_code} after {elapsed:.1f}s\n")
+    sys.stderr.write(f"[update-metadata] exporter exited with code {return_code} after {elapsed:.1f}s\n")
     sys.stderr.flush()
 
     if GAME_LAUNCHED_MESSAGE in stderr:
@@ -737,8 +898,18 @@ def write_cards_extra(root: Path, language: str, cards: list[dict[str, Any]]) ->
     return out_path
 
 
+def write_sets(root: Path, language: str, sets: dict[str, list[dict[str, Any]]]) -> Path:
+    require_str(language, "language")
+    out_path = root / "metadata" / "sets" / language / "sets.json"
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    temp_path = out_path.with_suffix(out_path.suffix + ".tmp")
+    temp_path.write_text(json.dumps(sets, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    temp_path.replace(out_path)
+    return out_path
+
+
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Update PTCGP cards.extra metadata from frida-test")
+    parser = argparse.ArgumentParser(description="Update PTCGP metadata from frida-test")
     parser.add_argument("--frida-test-dir", required=True, type=Path)
     args = parser.parse_args(argv)
 
@@ -748,10 +919,13 @@ def main(argv: list[str] | None = None) -> int:
         print(error, file=sys.stderr)
         return 0
 
-    cards = convert_export(export)
+    cards = convert_cards_extra(export)
+    sets = convert_sets(export, cards)
     language = require_str(export.get("language"), "language")
-    output = write_cards_extra(Path.cwd(), language, cards)
-    print(f"wrote {output}")
+    cards_output = write_cards_extra(Path.cwd(), language, cards)
+    sets_output = write_sets(Path.cwd(), language, sets)
+    print(f"wrote {cards_output}")
+    print(f"wrote {sets_output}")
     return 0
 
 

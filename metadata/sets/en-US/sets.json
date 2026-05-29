@@ -1,0 +1,255 @@
+{
+  "A": [
+    {
+      "code": "A1",
+      "releaseDate": null,
+      "count": 286,
+      "name": {
+        "en": "Genetic Apex"
+      },
+      "packs": [
+        "Charizard",
+        "Mewtwo",
+        "Pikachu"
+      ]
+    },
+    {
+      "code": "A1a",
+      "releaseDate": null,
+      "count": 86,
+      "name": {
+        "en": "Mythical Island"
+      },
+      "packs": [
+        "Mythical Island"
+      ]
+    },
+    {
+      "code": "A2",
+      "releaseDate": null,
+      "count": 207,
+      "name": {
+        "en": "Space-Time Smackdown"
+      },
+      "packs": [
+        "Dialga",
+        "Palkia"
+      ]
+    },
+    {
+      "code": "A2a",
+      "releaseDate": null,
+      "count": 96,
+      "name": {
+        "en": "Triumphant Light"
+      },
+      "packs": [
+        "Triumphant Light"
+      ]
+    },
+    {
+      "code": "A2b",
+      "releaseDate": null,
+      "count": 111,
+      "name": {
+        "en": "Shining Revelry"
+      },
+      "packs": [
+        "Shining Revelry"
+      ]
+    },
+    {
+      "code": "A3",
+      "releaseDate": null,
+      "count": 239,
+      "name": {
+        "en": "Celestial Guardians"
+      },
+      "packs": [
+        "Lunala",
+        "Solgaleo"
+      ]
+    },
+    {
+      "code": "A3a",
+      "releaseDate": null,
+      "count": 103,
+      "name": {
+        "en": "Extradimensional Crisis"
+      },
+      "packs": [
+        "Extradimensional Crisis"
+      ]
+    },
+    {
+      "code": "A3b",
+      "releaseDate": null,
+      "count": 107,
+      "name": {
+        "en": "Eevee Grove"
+      },
+      "packs": [
+        "Eevee Grove"
+      ]
+    },
+    {
+      "code": "A4",
+      "releaseDate": null,
+      "count": 241,
+      "name": {
+        "en": "Wisdom of Sea and Sky"
+      },
+      "packs": [
+        "Ho-Oh",
+        "Lugia"
+      ]
+    },
+    {
+      "code": "A4a",
+      "releaseDate": null,
+      "count": 105,
+      "name": {
+        "en": "Secluded Springs"
+      },
+      "packs": [
+        "Secluded Springs"
+      ]
+    },
+    {
+      "code": "A4b",
+      "releaseDate": null,
+      "count": 379,
+      "name": {
+        "en": "Deluxe Pack ex"
+      },
+      "packs": [
+        "Deluxe Pack ex"
+      ]
+    }
+  ],
+  "B": [
+    {
+      "code": "B1",
+      "releaseDate": null,
+      "count": 331,
+      "name": {
+        "en": "Mega Rising Mega"
+      },
+      "packs": [
+        "Mega Rising Mega Altaria",
+        "Mega Rising Mega Blaziken",
+        "Mega Rising Mega Gyarados"
+      ]
+    },
+    {
+      "code": "B1a",
+      "releaseDate": null,
+      "count": 103,
+      "name": {
+        "en": "Crimson Blaze"
+      },
+      "packs": [
+        "Crimson Blaze"
+      ]
+    },
+    {
+      "code": "B2",
+      "releaseDate": null,
+      "count": 234,
+      "name": {
+        "en": "Fantastical Parade"
+      },
+      "packs": [
+        "Fantastical Parade"
+      ]
+    },
+    {
+      "code": "B2a",
+      "releaseDate": null,
+      "count": 131,
+      "name": {
+        "en": "Paldean Wonders"
+      },
+      "packs": [
+        "Paldean Wonders"
+      ]
+    },
+    {
+      "code": "B2b",
+      "releaseDate": null,
+      "count": 117,
+      "name": {
+        "en": "Mega Shine"
+      },
+      "packs": [
+        "Mega Shine"
+      ]
+    },
+    {
+      "code": "B3",
+      "releaseDate": null,
+      "count": 234,
+      "name": {
+        "en": "Pulsing Aura"
+      },
+      "packs": [
+        "Pulsing Aura"
+      ]
+    },
+    {
+      "code": "B3a",
+      "releaseDate": null,
+      "count": 109,
+      "name": {
+        "en": "Paradox Drive"
+      },
+      "packs": [
+        "Paradox Drive"
+      ]
+    }
+  ],
+  "P": [
+    {
+      "code": "PROMO-A",
+      "releaseDate": null,
+      "count": 117,
+      "name": {
+        "en": "PROMO-A"
+      },
+      "packs": [
+        "Promo Pack A Series Vol. 1",
+        "Promo Pack A Series Vol. 2",
+        "Promo Pack A Series Vol. 3",
+        "Promo Pack A Series Vol. 4",
+        "Promo Pack A Series Vol. 5",
+        "Promo Pack A Series Vol. 6",
+        "Promo Pack A Series Vol. 7",
+        "Promo Pack A Series Vol. 8",
+        "Promo Pack A Series Vol. 9",
+        "Promo Pack A Series Vol. 10",
+        "Promo Pack A Series Vol. 11",
+        "Promo Pack A Series Vol. 12",
+        "Promo Pack A Series Vol. 13"
+      ]
+    },
+    {
+      "code": "PROMO-B",
+      "releaseDate": null,
+      "count": 70,
+      "name": {
+        "en": "PROMO-B"
+      },
+      "packs": [
+        "Promo Pack B Series Vol. 1",
+        "Promo Pack B Series Vol. 2",
+        "Promo Pack B Series Vol. 3",
+        "Promo Pack B Series Vol. 4",
+        "Promo Pack B Series Vol. 5",
+        "Promo Pack B Series Vol. 6",
+        "Promo Pack B Series Vol. 7",
+        "Promo Pack B Series Vol. 8",
+        "Promo Pack B Series Vol. 9"
+      ]
+    }
+  ]
+}

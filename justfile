@@ -32,6 +32,6 @@ download-langs langs="zh-TW,en-US":
 download-custom series="a,b" langs="zh-TW,en-US" concurrency="20" max_retries="3" verbose_flag="":
     uv run fetch_cards.py --series '{{ series }}' --langs '{{ langs }}' --concurrency {{ concurrency }} --max-retries {{ max_retries }} {{ verbose_flag }}
 
-# 从运行中的 PTCGP 游戏更新 cards.extra metadata
-update-cards-extra frida_test_dir:
-    uv run python scripts/update_cards_extra.py --frida-test-dir '{{ frida_test_dir }}'
+# 从运行中的 PTCGP 游戏更新 cards.extra 与 sets metadata
+update-metadata frida_test_dir:
+    uv run python scripts/update_metadata.py --frida-test-dir '{{ frida_test_dir }}'
