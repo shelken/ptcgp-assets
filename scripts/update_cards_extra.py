@@ -5,10 +5,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 import sys
+import threading
+import time
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, TextIO
 
 EXPORT_COMMAND = [
     "./node_modules/.bin/tsx",
@@ -19,6 +23,28 @@ EXPORT_COMMAND = [
     "-",
 ]
 EXPORT_TIMEOUT_SECONDS = 120
+GAME_LAUNCHED_MESSAGE = (
+    "Game was launched. Enter the game home screen, then run export again. "
+    "Cold-start attach can freeze Unity/IL2CPP before MemoryDatabase is loaded."
+)
+NORMAL_PACK_MARKER = "_00_000"
+TEXT_TOKEN_RE = re.compile(r"\[Text:([^\s\]]+)([^\]]*)\]")
+TEXT_TOKEN_ATTR_RE = re.compile(r'(\w+)="([^"]*)"')
+
+
+class ExportDeferred(RuntimeError):
+    pass
+
+
+@dataclass(frozen=True)
+class ConversionContext:
+    localization_texts: dict[str, str]
+    expansion_names_by_id: dict[str, list[str]]
+    normal_pack_count_by_expansion_id: dict[str, int]
+    full_pack_names_by_expansion_id: dict[str, list[str]]
+    card_name_by_key: dict[str, str]
+    pack_name_by_key: dict[str, str]
+
 
 ENERGY_TYPES = {
     "Grass": "grass",
@@ -74,6 +100,19 @@ def require_str(value: Any, field: str) -> str:
     return value
 
 
+def optional_str(value: Any, field: str) -> str | None:
+    if value is None:
+        return None
+    return require_str(value, field)
+
+
+def require_clean_str(value: Any, field: str) -> str:
+    text = require_str(value, field)
+    if is_corrupt_text(text):
+        raise ValueError(f"{field} contains replacement characters: {text}")
+    return text
+
+
 def require_int(value: Any, field: str) -> int:
     if not isinstance(value, int) or isinstance(value, bool):
         raise ValueError(f"{field} must be an integer")
@@ -83,6 +122,12 @@ def require_int(value: Any, field: str) -> int:
 def require_string_list(value: Any, field: str) -> list[str]:
     if not isinstance(value, list) or not all(isinstance(item, str) for item in value):
         raise ValueError(f"{field} must be an array of strings")
+    return value
+
+
+def require_object_list(value: Any, field: str) -> list[dict[str, Any]]:
+    if not isinstance(value, list) or not all(isinstance(item, dict) for item in value):
+        raise ValueError(f"{field} must be an array of objects")
     return value
 
 
@@ -123,7 +168,376 @@ def ordered_record(record: dict[str, Any]) -> dict[str, Any]:
     return {key: record[key] for key in FIELD_ORDER if key in record}
 
 
-def convert_pokemon(card: dict[str, Any]) -> dict[str, Any]:
+def is_corrupt_text(value: str | None) -> bool:
+    return isinstance(value, str) and "�" in value
+
+
+def parse_text_token_attributes(raw_attributes: str) -> dict[str, str]:
+    return {match.group(1): match.group(2) for match in TEXT_TOKEN_ATTR_RE.finditer(raw_attributes)}
+
+
+def render_char_token(value: str | None) -> str:
+    if value in {"FOUR-PER-EM-SPACE", "SPACE"}:
+        return " "
+    return ""
+
+
+def render_localized_rich_text(text: str | None, localization_texts: dict[str, str]) -> str | None:
+    if text is None:
+        return None
+
+    def replace_token(match: re.Match[str]) -> str:
+        kind = match.group(1)
+        attributes = parse_text_token_attributes(match.group(2))
+        value = attributes.get("v")
+
+        if kind == "Char":
+            return render_char_token(value)
+        if kind == "AdditionalName":
+            resolved = localization_texts.get(value or "")
+            if resolved is not None:
+                return render_localized_rich_text(resolved, localization_texts) or ""
+            return (value or "").removeprefix("ADDITIONAL_NAME_")
+
+        return value or ""
+
+    rendered = TEXT_TOKEN_RE.sub(replace_token, text)
+    return re.sub(r"\s+", " ", rendered).strip()
+
+
+def card_lookup_keys(identifier: str | None) -> list[str]:
+    if not identifier:
+        return []
+
+    without_extension = identifier.removesuffix(".webp")
+    without_image_prefix = re.sub(r"^c(?=PK_|TR_)", "", without_extension)
+    keys = {identifier, without_extension, without_image_prefix}
+    parts = without_image_prefix.split("_")
+
+    if len(parts) >= 4 and parts[0] in {"PK", "TR"}:
+        keys.add("_".join(parts[:4]))
+        keys.add("_".join(parts[:3]))
+
+    if re.search(r"_(\d{2})$", without_image_prefix):
+        keys.add(re.sub(r"_(\d{2})$", "", without_image_prefix))
+
+    return [key for key in keys if key]
+
+
+def character_lookup_key(character_id: str | None) -> str | None:
+    return f"character:{character_id}" if character_id else None
+
+
+def remember_best_name(names_by_key: dict[str, str], key: str | None, name: str | None) -> None:
+    if not key or not name:
+        return
+
+    existing = names_by_key.get(key)
+    if existing is None or (is_corrupt_text(existing) and not is_corrupt_text(name)):
+        names_by_key[key] = name
+
+
+def build_card_name_lookup(cards: list[dict[str, Any]], localization_texts: dict[str, str]) -> dict[str, str]:
+    names_by_key: dict[str, str] = {}
+
+    for card in cards:
+        raw_name = card.get("name")
+        name = render_localized_rich_text(raw_name, localization_texts) if isinstance(raw_name, str) else None
+        for key in [
+            *card_lookup_keys(card.get("cardId")),
+            *card_lookup_keys(card.get("illustrationId")),
+            *card_lookup_keys(card.get("image")),
+            character_lookup_key(card.get("characterId")),
+        ]:
+            remember_best_name(names_by_key, key, name)
+
+        pokemon = card.get("pokemon")
+        if isinstance(pokemon, dict):
+            evolves_from = render_localized_rich_text(pokemon.get("evolvesFrom"), localization_texts)
+            remember_best_name(
+                names_by_key,
+                character_lookup_key(pokemon.get("evolvesFromCharacterId")),
+                evolves_from,
+            )
+
+    return names_by_key
+
+
+def lookup_best_card_name(context: ConversionContext, card: dict[str, Any], fallback: str | None) -> str | None:
+    if fallback is not None and not is_corrupt_text(fallback):
+        return fallback
+
+    for key in [
+        *card_lookup_keys(card.get("cardId")),
+        *card_lookup_keys(card.get("illustrationId")),
+        *card_lookup_keys(card.get("image")),
+    ]:
+        name = context.card_name_by_key.get(key)
+        if name and not is_corrupt_text(name):
+            return name
+
+    return fallback
+
+
+def lookup_best_character_name(context: ConversionContext, character_id: str | None, fallback: str | None) -> str | None:
+    if fallback is not None and not is_corrupt_text(fallback):
+        return fallback
+
+    key = character_lookup_key(character_id)
+    name = context.card_name_by_key.get(key or "")
+    if name and not is_corrupt_text(name):
+        return name
+    return fallback
+
+
+def trim_pack_separator(value: str) -> str:
+    return re.sub(r"^\s*[:：]\s*", "", value).strip()
+
+
+def normalize_pack_punctuation(value: str) -> str:
+    return re.sub(r"\s*[:：]\s*", " ", value).strip()
+
+
+def normalized_text(value: str) -> str:
+    return re.sub(r"\s+", " ", normalize_pack_punctuation(value)).strip()
+
+
+def longest_common_prefix(values: list[str]) -> str:
+    if not values:
+        return ""
+
+    prefix = values[0]
+    for value in values[1:]:
+        while prefix and not value.startswith(prefix):
+            prefix = prefix[:-1]
+    return prefix
+
+
+def common_featured_pack_name_prefix(pack_names: list[str]) -> str | None:
+    normalized_names = list(dict.fromkeys(normalized_text(name) for name in pack_names if name))
+    if len(normalized_names) < 2:
+        return None
+
+    prefix = trim_pack_separator(longest_common_prefix(normalized_names))
+    if not prefix:
+        return None
+
+    for name in normalized_names:
+        suffix = trim_pack_separator(name[len(prefix):])
+        if not suffix:
+            return None
+
+    return prefix
+
+
+def display_name_from_separated_pack_name(pack_name: str, expansion_prefixes: list[str]) -> str | None:
+    match = re.match(r"^(.+?)\s*[:：]\s*(.+)$", pack_name)
+    if not match:
+        return None
+
+    prefix, suffix = match.groups()
+    normalized_prefix = normalized_text(prefix)
+    for expansion_prefix in [normalized_text(name) for name in expansion_prefixes]:
+        if normalized_prefix == expansion_prefix:
+            return normalized_text(suffix)
+
+    return normalized_text(pack_name)
+
+
+def pack_display_name(
+    pack_name: str,
+    expansion_names: list[str],
+    has_featured_cards: bool,
+    related_featured_pack_names: list[str],
+) -> str:
+    inferred_prefix = common_featured_pack_name_prefix(related_featured_pack_names) if has_featured_cards else None
+    prefixes = [*expansion_names, inferred_prefix] if inferred_prefix else expansion_names
+
+    separated_name = display_name_from_separated_pack_name(pack_name, prefixes)
+    if separated_name is not None:
+        return separated_name
+
+    normalized_pack_name = normalized_text(pack_name)
+    for expansion_name in sorted((normalized_text(name) for name in prefixes), key=len, reverse=True):
+        if normalized_pack_name == expansion_name:
+            return normalized_pack_name
+        if not normalized_pack_name.startswith(f"{expansion_name} "):
+            continue
+
+        suffix = trim_pack_separator(normalized_pack_name[len(expansion_name):])
+        if suffix:
+            return normalized_text(suffix)
+
+    return normalized_pack_name
+
+
+def strip_pokemon_ex_suffix(name: str) -> str:
+    return re.sub(r"\s*ex$", "", name, flags=re.IGNORECASE).strip()
+
+
+def is_normal_pack(pack: dict[str, Any]) -> bool:
+    pack_id = pack.get("packId")
+    return isinstance(pack_id, str) and NORMAL_PACK_MARKER in pack_id
+
+
+def pack_expansion_id(pack: dict[str, Any]) -> str | None:
+    return optional_str(pack.get("expansionId"), "pack.expansionId")
+
+
+def iter_normal_pack_entries(cards: list[dict[str, Any]]):
+    for card in cards:
+        for pack in require_object_list(card.get("packs"), "packs"):
+            if is_normal_pack(pack):
+                yield pack
+
+
+def build_expansion_names_by_id(export: dict[str, Any]) -> dict[str, list[str]]:
+    rows = require_object_list(export.get("expansions"), "expansions")
+    result: dict[str, list[str]] = {}
+    for row in rows:
+        expansion_id = require_str(row.get("expansionId"), "expansion.expansionId")
+        result[expansion_id] = require_string_list(row.get("names"), "expansion.names")
+    return result
+
+
+def build_normal_pack_count_by_expansion_id(cards: list[dict[str, Any]]) -> dict[str, int]:
+    pack_ids_by_expansion: dict[str, set[str]] = {}
+    for pack in iter_normal_pack_entries(cards):
+        expansion_id = pack_expansion_id(pack)
+        pack_id = require_str(pack.get("packId"), "pack.packId")
+        if not expansion_id:
+            continue
+        pack_ids_by_expansion.setdefault(expansion_id, set()).add(pack_id)
+    return {expansion_id: len(pack_ids) for expansion_id, pack_ids in pack_ids_by_expansion.items()}
+
+
+def pack_lookup_keys(pack: dict[str, Any]) -> list[str]:
+    keys = []
+    pack_id = pack.get("packId")
+    name_msid = pack.get("nameMSID")
+    if isinstance(pack_id, str):
+        keys.append(f"packId:{pack_id}")
+    if isinstance(name_msid, str):
+        keys.append(f"nameMSID:{name_msid}")
+    if isinstance(pack_id, str) and isinstance(name_msid, str):
+        keys.append(f"pack:{pack_id}:{name_msid}")
+    return keys
+
+
+def build_pack_name_lookup(cards: list[dict[str, Any]]) -> dict[str, str]:
+    names_by_key: dict[str, str] = {}
+    for pack in iter_normal_pack_entries(cards):
+        raw_name = pack.get("name")
+        if not isinstance(raw_name, str):
+            continue
+        for key in pack_lookup_keys(pack):
+            remember_best_name(names_by_key, key, raw_name)
+    return names_by_key
+
+
+def lookup_best_pack_raw_name(context: ConversionContext, pack: dict[str, Any]) -> str:
+    raw_name = require_str(pack.get("name"), "pack.name")
+    if not is_corrupt_text(raw_name):
+        return raw_name
+
+    for key in pack_lookup_keys(pack):
+        name = context.pack_name_by_key.get(key)
+        if name and not is_corrupt_text(name):
+            return name
+
+    return raw_name
+
+
+def build_full_pack_names_by_expansion_id(cards: list[dict[str, Any]], pack_name_by_key: dict[str, str]) -> dict[str, list[str]]:
+    names_by_expansion: dict[str, list[str]] = {}
+    seen: dict[str, set[str]] = {}
+    for pack in iter_normal_pack_entries(cards):
+        expansion_id = pack_expansion_id(pack)
+        if not expansion_id:
+            continue
+        name = require_str(pack.get("name"), "pack.name")
+        for key in pack_lookup_keys(pack):
+            candidate = pack_name_by_key.get(key)
+            if candidate and not is_corrupt_text(candidate):
+                name = candidate
+                break
+        if name in seen.setdefault(expansion_id, set()):
+            continue
+        seen[expansion_id].add(name)
+        names_by_expansion.setdefault(expansion_id, []).append(name)
+    return names_by_expansion
+
+
+def featured_pack_display_name(pack: dict[str, Any], context: ConversionContext) -> str | None:
+    for card_id in require_string_list(pack.get("featuredCardIds"), "pack.featuredCardIds"):
+        for key in card_lookup_keys(card_id):
+            name = context.card_name_by_key.get(key)
+            if not name:
+                continue
+
+            display_name = strip_pokemon_ex_suffix(name)
+            if not is_corrupt_text(display_name):
+                return display_name
+
+    return None
+
+
+def display_pack_name(pack: dict[str, Any], context: ConversionContext) -> str | None:
+    if not is_normal_pack(pack):
+        return None
+
+    raw_name = lookup_best_pack_raw_name(context, pack)
+    expansion_id = pack_expansion_id(pack)
+    expansion_names = context.expansion_names_by_id.get(expansion_id or "", [])
+    is_multi_pack_expansion = context.normal_pack_count_by_expansion_id.get(expansion_id or "", 0) > 1
+    featured_name = featured_pack_display_name(pack, context) if is_multi_pack_expansion else None
+    if featured_name:
+        return featured_name
+
+    return pack_display_name(
+        raw_name,
+        expansion_names,
+        has_featured_cards=is_multi_pack_expansion and bool(pack.get("featuredCardIds")),
+        related_featured_pack_names=context.full_pack_names_by_expansion_id.get(expansion_id or "", []),
+    )
+
+
+def convert_packs(value: Any, context: ConversionContext) -> list[str]:
+    names = set()
+    for pack in require_object_list(value, "packs"):
+        name = display_pack_name(pack, context)
+        if name:
+            names.add(require_clean_str(name, "pack name"))
+    return sorted(names)
+
+
+def build_conversion_context(export: dict[str, Any], cards: list[dict[str, Any]]) -> ConversionContext:
+    localization_texts = export.get("localizationTexts")
+    if not isinstance(localization_texts, dict) or not all(
+        isinstance(key, str) and isinstance(value, str) for key, value in localization_texts.items()
+    ):
+        raise ValueError("localizationTexts must be an object of strings")
+
+    pack_name_by_key = build_pack_name_lookup(cards)
+
+    return ConversionContext(
+        localization_texts=localization_texts,
+        expansion_names_by_id=build_expansion_names_by_id(export),
+        normal_pack_count_by_expansion_id=build_normal_pack_count_by_expansion_id(cards),
+        full_pack_names_by_expansion_id=build_full_pack_names_by_expansion_id(cards, pack_name_by_key),
+        card_name_by_key=build_card_name_lookup(cards, localization_texts),
+        pack_name_by_key=pack_name_by_key,
+    )
+
+
+def converted_card_name(card: dict[str, Any], context: ConversionContext) -> str:
+    raw_name = require_str(card.get("name"), "name")
+    rendered = render_localized_rich_text(raw_name, context.localization_texts)
+    name = lookup_best_card_name(context, card, rendered)
+    return require_clean_str(name, "name")
+
+
+def convert_pokemon(card: dict[str, Any], context: ConversionContext) -> dict[str, Any]:
     pokemon = card.get("pokemon")
     if not isinstance(pokemon, dict):
         raise ValueError(f"pokemon payload missing for {card.get('set')} #{card.get('number')}")
@@ -131,10 +545,10 @@ def convert_pokemon(card: dict[str, Any]) -> dict[str, Any]:
     record: dict[str, Any] = {
         "set": require_str(card.get("set"), "set"),
         "number": require_int(card.get("number"), "number"),
-        "name": require_str(card.get("name"), "name"),
+        "name": converted_card_name(card, context),
         "rarity": require_str(card.get("rarity"), "rarity"),
         "image": require_image(card.get("image")),
-        "packs": require_string_list(card.get("packs"), "packs"),
+        "packs": convert_packs(card.get("packs"), context),
         "element": map_value(ENERGY_TYPES, pokemon.get("element"), "element"),
         "type": "pokemon",
         "stage": map_value(STAGES, pokemon.get("stage"), "stage"),
@@ -146,8 +560,14 @@ def convert_pokemon(card: dict[str, Any]) -> dict[str, Any]:
     if record["weakness"] is not None:
         record["weakness"] = require_str(record["weakness"], "weakness")
 
-    evolves_from = pokemon.get("evolvesFrom")
-    record["evolvesFrom"] = None if evolves_from is None else require_str(evolves_from, "evolvesFrom")
+    raw_evolves_from = pokemon.get("evolvesFrom")
+    rendered_evolves_from = render_localized_rich_text(raw_evolves_from, context.localization_texts)
+    evolves_from = lookup_best_character_name(
+        context,
+        pokemon.get("evolvesFromCharacterId"),
+        rendered_evolves_from,
+    )
+    record["evolvesFrom"] = None if evolves_from is None else require_clean_str(evolves_from, "evolvesFrom")
 
     return ordered_record(record)
 
@@ -159,7 +579,7 @@ def require_image(value: Any) -> str:
     return image
 
 
-def convert_trainer(card: dict[str, Any]) -> dict[str, Any]:
+def convert_trainer(card: dict[str, Any], context: ConversionContext) -> dict[str, Any]:
     trainer = card.get("trainer")
     if not isinstance(trainer, dict):
         raise ValueError(f"trainer payload missing for {card.get('set')} #{card.get('number')}")
@@ -168,10 +588,10 @@ def convert_trainer(card: dict[str, Any]) -> dict[str, Any]:
     record: dict[str, Any] = {
         "set": require_str(card.get("set"), "set"),
         "number": require_int(card.get("number"), "number"),
-        "name": require_str(card.get("name"), "name"),
+        "name": converted_card_name(card, context),
         "rarity": require_str(card.get("rarity"), "rarity"),
         "image": require_image(card.get("image")),
-        "packs": require_string_list(card.get("packs"), "packs"),
+        "packs": convert_packs(card.get("packs"), context),
         "type": trainer_type,
     }
 
@@ -186,6 +606,9 @@ def natural_key(card: dict[str, Any]) -> tuple[str, int]:
 
 
 def convert_export(export: dict[str, Any]) -> list[dict[str, Any]]:
+    if export.get("schemaVersion") != 2:
+        raise ValueError("frida-test exporter schemaVersion must be 2 raw metadata")
+
     language = require_str(export.get("language"), "language")
     if "_" in language:
         raise ValueError(f"language must use hyphen form: {language}")
@@ -193,19 +616,19 @@ def convert_export(export: dict[str, Any]) -> list[dict[str, Any]]:
     cards = export.get("cards")
     if not isinstance(cards, list):
         raise ValueError("cards must be an array")
+    if not all(isinstance(card, dict) for card in cards):
+        raise ValueError("card must be an object")
 
+    context = build_conversion_context(export, cards)
     converted: list[dict[str, Any]] = []
     seen: set[tuple[str, int]] = set()
 
     for card in cards:
-        if not isinstance(card, dict):
-            raise ValueError("card must be an object")
-
         kind = require_str(card.get("kind"), "kind")
         if kind == "pokemon":
-            record = convert_pokemon(card)
+            record = convert_pokemon(card, context)
         elif kind == "trainer":
-            record = convert_trainer(card)
+            record = convert_trainer(card, context)
         else:
             raise ValueError(f"unsupported card kind: {kind}")
 
@@ -221,6 +644,17 @@ def convert_export(export: dict[str, Any]) -> list[dict[str, Any]]:
     return sorted(converted, key=natural_key)
 
 
+def collect_stream(stream: TextIO, chunks: list[str], echo: bool) -> None:
+    try:
+        for chunk in iter(stream.readline, ""):
+            chunks.append(chunk)
+            if echo:
+                sys.stderr.write(chunk)
+                sys.stderr.flush()
+    finally:
+        stream.close()
+
+
 def run_exporter(frida_test_dir: Path) -> dict[str, Any]:
     if not frida_test_dir.is_dir():
         raise ValueError(f"frida-test dir does not exist: {frida_test_dir}")
@@ -230,35 +664,67 @@ def run_exporter(frida_test_dir: Path) -> dict[str, Any]:
         raise ValueError(f"frida-test dir missing src/cli/index.ts: {frida_test_dir}")
 
     command_display = " ".join(EXPORT_COMMAND)
+    # Frida 卡住时必须实时看到内层阶段日志；capture_output 会把关键 stderr 吞到超时后。
+    sys.stderr.write(f"[update-cards-extra] running: {command_display}\n")
+    sys.stderr.flush()
+    started_at = time.monotonic()
+    process = subprocess.Popen(
+        EXPORT_COMMAND,
+        cwd=frida_test_dir,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    if process.stdout is None or process.stderr is None:
+        raise RuntimeError("failed to capture frida-test exporter output")
+
+    stdout_chunks: list[str] = []
+    stderr_chunks: list[str] = []
+    # stdout 里有最终 JSON，不能直接转发；stderr 只放诊断日志，可以实时透出。
+    stdout_thread = threading.Thread(target=collect_stream, args=(process.stdout, stdout_chunks, False))
+    stderr_thread = threading.Thread(target=collect_stream, args=(process.stderr, stderr_chunks, True))
+    stdout_thread.start()
+    stderr_thread.start()
+
     try:
-        result = subprocess.run(
-            EXPORT_COMMAND,
-            cwd=frida_test_dir,
-            check=False,
-            text=True,
-            capture_output=True,
-            timeout=EXPORT_TIMEOUT_SECONDS,
-        )
+        return_code = process.wait(timeout=EXPORT_TIMEOUT_SECONDS)
     except subprocess.TimeoutExpired as error:
+        # 超时后先杀子进程再拼 preview，否则 Frida/tsx 残留会继续占着设备会话。
+        process.kill()
+        process.wait()
+        stdout_thread.join(timeout=5)
+        stderr_thread.join(timeout=5)
+        stdout = "".join(stdout_chunks)
+        stderr = "".join(stderr_chunks)
+        elapsed = time.monotonic() - started_at
         raise TimeoutError(
-            f"frida-test exporter timed out after {EXPORT_TIMEOUT_SECONDS}s\n"
+            f"frida-test exporter timed out after {elapsed:.1f}s\n"
             f"command: {command_display}\n"
-            f"stdout preview: {preview_text(error.stdout or '')}\n"
-            f"stderr preview: {preview_text(error.stderr or '')}"
+            f"stdout preview: {preview_text(stdout)}\n"
+            f"stderr preview: {preview_text(stderr)}"
         ) from error
 
-    if result.stderr:
-        sys.stderr.write(result.stderr)
-    if result.returncode != 0:
+    stdout_thread.join()
+    stderr_thread.join()
+    stdout = "".join(stdout_chunks)
+    stderr = "".join(stderr_chunks)
+    elapsed = time.monotonic() - started_at
+    sys.stderr.write(f"[update-cards-extra] exporter exited with code {return_code} after {elapsed:.1f}s\n")
+    sys.stderr.flush()
+
+    if GAME_LAUNCHED_MESSAGE in stderr:
+        raise ExportDeferred(GAME_LAUNCHED_MESSAGE)
+
+    if return_code != 0:
         raise RuntimeError(
             "frida-test exporter failed\n"
             f"command: {command_display}\n"
-            f"exit code: {result.returncode}\n"
-            f"stdout preview: {preview_text(result.stdout)}\n"
-            f"stderr preview: {preview_text(result.stderr)}"
+            f"exit code: {return_code}\n"
+            f"stdout preview: {preview_text(stdout)}\n"
+            f"stderr preview: {preview_text(stderr)}"
         )
 
-    return parse_exporter_stdout(result.stdout, result.stderr, command_display)
+    return parse_exporter_stdout(stdout, stderr, command_display)
 
 
 def write_cards_extra(root: Path, language: str, cards: list[dict[str, Any]]) -> Path:
@@ -276,7 +742,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--frida-test-dir", required=True, type=Path)
     args = parser.parse_args(argv)
 
-    export = run_exporter(args.frida_test_dir)
+    try:
+        export = run_exporter(args.frida_test_dir)
+    except ExportDeferred as error:
+        print(error, file=sys.stderr)
+        return 0
+
     cards = convert_export(export)
     language = require_str(export.get("language"), "language")
     output = write_cards_extra(Path.cwd(), language, cards)
