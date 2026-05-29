@@ -54,6 +54,14 @@ metadata/cards/<language>/cards.extra.json
 
 CLI stdout 只放 JSON。日志、诊断、错误走 stderr，避免污染管道。
 
+当前链路是一次性 exporter，不是常驻服务：
+
+```text
+attach -> dump raw JSON -> stdout marker 完整 -> 主动结束 Frida CLI
+```
+
+如果日志在 `emit:done` 后出现 `Failed to load script: operation was cancelled` 且 exit code 为 0，这是主动结束 Frida CLI 的副作用，不代表导出失败。常驻模式需要另建 daemon/RPC 入口，不能把这条一次性 CLI 当长期 session 使用。
+
 ## frida-test 设计
 
 新增 PTCGP 专用命令组：
@@ -103,9 +111,9 @@ src/features/pokemon/metadata/
 
 职责：
 
-- CLI 层：连接设备、attach PTCGP、注入 IL2CPP 脚本、输出 exporter JSON
-- injected exporter：读取 `MemoryDatabase`、本地化、pack join、语言
-- 类型层：定义稳定 exporter JSON schema
+- CLI 层：连接设备、attach PTCGP、注入 IL2CPP 脚本、输出 exporter JSON，并在 JSON 完整后结束 Frida CLI
+- injected exporter：只读取并开放 `MemoryDatabase`、本地化 raw text、pack join、语言；不做最终字段加工
+- 类型层：定义稳定 raw exporter JSON schema
 
 ### 关键数据来源
 
@@ -139,14 +147,28 @@ pack join：
 PackTableCardMaster.CardID
 -> PackTableLabelMaster.PackTableLabelID
 -> PackTableMaster.PackTableID
--> PackMaster.PackID / NameMSID
+-> PackMaster.PackID
 ```
 
-pack 过滤：
+raw exporter 不做 pack 过滤和显示名加工。它输出 `packId`、`expansionId`、raw localized `PackMaster.NameMSID` 文本、`FeaturedCardIDs`。
+
+pack 过滤和显示名在 `ptcgp-assets/scripts/update_cards_extra.py` 完成：
 
 ```text
 只保留 PackID 包含 "_00_000"
 排除 "_01_000" 派生保底包
+PackMaster.NameMSID 是完整本地化展示名，不是最终短 pack 名。
+同一 expansion 有多个 `_00_000` 普通包时，使用 PackMaster.FeaturedCardIDs 的第一个可解析 CardID 作为封面卡：CardID -> raw card rows -> Character.DisplayNameMSID raw text；取封面卡名作为 pack 名，卡名末尾 ex 要剥离，例如 Mega Altaria ex -> Mega Altaria。
+同一 expansion 只有一个 `_00_000` 普通包时，即使 FeaturedCardIDs 非空，也保留 PackMaster.NameMSID 的完整名称，只规范化冒号，例如 Deluxe Pack: ex -> Deluxe Pack ex。
+不要按最后一个空格、冒号后缀或最长公共前缀猜 pack 名。
+```
+
+示例：
+
+```text
+Genetic Apex Pikachu      -> Pikachu
+Mega Rising Mega Altaria  -> Mega Altaria
+Deluxe Pack: ex           -> Deluxe Pack ex
 ```
 
 图片字段：
@@ -242,13 +264,13 @@ evolvesFrom
 ```text
 set      <- ExpansionCollectionNumber.ExpansionID
 number   <- ExpansionCollectionNumber.CollectionNumber
-name     <- localized card name
+name     <- raw exporter localized card name; ptcgp-assets renders [Text:...] rich-text tokens
 rarity   <- card row Rarity string
 image    <- card row IllustrationID + ".webp"
-packs    <- standard pack localized names, normalized to pack name only
+packs    <- ptcgp-assets builds all normalized pack sources for this CardID from raw pack entries
 ```
 
-同一 `CardID` 可属于多个 expansion。导出时按 `ExpansionCollectionNumber` 展开为多条最终记录。主键：
+同一 `CardID` 可属于多个 expansion。导出时按 `ExpansionCollectionNumber` 展开为多条最终记录；`packs` 表示该 `CardID` 的所有获取来源，所以 A4b 复刻行和原始 expansion 行可以共享彼此的 pack 来源。主键：
 
 ```text
 (set, number)
@@ -341,7 +363,7 @@ TrainerCard.IllustrationID + ".webp"
 
 ## 错误处理
 
-`frida-test` 遇到以下情况直接失败，不输出半成品：
+`frida-test` 遇到以下情况直接失败，不输出半成品 raw JSON：
 
 - 找不到 PTCGP 进程
 - Frida attach 失败
