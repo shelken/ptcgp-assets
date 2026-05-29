@@ -10176,7 +10176,7 @@
   {
     "set": "A2a",
     "number": 23,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Origin\" type=\"origin\"]帕路奇亞",
+    "name": "起源帕路奇亞",
     "rarity": "R",
     "image": "cPK_10_004470_00_ORIGINPALKIA_R.webp",
     "packs": [
@@ -10814,7 +10814,7 @@
   {
     "set": "A2a",
     "number": 60,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Origin\" type=\"origin\"]帝牙盧卡",
+    "name": "起源帝牙盧卡",
     "rarity": "R",
     "image": "cPK_10_004840_00_ORIGINDIALGA_R.webp",
     "packs": [
@@ -11609,7 +11609,7 @@
   {
     "set": "A2b",
     "number": 13,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Paldea\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]肯泰羅",
+    "name": "帕底亞 肯泰羅",
     "rarity": "U",
     "image": "cPK_10_005320_00_PALDEAKENTAUROS_U.webp",
     "packs": [
@@ -12194,7 +12194,7 @@
   {
     "set": "A2b",
     "number": 47,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Paldea\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]烏波",
+    "name": "帕底亞 烏波",
     "rarity": "C",
     "image": "cPK_10_005620_00_PALDEAUPAH_C.webp",
     "packs": [
@@ -12212,7 +12212,7 @@
   {
     "set": "A2b",
     "number": 48,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Paldea\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]土王ex",
+    "name": "帕底亞 土王ex",
     "rarity": "RR",
     "image": "cPK_10_005630_00_PALDEADOOHex_RR.webp",
     "packs": [
@@ -12225,7 +12225,7 @@
     "health": 160,
     "retreatCost": 3,
     "weakness": "Fighting",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Paldea\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]烏波"
+    "evolvesFrom": "帕底亞 烏波"
   },
   {
     "set": "A2b",
@@ -12826,7 +12826,7 @@
   {
     "set": "A2b",
     "number": 85,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Paldea\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]土王ex",
+    "name": "帕底亞 土王ex",
     "rarity": "SR",
     "image": "cPK_20_005630_00_PALDEADOOHex_SR.webp",
     "packs": [
@@ -12838,7 +12838,7 @@
     "health": 160,
     "retreatCost": 3,
     "weakness": "Fighting",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Paldea\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]烏波"
+    "evolvesFrom": "帕底亞 烏波"
   },
   {
     "set": "A2b",
@@ -12938,7 +12938,7 @@
   {
     "set": "A2b",
     "number": 93,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Paldea\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]土王ex",
+    "name": "帕底亞 土王ex",
     "rarity": "SAR",
     "image": "cPK_20_005630_01_PALDEADOOHex_SAR.webp",
     "packs": [
@@ -12950,7 +12950,7 @@
     "health": 160,
     "retreatCost": 3,
     "weakness": "Fighting",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Paldea\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]烏波"
+    "evolvesFrom": "帕底亞 烏波"
   },
   {
     "set": "A2b",
@@ -13272,7 +13272,7 @@
   {
     "set": "A3",
     "number": 2,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]椰蛋樹",
+    "name": "阿羅拉 椰蛋樹",
     "rarity": "R",
     "image": "cPK_10_005830_00_ALOLANASSY_R.webp",
     "packs": [
@@ -13655,7 +13655,7 @@
   {
     "set": "A3",
     "number": 24,
-    "name": "卡璞[Text:Char v=\"MIDDLE-DOT\" ]哞哞",
+    "name": "卡璞哞哞",
     "rarity": "R",
     "image": "cPK_10_006050_00_KAPU-BULUL_R.webp",
     "packs": [
@@ -13708,7 +13708,7 @@
   {
     "set": "A3",
     "number": 27,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]嘎啦嘎啦",
+    "name": "阿羅拉 嘎啦嘎啦",
     "rarity": "U",
     "image": "cPK_10_006080_00_ALOLAGARAGARA_U.webp",
     "packs": [
@@ -13900,7 +13900,7 @@
   {
     "set": "A3",
     "number": 38,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]穿山鼠",
+    "name": "阿羅拉 穿山鼠",
     "rarity": "C",
     "image": "cPK_10_006190_00_ALOLASAND_C.webp",
     "packs": [
@@ -13918,7 +13918,7 @@
   {
     "set": "A3",
     "number": 39,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]穿山王",
+    "name": "阿羅拉 穿山王",
     "rarity": "U",
     "image": "cPK_10_006200_00_ALOLASANDPAN_U.webp",
     "packs": [
@@ -13931,12 +13931,12 @@
     "health": 100,
     "retreatCost": 1,
     "weakness": "Metal",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]穿山鼠"
+    "evolvesFrom": "阿羅拉 穿山鼠"
   },
   {
     "set": "A3",
     "number": 40,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]六尾",
+    "name": "阿羅拉 六尾",
     "rarity": "C",
     "image": "cPK_10_006210_00_ALOLAROKON_C.webp",
     "packs": [
@@ -13953,7 +13953,7 @@
   {
     "set": "A3",
     "number": 41,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]九尾",
+    "name": "阿羅拉 九尾",
     "rarity": "R",
     "image": "cPK_10_006220_00_ALOLAKYUKON_R.webp",
     "packs": [
@@ -13965,7 +13965,7 @@
     "health": 110,
     "retreatCost": 1,
     "weakness": "Metal",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]六尾"
+    "evolvesFrom": "阿羅拉 六尾"
   },
   {
     "set": "A3",
@@ -14213,7 +14213,7 @@
   {
     "set": "A3",
     "number": 56,
-    "name": "卡璞[Text:Char v=\"MIDDLE-DOT\" ]鰭鰭",
+    "name": "卡璞鰭鰭",
     "rarity": "R",
     "image": "cPK_10_006370_00_KAPU-REHIRE_R.webp",
     "packs": [
@@ -14247,7 +14247,7 @@
   {
     "set": "A3",
     "number": 58,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]雷丘ex",
+    "name": "阿羅拉 雷丘ex",
     "rarity": "RR",
     "image": "cPK_10_006390_00_ALOLARAICHUex_RR.webp",
     "packs": [
@@ -14265,7 +14265,7 @@
   {
     "set": "A3",
     "number": 59,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]小拳石",
+    "name": "阿羅拉 小拳石",
     "rarity": "C",
     "image": "cPK_10_006400_00_ALOLAISITSUBUTE_C.webp",
     "packs": [
@@ -14282,7 +14282,7 @@
   {
     "set": "A3",
     "number": 60,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]隆隆石",
+    "name": "阿羅拉 隆隆石",
     "rarity": "U",
     "image": "cPK_10_006410_00_ALOLAGOLONE_U.webp",
     "packs": [
@@ -14294,12 +14294,12 @@
     "health": 110,
     "retreatCost": 3,
     "weakness": "Fighting",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]小拳石"
+    "evolvesFrom": "阿羅拉 小拳石"
   },
   {
     "set": "A3",
     "number": 61,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]隆隆岩",
+    "name": "阿羅拉 隆隆岩",
     "rarity": "R",
     "image": "cPK_10_006420_00_ALOLAGOLONYA_R.webp",
     "packs": [
@@ -14311,7 +14311,7 @@
     "health": 160,
     "retreatCost": 4,
     "weakness": "Fighting",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]隆隆石"
+    "evolvesFrom": "阿羅拉 隆隆石"
   },
   {
     "set": "A3",
@@ -14421,7 +14421,7 @@
   {
     "set": "A3",
     "number": 68,
-    "name": "卡璞[Text:Char v=\"MIDDLE-DOT\" ]鳴鳴",
+    "name": "卡璞鳴鳴",
     "rarity": "R",
     "image": "cPK_10_006490_00_KAPU-KOKEKO_R.webp",
     "packs": [
@@ -14699,7 +14699,7 @@
   {
     "set": "A3",
     "number": 84,
-    "name": "卡璞[Text:Char v=\"MIDDLE-DOT\" ]蝶蝶",
+    "name": "卡璞蝶蝶",
     "rarity": "R",
     "image": "cPK_10_006650_00_KAPU-TETEFU_R.webp",
     "packs": [
@@ -15084,7 +15084,7 @@
   {
     "set": "A3",
     "number": 106,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]小拉達",
+    "name": "阿羅拉 小拉達",
     "rarity": "C",
     "image": "cPK_10_006870_00_ALOLAKORATTA_C.webp",
     "packs": [
@@ -15101,7 +15101,7 @@
   {
     "set": "A3",
     "number": 107,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]拉達",
+    "name": "阿羅拉 拉達",
     "rarity": "U",
     "image": "cPK_10_006880_00_ALOLARATTA_U.webp",
     "packs": [
@@ -15113,12 +15113,12 @@
     "health": 110,
     "retreatCost": 3,
     "weakness": "Grass",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]小拉達"
+    "evolvesFrom": "阿羅拉 小拉達"
   },
   {
     "set": "A3",
     "number": 108,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]喵喵",
+    "name": "阿羅拉 喵喵",
     "rarity": "C",
     "image": "cPK_10_006890_00_ALOLANYARTH_C.webp",
     "packs": [
@@ -15135,7 +15135,7 @@
   {
     "set": "A3",
     "number": 109,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]貓老大",
+    "name": "阿羅拉 貓老大",
     "rarity": "R",
     "image": "cPK_10_006900_00_ALOLAPERSIAN_R.webp",
     "packs": [
@@ -15147,12 +15147,12 @@
     "health": 100,
     "retreatCost": 1,
     "weakness": "Grass",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]喵喵"
+    "evolvesFrom": "阿羅拉 喵喵"
   },
   {
     "set": "A3",
     "number": 110,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]臭泥",
+    "name": "阿羅拉 臭泥",
     "rarity": "C",
     "image": "cPK_10_006910_00_ALOLABETBETER_C.webp",
     "packs": [
@@ -15170,7 +15170,7 @@
   {
     "set": "A3",
     "number": 111,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]臭臭泥ex",
+    "name": "阿羅拉 臭臭泥ex",
     "rarity": "RR",
     "image": "cPK_10_006920_00_ALOLABETBETONex_RR.webp",
     "packs": [
@@ -15183,7 +15183,7 @@
     "health": 160,
     "retreatCost": 3,
     "weakness": "Fighting",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]臭泥"
+    "evolvesFrom": "阿羅拉 臭泥"
   },
   {
     "set": "A3",
@@ -15275,7 +15275,7 @@
   {
     "set": "A3",
     "number": 117,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]地鼠",
+    "name": "阿羅拉 地鼠",
     "rarity": "C",
     "image": "cPK_10_006980_00_ALOLADIGDA_C.webp",
     "packs": [
@@ -15293,7 +15293,7 @@
   {
     "set": "A3",
     "number": 118,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]三地鼠",
+    "name": "阿羅拉 三地鼠",
     "rarity": "C",
     "image": "cPK_10_006990_00_ALOLADUGTRIO_C.webp",
     "packs": [
@@ -15306,7 +15306,7 @@
     "health": 90,
     "retreatCost": 1,
     "weakness": "Fire",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]地鼠"
+    "evolvesFrom": "阿羅拉 地鼠"
   },
   {
     "set": "A3",
@@ -15875,7 +15875,7 @@
   {
     "set": "A3",
     "number": 156,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]椰蛋樹",
+    "name": "阿羅拉 椰蛋樹",
     "rarity": "AR",
     "image": "cPK_20_005830_00_ALOLANASSY_AR.webp",
     "packs": [
@@ -15926,7 +15926,7 @@
   {
     "set": "A3",
     "number": 159,
-    "name": "卡璞[Text:Char v=\"MIDDLE-DOT\" ]哞哞",
+    "name": "卡璞哞哞",
     "rarity": "AR",
     "image": "cPK_20_006050_00_KAPU-BULUL_AR.webp",
     "packs": [
@@ -15943,7 +15943,7 @@
   {
     "set": "A3",
     "number": 160,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]嘎啦嘎啦",
+    "name": "阿羅拉 嘎啦嘎啦",
     "rarity": "AR",
     "image": "cPK_20_006080_00_ALOLAGARAGARA_AR.webp",
     "packs": [
@@ -15977,7 +15977,7 @@
   {
     "set": "A3",
     "number": 162,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]六尾",
+    "name": "阿羅拉 六尾",
     "rarity": "AR",
     "image": "cPK_20_006210_00_ALOLAROKON_AR.webp",
     "packs": [
@@ -16011,7 +16011,7 @@
   {
     "set": "A3",
     "number": 164,
-    "name": "卡璞[Text:Char v=\"MIDDLE-DOT\" ]鰭鰭",
+    "name": "卡璞鰭鰭",
     "rarity": "AR",
     "image": "cPK_20_006370_00_KAPU-REHIRE_AR.webp",
     "packs": [
@@ -16045,7 +16045,7 @@
   {
     "set": "A3",
     "number": 166,
-    "name": "卡璞[Text:Char v=\"MIDDLE-DOT\" ]鳴鳴",
+    "name": "卡璞鳴鳴",
     "rarity": "AR",
     "image": "cPK_20_006490_00_KAPU-KOKEKO_AR.webp",
     "packs": [
@@ -16113,7 +16113,7 @@
   {
     "set": "A3",
     "number": 170,
-    "name": "卡璞[Text:Char v=\"MIDDLE-DOT\" ]蝶蝶",
+    "name": "卡璞蝶蝶",
     "rarity": "AR",
     "image": "cPK_20_006650_00_KAPU-TETEFU_AR.webp",
     "packs": [
@@ -16368,7 +16368,7 @@
   {
     "set": "A3",
     "number": 185,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]雷丘ex",
+    "name": "阿羅拉 雷丘ex",
     "rarity": "SR",
     "image": "cPK_20_006390_00_ALOLARAICHUex_SR.webp",
     "packs": [
@@ -16419,7 +16419,7 @@
   {
     "set": "A3",
     "number": 188,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]臭臭泥ex",
+    "name": "阿羅拉 臭臭泥ex",
     "rarity": "SR",
     "image": "cPK_20_006920_00_ALOLABETBETONex_SR.webp",
     "packs": [
@@ -16431,7 +16431,7 @@
     "health": 160,
     "retreatCost": 3,
     "weakness": "Fighting",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]臭泥"
+    "evolvesFrom": "阿羅拉 臭泥"
   },
   {
     "set": "A3",
@@ -16626,7 +16626,7 @@
   {
     "set": "A3",
     "number": 203,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]雷丘ex",
+    "name": "阿羅拉 雷丘ex",
     "rarity": "SAR",
     "image": "cPK_20_006390_01_ALOLARAICHUex_SAR.webp",
     "packs": [
@@ -16677,7 +16677,7 @@
   {
     "set": "A3",
     "number": 206,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]臭臭泥ex",
+    "name": "阿羅拉 臭臭泥ex",
     "rarity": "SAR",
     "image": "cPK_20_006920_01_ALOLABETBETONex_SAR.webp",
     "packs": [
@@ -16689,7 +16689,7 @@
     "health": 160,
     "retreatCost": 3,
     "weakness": "Fighting",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]臭泥"
+    "evolvesFrom": "阿羅拉 臭泥"
   },
   {
     "set": "A3",
@@ -17554,7 +17554,7 @@
   {
     "set": "A3a",
     "number": 19,
-    "name": "卡璞[Text:Char v=\"MIDDLE-DOT\" ]鳴鳴ex",
+    "name": "卡璞鳴鳴ex",
     "rarity": "RR",
     "image": "cPK_10_007420_00_KAPU-KOKEKOex_RR.webp",
     "packs": [
@@ -17864,7 +17864,7 @@
   {
     "set": "A3a",
     "number": 37,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]喵喵",
+    "name": "阿羅拉 喵喵",
     "rarity": "C",
     "image": "cPK_10_007740_00_ALOLANYARTH_C.webp",
     "packs": [
@@ -17881,7 +17881,7 @@
   {
     "set": "A3a",
     "number": 38,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]貓老大",
+    "name": "阿羅拉 貓老大",
     "rarity": "U",
     "image": "cPK_10_007750_00_ALOLAPERSIAN_U.webp",
     "packs": [
@@ -17893,7 +17893,7 @@
     "health": 100,
     "retreatCost": 1,
     "weakness": "Grass",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]喵喵"
+    "evolvesFrom": "阿羅拉 喵喵"
   },
   {
     "set": "A3a",
@@ -18019,7 +18019,7 @@
   {
     "set": "A3a",
     "number": 46,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]地鼠",
+    "name": "阿羅拉 地鼠",
     "rarity": "C",
     "image": "cPK_10_007820_00_ALOLADIGDA_C.webp",
     "packs": [
@@ -18037,7 +18037,7 @@
   {
     "set": "A3a",
     "number": 47,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]三地鼠ex",
+    "name": "阿羅拉 三地鼠ex",
     "rarity": "RR",
     "image": "cPK_10_007830_00_ALOLADUGTRIOex_RR.webp",
     "packs": [
@@ -18050,7 +18050,7 @@
     "health": 130,
     "retreatCost": 1,
     "weakness": "Fire",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]地鼠"
+    "evolvesFrom": "阿羅拉 地鼠"
   },
   {
     "set": "A3a",
@@ -18443,7 +18443,7 @@
   {
     "set": "A3a",
     "number": 73,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]喵喵",
+    "name": "阿羅拉 喵喵",
     "rarity": "AR",
     "image": "cPK_20_007740_00_ALOLANYARTH_AR.webp",
     "packs": [
@@ -18511,7 +18511,7 @@
   {
     "set": "A3a",
     "number": 77,
-    "name": "卡璞[Text:Char v=\"MIDDLE-DOT\" ]鳴鳴ex",
+    "name": "卡璞鳴鳴ex",
     "rarity": "SR",
     "image": "cPK_20_007420_00_KAPU-KOKEKOex_SR.webp",
     "packs": [
@@ -18562,7 +18562,7 @@
   {
     "set": "A3a",
     "number": 80,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]三地鼠ex",
+    "name": "阿羅拉 三地鼠ex",
     "rarity": "SR",
     "image": "cPK_20_007830_00_ALOLADUGTRIOex_SR.webp",
     "packs": [
@@ -18574,7 +18574,7 @@
     "health": 130,
     "retreatCost": 1,
     "weakness": "Fire",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]地鼠"
+    "evolvesFrom": "阿羅拉 地鼠"
   },
   {
     "set": "A3a",
@@ -18612,7 +18612,7 @@
   {
     "set": "A3a",
     "number": 84,
-    "name": "卡璞[Text:Char v=\"MIDDLE-DOT\" ]鳴鳴ex",
+    "name": "卡璞鳴鳴ex",
     "rarity": "SAR",
     "image": "cPK_20_007420_01_KAPU-KOKEKOex_SAR.webp",
     "packs": [
@@ -18663,7 +18663,7 @@
   {
     "set": "A3a",
     "number": 87,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]三地鼠ex",
+    "name": "阿羅拉 三地鼠ex",
     "rarity": "SAR",
     "image": "cPK_20_007830_01_ALOLADUGTRIOex_SAR.webp",
     "packs": [
@@ -18675,7 +18675,7 @@
     "health": 130,
     "retreatCost": 1,
     "weakness": "Fire",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]地鼠"
+    "evolvesFrom": "阿羅拉 地鼠"
   },
   {
     "set": "A3a",
@@ -20956,8 +20956,8 @@
     "rarity": "C",
     "image": "cPK_10_008690_00_HANECCO_C.webp",
     "packs": [
-      "鳳王",
-      "高級擴充包ex"
+      "高級擴充包ex",
+      "鳳王"
     ],
     "element": "grass",
     "type": "pokemon",
@@ -20974,8 +20974,8 @@
     "rarity": "U",
     "image": "cPK_10_008700_00_POPOCCO_U.webp",
     "packs": [
-      "鳳王",
-      "高級擴充包ex"
+      "高級擴充包ex",
+      "鳳王"
     ],
     "element": "grass",
     "type": "pokemon",
@@ -20992,8 +20992,8 @@
     "rarity": "R",
     "image": "cPK_10_008710_00_WATACCO_R.webp",
     "packs": [
-      "鳳王",
-      "高級擴充包ex"
+      "高級擴充包ex",
+      "鳳王"
     ],
     "element": "grass",
     "type": "pokemon",
@@ -21136,8 +21136,8 @@
     "image": "cPK_10_008790_00_CHERINBO_C.webp",
     "packs": [
       "洛奇亞",
-      "鳳王",
-      "高級擴充包ex"
+      "高級擴充包ex",
+      "鳳王"
     ],
     "element": "grass",
     "type": "pokemon",
@@ -21155,8 +21155,8 @@
     "image": "cPK_10_008800_00_CHERRIM_U.webp",
     "packs": [
       "洛奇亞",
-      "鳳王",
-      "高級擴充包ex"
+      "高級擴充包ex",
+      "鳳王"
     ],
     "element": "grass",
     "type": "pokemon",
@@ -21326,8 +21326,8 @@
     "rarity": "RR",
     "image": "cPK_10_008900_00_HOUOUex_RR.webp",
     "packs": [
-      "鳳王",
-      "高級擴充包ex"
+      "高級擴充包ex",
+      "鳳王"
     ],
     "element": "fire",
     "type": "pokemon",
@@ -22450,8 +22450,8 @@
     "rarity": "C",
     "image": "cPK_10_009550_00_GOMAZOU_C.webp",
     "packs": [
-      "鳳王",
-      "高級擴充包ex"
+      "高級擴充包ex",
+      "鳳王"
     ],
     "element": "fighting",
     "type": "pokemon",
@@ -22468,8 +22468,8 @@
     "rarity": "RR",
     "image": "cPK_10_009560_00_DONFANex_RR.webp",
     "packs": [
-      "鳳王",
-      "高級擴充包ex"
+      "高級擴充包ex",
+      "鳳王"
     ],
     "element": "fighting",
     "type": "pokemon",
@@ -22623,8 +22623,8 @@
     "rarity": "RR",
     "image": "cPK_10_009650_00_CROBATex_RR.webp",
     "packs": [
-      "鳳王",
-      "高級擴充包ex"
+      "高級擴充包ex",
+      "鳳王"
     ],
     "element": "darkness",
     "type": "pokemon",
@@ -22675,8 +22675,8 @@
     "rarity": "RR",
     "image": "cPK_10_009680_00_BRACKYex_RR.webp",
     "packs": [
-      "鳳王",
-      "高級擴充包ex"
+      "高級擴充包ex",
+      "鳳王"
     ],
     "element": "darkness",
     "type": "pokemon",
@@ -22884,8 +22884,8 @@
     "rarity": "RR",
     "image": "cPK_10_009800_00_AIRMDex_RR.webp",
     "packs": [
-      "鳳王",
-      "高級擴充包ex"
+      "高級擴充包ex",
+      "鳳王"
     ],
     "element": "metal",
     "type": "pokemon",
@@ -23431,8 +23431,8 @@
     "rarity": "U",
     "image": "cTR_10_000780_00_SILVER_U.webp",
     "packs": [
-      "鳳王",
-      "高級擴充包ex"
+      "高級擴充包ex",
+      "鳳王"
     ],
     "type": "supporter"
   },
@@ -25359,7 +25359,7 @@
   {
     "set": "A4a",
     "number": 34,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Galar\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]太陽珊瑚",
+    "name": "伽勒爾 太陽珊瑚",
     "rarity": "C",
     "image": "cPK_10_010530_00_GALARSUNNYGO_C.webp",
     "packs": [
@@ -25376,7 +25376,7 @@
   {
     "set": "A4a",
     "number": 35,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Galar\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]魔靈珊瑚",
+    "name": "伽勒爾 魔靈珊瑚",
     "rarity": "R",
     "image": "cPK_10_010540_00_GALARSUNIGOON_R.webp",
     "packs": [
@@ -25388,7 +25388,7 @@
     "health": 80,
     "retreatCost": 2,
     "weakness": "Darkness",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Galar\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]太陽珊瑚"
+    "evolvesFrom": "伽勒爾 太陽珊瑚"
   },
   {
     "set": "A4a",
@@ -26433,7 +26433,7 @@
   {
     "set": "A4a",
     "number": 100,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Paldea\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]烏波",
+    "name": "帕底亞 烏波",
     "rarity": "S",
     "image": "cPK_20_005620_00_PALDEAUPAH_S.webp",
     "packs": [
@@ -26501,7 +26501,7 @@
   {
     "set": "A4a",
     "number": 104,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Paldea\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]土王ex",
+    "name": "帕底亞 土王ex",
     "rarity": "SSR",
     "image": "cPK_20_005630_02_PALDEADOOHex_SSR.webp",
     "packs": [
@@ -26513,7 +26513,7 @@
     "health": 160,
     "retreatCost": 3,
     "weakness": "Fighting",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Paldea\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]烏波"
+    "evolvesFrom": "帕底亞 烏波"
   },
   {
     "set": "A4a",
@@ -26768,8 +26768,8 @@
     "rarity": "C",
     "image": "cPK_10_008690_00_HANECCO_C.webp",
     "packs": [
-      "鳳王",
-      "高級擴充包ex"
+      "高級擴充包ex",
+      "鳳王"
     ],
     "element": "grass",
     "type": "pokemon",
@@ -26803,8 +26803,8 @@
     "rarity": "U",
     "image": "cPK_10_008700_00_POPOCCO_U.webp",
     "packs": [
-      "鳳王",
-      "高級擴充包ex"
+      "高級擴充包ex",
+      "鳳王"
     ],
     "element": "grass",
     "type": "pokemon",
@@ -26838,8 +26838,8 @@
     "rarity": "R",
     "image": "cPK_10_008710_00_WATACCO_R.webp",
     "packs": [
-      "鳳王",
-      "高級擴充包ex"
+      "高級擴充包ex",
+      "鳳王"
     ],
     "element": "grass",
     "type": "pokemon",
@@ -26963,8 +26963,8 @@
     "image": "cPK_10_008790_00_CHERINBO_C.webp",
     "packs": [
       "洛奇亞",
-      "鳳王",
-      "高級擴充包ex"
+      "高級擴充包ex",
+      "鳳王"
     ],
     "element": "grass",
     "type": "pokemon",
@@ -26999,8 +26999,8 @@
     "image": "cPK_10_008800_00_CHERRIM_U.webp",
     "packs": [
       "洛奇亞",
-      "鳳王",
-      "高級擴充包ex"
+      "高級擴充包ex",
+      "鳳王"
     ],
     "element": "grass",
     "type": "pokemon",
@@ -27721,8 +27721,8 @@
     "rarity": "RR",
     "image": "cPK_10_008900_00_HOUOUex_RR.webp",
     "packs": [
-      "鳳王",
-      "高級擴充包ex"
+      "高級擴充包ex",
+      "鳳王"
     ],
     "element": "fire",
     "type": "pokemon",
@@ -28809,7 +28809,7 @@
   {
     "set": "A4b",
     "number": 130,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]雷丘ex",
+    "name": "阿羅拉 雷丘ex",
     "rarity": "RR",
     "image": "cPK_10_006390_00_ALOLARAICHUex_RR.webp",
     "packs": [
@@ -29128,7 +29128,7 @@
   {
     "set": "A4b",
     "number": 148,
-    "name": "卡璞[Text:Char v=\"MIDDLE-DOT\" ]鳴鳴ex",
+    "name": "卡璞鳴鳴ex",
     "rarity": "RR",
     "image": "cPK_10_007420_00_KAPU-KOKEKOex_RR.webp",
     "packs": [
@@ -30050,8 +30050,8 @@
     "rarity": "C",
     "image": "cPK_10_009550_00_GOMAZOU_C.webp",
     "packs": [
-      "鳳王",
-      "高級擴充包ex"
+      "高級擴充包ex",
+      "鳳王"
     ],
     "element": "fighting",
     "type": "pokemon",
@@ -30085,8 +30085,8 @@
     "rarity": "RR",
     "image": "cPK_10_009560_00_DONFANex_RR.webp",
     "packs": [
-      "鳳王",
-      "高級擴充包ex"
+      "高級擴充包ex",
+      "鳳王"
     ],
     "element": "fighting",
     "type": "pokemon",
@@ -30614,8 +30614,8 @@
     "rarity": "RR",
     "image": "cPK_10_009650_00_CROBATex_RR.webp",
     "packs": [
-      "鳳王",
-      "高級擴充包ex"
+      "高級擴充包ex",
+      "鳳王"
     ],
     "element": "darkness",
     "type": "pokemon",
@@ -30628,7 +30628,7 @@
   {
     "set": "A4b",
     "number": 233,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]臭泥",
+    "name": "阿羅拉 臭泥",
     "rarity": "C",
     "image": "cPK_10_006910_00_ALOLABETBETER_C.webp",
     "packs": [
@@ -30646,7 +30646,7 @@
   {
     "set": "A4b",
     "number": 234,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]臭泥",
+    "name": "阿羅拉 臭泥",
     "rarity": "C",
     "image": "cPK_10_006910_01_ALOLABETBETER_C.webp",
     "packs": [
@@ -30663,7 +30663,7 @@
   {
     "set": "A4b",
     "number": 235,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]臭臭泥ex",
+    "name": "阿羅拉 臭臭泥ex",
     "rarity": "RR",
     "image": "cPK_10_006920_00_ALOLABETBETONex_RR.webp",
     "packs": [
@@ -30676,12 +30676,12 @@
     "health": 160,
     "retreatCost": 3,
     "weakness": "Fighting",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]臭泥"
+    "evolvesFrom": "阿羅拉 臭泥"
   },
   {
     "set": "A4b",
     "number": 236,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Paldea\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]烏波",
+    "name": "帕底亞 烏波",
     "rarity": "C",
     "image": "cPK_10_005620_00_PALDEAUPAH_C.webp",
     "packs": [
@@ -30699,7 +30699,7 @@
   {
     "set": "A4b",
     "number": 237,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Paldea\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]烏波",
+    "name": "帕底亞 烏波",
     "rarity": "C",
     "image": "cPK_10_005620_01_PALDEAUPAH_C.webp",
     "packs": [
@@ -30716,7 +30716,7 @@
   {
     "set": "A4b",
     "number": 238,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Paldea\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]土王ex",
+    "name": "帕底亞 土王ex",
     "rarity": "RR",
     "image": "cPK_10_005630_00_PALDEADOOHex_RR.webp",
     "packs": [
@@ -30729,7 +30729,7 @@
     "health": 160,
     "retreatCost": 3,
     "weakness": "Fighting",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Paldea\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]烏波"
+    "evolvesFrom": "帕底亞 烏波"
   },
   {
     "set": "A4b",
@@ -30773,8 +30773,8 @@
     "rarity": "RR",
     "image": "cPK_10_009680_00_BRACKYex_RR.webp",
     "packs": [
-      "鳳王",
-      "高級擴充包ex"
+      "高級擴充包ex",
+      "鳳王"
     ],
     "element": "darkness",
     "type": "pokemon",
@@ -30911,7 +30911,7 @@
   {
     "set": "A4b",
     "number": 249,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]地鼠",
+    "name": "阿羅拉 地鼠",
     "rarity": "C",
     "image": "cPK_10_007820_00_ALOLADIGDA_C.webp",
     "packs": [
@@ -30929,7 +30929,7 @@
   {
     "set": "A4b",
     "number": 250,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]地鼠",
+    "name": "阿羅拉 地鼠",
     "rarity": "C",
     "image": "cPK_10_007820_01_ALOLADIGDA_C.webp",
     "packs": [
@@ -30946,7 +30946,7 @@
   {
     "set": "A4b",
     "number": 251,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]三地鼠ex",
+    "name": "阿羅拉 三地鼠ex",
     "rarity": "RR",
     "image": "cPK_10_007830_00_ALOLADUGTRIOex_RR.webp",
     "packs": [
@@ -30959,7 +30959,7 @@
     "health": 130,
     "retreatCost": 1,
     "weakness": "Fire",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]地鼠"
+    "evolvesFrom": "阿羅拉 地鼠"
   },
   {
     "set": "A4b",
@@ -30968,8 +30968,8 @@
     "rarity": "RR",
     "image": "cPK_10_009800_00_AIRMDex_RR.webp",
     "packs": [
-      "鳳王",
-      "高級擴充包ex"
+      "高級擴充包ex",
+      "鳳王"
     ],
     "element": "metal",
     "type": "pokemon",
@@ -32286,8 +32286,8 @@
     "rarity": "U",
     "image": "cTR_10_000780_00_SILVER_U.webp",
     "packs": [
-      "鳳王",
-      "高級擴充包ex"
+      "高級擴充包ex",
+      "鳳王"
     ],
     "type": "supporter"
   },
@@ -38139,7 +38139,7 @@
   {
     "set": "B1",
     "number": 311,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]地鼠",
+    "name": "阿羅拉 地鼠",
     "rarity": "S",
     "image": "cPK_20_006980_00_ALOLADIGDA_S.webp",
     "packs": [
@@ -38326,7 +38326,7 @@
   {
     "set": "B1",
     "number": 322,
-    "name": "卡璞[Text:Char v=\"MIDDLE-DOT\" ]鳴鳴ex",
+    "name": "卡璞鳴鳴ex",
     "rarity": "SSR",
     "image": "cPK_20_007420_02_KAPU-KOKEKOex_SSR.webp",
     "packs": [
@@ -38377,7 +38377,7 @@
   {
     "set": "B1",
     "number": 325,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]三地鼠ex",
+    "name": "阿羅拉 三地鼠ex",
     "rarity": "SSR",
     "image": "cPK_20_007830_02_ALOLADUGTRIOex_SSR.webp",
     "packs": [
@@ -38389,7 +38389,7 @@
     "health": 130,
     "retreatCost": 1,
     "weakness": "Fire",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]地鼠"
+    "evolvesFrom": "阿羅拉 地鼠"
   },
   {
     "set": "B1",
@@ -40477,7 +40477,7 @@
   {
     "set": "B2",
     "number": 17,
-    "name": "厄鬼椪[Text:Char v=\"FOUR-PER-EM-SPACE\"][Text:AdditionalName v=\"ADDITIONAL_NAME_Midori\" type=\"A\"]ex",
+    "name": "厄鬼椪 碧草面具ex",
     "rarity": "RR",
     "image": "cPK_10_013830_00_OGERPONMIDORINOMENex_RR.webp",
     "packs": [
@@ -40494,7 +40494,7 @@
   {
     "set": "B2",
     "number": 18,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]嘎啦嘎啦",
+    "name": "阿羅拉 嘎啦嘎啦",
     "rarity": "U",
     "image": "cPK_10_013840_00_ALOLAGARAGARA_U.webp",
     "packs": [
@@ -40647,7 +40647,7 @@
   {
     "set": "B2",
     "number": 27,
-    "name": "厄鬼椪[Text:Char v=\"FOUR-PER-EM-SPACE\"][Text:AdditionalName v=\"ADDITIONAL_NAME_Kamado\" type=\"A\"]",
+    "name": "厄鬼椪 火灶面具",
     "rarity": "R",
     "image": "cPK_10_013930_00_OGERPONKAMADONOMEN_R.webp",
     "packs": [
@@ -40664,7 +40664,7 @@
   {
     "set": "B2",
     "number": 28,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]六尾",
+    "name": "阿羅拉 六尾",
     "rarity": "C",
     "image": "cPK_10_013940_00_ALOLAROKON_C.webp",
     "packs": [
@@ -40681,7 +40681,7 @@
   {
     "set": "B2",
     "number": 29,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]九尾ex",
+    "name": "阿羅拉 九尾ex",
     "rarity": "RR",
     "image": "cPK_10_013950_00_ALOLAKYUKONex_RR.webp",
     "packs": [
@@ -40693,12 +40693,12 @@
     "health": 150,
     "retreatCost": 2,
     "weakness": "Metal",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]六尾"
+    "evolvesFrom": "阿羅拉 六尾"
   },
   {
     "set": "B2",
     "number": 30,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Galar\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]魔牆人偶",
+    "name": "伽勒爾 魔牆人偶",
     "rarity": "C",
     "image": "cPK_10_013960_00_GALARBARRIERD_C.webp",
     "packs": [
@@ -40715,7 +40715,7 @@
   {
     "set": "B2",
     "number": 31,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Galar\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]踏冰人偶",
+    "name": "伽勒爾 踏冰人偶",
     "rarity": "U",
     "image": "cPK_10_013970_00_GALARBARRIKOHRU_U.webp",
     "packs": [
@@ -40727,7 +40727,7 @@
     "health": 110,
     "retreatCost": 2,
     "weakness": "Metal",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Galar\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]魔牆人偶"
+    "evolvesFrom": "伽勒爾 魔牆人偶"
   },
   {
     "set": "B2",
@@ -41004,7 +41004,7 @@
   {
     "set": "B2",
     "number": 48,
-    "name": "厄鬼椪[Text:Char v=\"FOUR-PER-EM-SPACE\"][Text:AdditionalName v=\"ADDITIONAL_NAME_Ido\" type=\"A\"]",
+    "name": "厄鬼椪 水井面具",
     "rarity": "R",
     "image": "cPK_10_014140_00_OGERPONIDONOMEN_R.webp",
     "packs": [
@@ -41038,7 +41038,7 @@
   {
     "set": "B2",
     "number": 50,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]雷丘",
+    "name": "阿羅拉 雷丘",
     "rarity": "R",
     "image": "cPK_10_014160_00_ALOLARAICHU_R.webp",
     "packs": [
@@ -41123,7 +41123,7 @@
   {
     "set": "B2",
     "number": 55,
-    "name": "��弦蠑螈ex",
+    "name": "顫弦蠑螈ex",
     "rarity": "RR",
     "image": "cPK_10_014210_00_STRINDERex_RR.webp",
     "packs": [
@@ -41174,7 +41174,7 @@
   {
     "set": "B2",
     "number": 58,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Galar\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]小火馬",
+    "name": "伽勒爾 小火馬",
     "rarity": "C",
     "image": "cPK_10_014240_00_GALARPONYTA_C.webp",
     "packs": [
@@ -41191,7 +41191,7 @@
   {
     "set": "B2",
     "number": 59,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Galar\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]烈焰馬",
+    "name": "伽勒爾 烈焰馬",
     "rarity": "U",
     "image": "cPK_10_014250_00_GALARGALLOP_U.webp",
     "packs": [
@@ -41203,7 +41203,7 @@
     "health": 100,
     "retreatCost": 2,
     "weakness": "Darkness",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Galar\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]小火馬"
+    "evolvesFrom": "伽勒爾 小火馬"
   },
   {
     "set": "B2",
@@ -41769,7 +41769,7 @@
   {
     "set": "B2",
     "number": 93,
-    "name": "厄鬼椪[Text:Char v=\"FOUR-PER-EM-SPACE\"][Text:AdditionalName v=\"ADDITIONAL_NAME_Isizue\" type=\"A\"]",
+    "name": "厄鬼椪 礎石面具",
     "rarity": "R",
     "image": "cPK_10_014590_00_OGERPONISHIZUENOMEN_R.webp",
     "packs": [
@@ -41786,7 +41786,7 @@
   {
     "set": "B2",
     "number": 94,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]喵喵",
+    "name": "阿羅拉 喵喵",
     "rarity": "C",
     "image": "cPK_10_014600_00_ALOLANYARTH_C.webp",
     "packs": [
@@ -41803,7 +41803,7 @@
   {
     "set": "B2",
     "number": 95,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]貓老大",
+    "name": "阿羅拉 貓老大",
     "rarity": "U",
     "image": "cPK_10_014610_00_ALOLAPERSIAN_U.webp",
     "packs": [
@@ -41815,12 +41815,12 @@
     "health": 100,
     "retreatCost": 1,
     "weakness": "Grass",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]喵喵"
+    "evolvesFrom": "阿羅拉 喵喵"
   },
   {
     "set": "B2",
     "number": 96,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]臭泥",
+    "name": "阿羅拉 臭泥",
     "rarity": "C",
     "image": "cPK_10_014620_00_ALOLABETBETER_C.webp",
     "packs": [
@@ -41837,7 +41837,7 @@
   {
     "set": "B2",
     "number": 97,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]臭臭泥",
+    "name": "阿羅拉 臭臭泥",
     "rarity": "R",
     "image": "cPK_10_014630_00_ALOLABETBETON_R.webp",
     "packs": [
@@ -41849,12 +41849,12 @@
     "health": 110,
     "retreatCost": 3,
     "weakness": "Fighting",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]臭泥"
+    "evolvesFrom": "阿羅拉 臭泥"
   },
   {
     "set": "B2",
     "number": 98,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Galar\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]蛇紋熊",
+    "name": "伽勒爾 蛇紋熊",
     "rarity": "C",
     "image": "cPK_10_014640_00_GALARJIGUZAGUMA_C.webp",
     "packs": [
@@ -41871,7 +41871,7 @@
   {
     "set": "B2",
     "number": 99,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Galar\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]直衝熊",
+    "name": "伽勒爾 直衝熊",
     "rarity": "U",
     "image": "cPK_10_014650_00_GALARMASSUGUMA_U.webp",
     "packs": [
@@ -41883,12 +41883,12 @@
     "health": 80,
     "retreatCost": 1,
     "weakness": "Grass",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Galar\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]蛇紋熊"
+    "evolvesFrom": "伽勒爾 蛇紋熊"
   },
   {
     "set": "B2",
     "number": 100,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Galar\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]堵攔熊",
+    "name": "伽勒爾 堵攔熊",
     "rarity": "R",
     "image": "cPK_10_014660_00_GALARTACHIFUSAGUMA_R.webp",
     "packs": [
@@ -41900,7 +41900,7 @@
     "health": 150,
     "retreatCost": 2,
     "weakness": "Grass",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Galar\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]直衝熊"
+    "evolvesFrom": "伽勒爾 直衝熊"
   },
   {
     "set": "B2",
@@ -42058,7 +42058,7 @@
   {
     "set": "B2",
     "number": 110,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Galar\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]喵喵",
+    "name": "伽勒爾 喵喵",
     "rarity": "C",
     "image": "cPK_10_014760_00_GALARNYARTH_C.webp",
     "packs": [
@@ -42075,7 +42075,7 @@
   {
     "set": "B2",
     "number": 111,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Galar\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]喵頭目",
+    "name": "伽勒爾 喵頭目",
     "rarity": "R",
     "image": "cPK_10_014770_00_GALARNYAIKING_R.webp",
     "packs": [
@@ -42087,7 +42087,7 @@
     "health": 100,
     "retreatCost": 2,
     "weakness": "Fire",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Galar\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]喵喵"
+    "evolvesFrom": "伽勒爾 喵喵"
   },
   {
     "set": "B2",
@@ -42177,7 +42177,7 @@
   {
     "set": "B2",
     "number": 117,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Galar\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]泥巴魚",
+    "name": "伽勒爾 泥巴魚",
     "rarity": "U",
     "image": "cPK_10_014830_00_GALARMAGGYO_U.webp",
     "packs": [
@@ -42957,7 +42957,7 @@
   {
     "set": "B2",
     "number": 167,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Galar\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]小火馬",
+    "name": "伽勒爾 小火馬",
     "rarity": "AR",
     "image": "cPK_20_014240_00_GALARPONYTA_AR.webp",
     "packs": [
@@ -43059,7 +43059,7 @@
   {
     "set": "B2",
     "number": 173,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]臭臭泥",
+    "name": "阿羅拉 臭臭泥",
     "rarity": "AR",
     "image": "cPK_20_014630_00_ALOLABETBETON_AR.webp",
     "packs": [
@@ -43071,7 +43071,7 @@
     "health": 110,
     "retreatCost": 3,
     "weakness": "Fighting",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]臭泥"
+    "evolvesFrom": "阿羅拉 臭泥"
   },
   {
     "set": "B2",
@@ -43110,7 +43110,7 @@
   {
     "set": "B2",
     "number": 176,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Galar\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]堵攔熊",
+    "name": "伽勒爾 堵攔熊",
     "rarity": "AR",
     "image": "cPK_20_014660_00_GALARTACHIFUSAGUMA_AR.webp",
     "packs": [
@@ -43122,12 +43122,12 @@
     "health": 150,
     "retreatCost": 2,
     "weakness": "Grass",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Galar\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]直衝熊"
+    "evolvesFrom": "伽勒爾 直衝熊"
   },
   {
     "set": "B2",
     "number": 177,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Galar\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]喵頭目",
+    "name": "伽勒爾 喵頭目",
     "rarity": "AR",
     "image": "cPK_20_014770_00_GALARNYAIKING_AR.webp",
     "packs": [
@@ -43139,7 +43139,7 @@
     "health": 100,
     "retreatCost": 2,
     "weakness": "Fire",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Galar\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]喵喵"
+    "evolvesFrom": "伽勒爾 喵喵"
   },
   {
     "set": "B2",
@@ -43178,7 +43178,7 @@
   {
     "set": "B2",
     "number": 180,
-    "name": "厄鬼椪[Text:Char v=\"FOUR-PER-EM-SPACE\"][Text:AdditionalName v=\"ADDITIONAL_NAME_Midori\" type=\"A\"]ex",
+    "name": "厄鬼椪 碧草面具ex",
     "rarity": "SR",
     "image": "cPK_20_013830_00_OGERPONMIDORINOMENex_SR.webp",
     "packs": [
@@ -43212,7 +43212,7 @@
   {
     "set": "B2",
     "number": 182,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]九尾ex",
+    "name": "阿羅拉 九尾ex",
     "rarity": "SR",
     "image": "cPK_20_013950_00_ALOLAKYUKONex_SR.webp",
     "packs": [
@@ -43224,7 +43224,7 @@
     "health": 150,
     "retreatCost": 2,
     "weakness": "Metal",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]六尾"
+    "evolvesFrom": "阿羅拉 六尾"
   },
   {
     "set": "B2",
@@ -43392,7 +43392,7 @@
   {
     "set": "B2",
     "number": 194,
-    "name": "厄鬼椪[Text:Char v=\"FOUR-PER-EM-SPACE\"][Text:AdditionalName v=\"ADDITIONAL_NAME_Midori\" type=\"A\"]ex",
+    "name": "厄鬼椪 碧草面具ex",
     "rarity": "SAR",
     "image": "cPK_20_013830_01_OGERPONMIDORINOMENex_SAR.webp",
     "packs": [
@@ -43426,7 +43426,7 @@
   {
     "set": "B2",
     "number": 196,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]九尾ex",
+    "name": "阿羅拉 九尾ex",
     "rarity": "SAR",
     "image": "cPK_20_013950_01_ALOLAKYUKONex_SAR.webp",
     "packs": [
@@ -43438,7 +43438,7 @@
     "health": 150,
     "retreatCost": 2,
     "weakness": "Metal",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]六尾"
+    "evolvesFrom": "阿羅拉 六尾"
   },
   {
     "set": "B2",
@@ -45052,7 +45052,7 @@
   {
     "set": "B2a",
     "number": 58,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Paldea\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]肯泰羅",
+    "name": "帕底亞 肯泰羅",
     "rarity": "U",
     "image": "cPK_10_015670_00_PALDEAKENTAUROS_U.webp",
     "packs": [
@@ -45154,7 +45154,7 @@
   {
     "set": "B2a",
     "number": 64,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Paldea\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]烏波",
+    "name": "帕底亞 烏波",
     "rarity": "C",
     "image": "cPK_10_015730_00_PALDEAUPAH_C.webp",
     "packs": [
@@ -45171,7 +45171,7 @@
   {
     "set": "B2a",
     "number": 65,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Paldea\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]土王",
+    "name": "帕底亞 土王",
     "rarity": "U",
     "image": "cPK_10_015740_00_PALDEADOOH_U.webp",
     "packs": [
@@ -45183,7 +45183,7 @@
     "health": 120,
     "retreatCost": 3,
     "weakness": "Fighting",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Paldea\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]烏波"
+    "evolvesFrom": "帕底亞 烏波"
   },
   {
     "set": "B2a",
@@ -45667,7 +45667,7 @@
   {
     "set": "B2a",
     "number": 97,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Paldea\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]烏波",
+    "name": "帕底亞 烏波",
     "rarity": "AR",
     "image": "cPK_20_015730_00_PALDEAUPAH_AR.webp",
     "packs": [
@@ -46441,7 +46441,7 @@
   {
     "set": "B2b",
     "number": 14,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Paldea\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]肯泰羅",
+    "name": "帕底亞 肯泰羅",
     "rarity": "C",
     "image": "cPK_10_016200_00_PALDEAKENTAUROS_C.webp",
     "packs": [
@@ -48552,7 +48552,7 @@
   {
     "set": "B3",
     "number": 24,
-    "name": "飄浮泡泡[Text:Char v=\"FOUR-PER-EM-SPACE\"][Text:AdditionalName v=\"ADDITIONAL_NAME_Taiyou\" type=\"A\"]",
+    "name": "飄浮泡泡 太陽的樣子",
     "rarity": "C",
     "image": "cPK_10_016890_00_POWALENTAIYOUNOSUGATA_C.webp",
     "packs": [
@@ -48756,7 +48756,7 @@
   {
     "set": "B3",
     "number": 36,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Paldea\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]肯泰羅",
+    "name": "帕底亞 肯泰羅",
     "rarity": "U",
     "image": "cPK_10_017010_00_PALDEAKENTAUROS_U.webp",
     "packs": [
@@ -48824,7 +48824,7 @@
   {
     "set": "B3",
     "number": 40,
-    "name": "飄浮泡泡[Text:Char v=\"FOUR-PER-EM-SPACE\" ][Text:AdditionalName v=\"ADDITIONAL_NAME_Amamizu\" type=\"A\" ]",
+    "name": "飄浮泡泡 雨水的樣子",
     "rarity": "C",
     "image": "cPK_10_017050_00_POWALENAMAMIZUNOSUGATA_C.webp",
     "packs": [
@@ -48841,7 +48841,7 @@
   {
     "set": "B3",
     "number": 41,
-    "name": "飄浮泡泡[Text:Char v=\"FOUR-PER-EM-SPACE\" ][Text:AdditionalName v=\"ADDITIONAL_NAME_Yukigumo\" type=\"A\" ]",
+    "name": "飄浮泡泡 雪雲的樣子",
     "rarity": "C",
     "image": "cPK_10_017060_00_POWALENYUKIGUMONOSUGATA_C.webp",
     "packs": [
@@ -49011,7 +49011,7 @@
   {
     "set": "B3",
     "number": 51,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Rengeki\" type=\"B\" ]武道熊師",
+    "name": "連擊武道熊師",
     "rarity": "R",
     "image": "cPK_10_017160_00_WULAOSURENGEKINOKATA_R.webp",
     "packs": [
@@ -50065,7 +50065,7 @@
   {
     "set": "B3",
     "number": 113,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Itigeki\" type=\"B\" ]武道熊師",
+    "name": "一擊武道熊師",
     "rarity": "R",
     "image": "cPK_10_017780_00_WULAOSUICHIGEKINOKATA_R.webp",
     "packs": [
@@ -53996,7 +53996,7 @@
     "rarity": "R",
     "image": "cPK_90_000070_00_BUTTERFREE_R.webp",
     "packs": [
-      "A系列第1波"
+      "巴大蝶"
     ],
     "element": "grass",
     "type": "pokemon",
@@ -54013,7 +54013,7 @@
     "rarity": "RR",
     "image": "cPK_90_002760_00_LAPLACEex_RR.webp",
     "packs": [
-      "A系列第1波"
+      "巴大蝶"
     ],
     "element": "water",
     "type": "pokemon",
@@ -54030,7 +54030,7 @@
     "rarity": "C",
     "image": "cPK_90_000940_01_PIKACHU_C.webp",
     "packs": [
-      "A系列第1波"
+      "巴大蝶"
     ],
     "element": "lightning",
     "type": "pokemon",
@@ -54047,7 +54047,7 @@
     "rarity": "C",
     "image": "cPK_90_001130_00_PIPPI_C.webp",
     "packs": [
-      "A系列第1波"
+      "巴大蝶"
     ],
     "element": "psychic",
     "type": "pokemon",
@@ -54064,7 +54064,7 @@
     "rarity": "C",
     "image": "cPK_90_002770_00_MANKEY_C.webp",
     "packs": [
-      "A系列第1波"
+      "巴大蝶"
     ],
     "element": "fighting",
     "type": "pokemon",
@@ -54081,7 +54081,7 @@
     "rarity": "AR",
     "image": "cPK_90_000030_00_FUSHIGIBANA_AR.webp",
     "packs": [
-      "A系列第2波"
+      "特典卡牌包 A系列第2波"
     ],
     "element": "grass",
     "type": "pokemon",
@@ -54098,7 +54098,7 @@
     "rarity": "R",
     "image": "cPK_90_000890_00_GEKKOUGA_R.webp",
     "packs": [
-      "A系列第2波"
+      "特典卡牌包 A系列第2波"
     ],
     "element": "water",
     "type": "pokemon",
@@ -54115,7 +54115,7 @@
     "rarity": "C",
     "image": "cPK_90_002780_00_GHOST_C.webp",
     "packs": [
-      "A系列第2波"
+      "特典卡牌包 A系列第2波"
     ],
     "element": "psychic",
     "type": "pokemon",
@@ -54132,7 +54132,7 @@
     "rarity": "C",
     "image": "cPK_90_001500_00_IWARK_C.webp",
     "packs": [
-      "A系列第2波"
+      "特典卡牌包 A系列第2波"
     ],
     "element": "fighting",
     "type": "pokemon",
@@ -54149,7 +54149,7 @@
     "rarity": "C",
     "image": "cPK_90_002790_00_PURIN_C.webp",
     "packs": [
-      "A系列第2波"
+      "特典卡牌包 A系列第2波"
     ],
     "element": "colorless",
     "type": "pokemon",
@@ -54226,7 +54226,7 @@
     "rarity": "C",
     "image": "cPK_90_002800_00_TSUTARJA_C.webp",
     "packs": [
-      "A系列第3波"
+      "特典卡牌包 A系列第3波"
     ],
     "element": "grass",
     "type": "pokemon",
@@ -54243,7 +54243,7 @@
     "rarity": "R",
     "image": "cPK_90_002280_00_ULGAMOTH_R.webp",
     "packs": [
-      "A系列第3波"
+      "特典卡牌包 A系列第3波"
     ],
     "element": "fire",
     "type": "pokemon",
@@ -54260,7 +54260,7 @@
     "rarity": "AR",
     "image": "cPK_90_000550_00_KAMEX_AR.webp",
     "packs": [
-      "A系列第3波"
+      "特典卡牌包 A系列第3波"
     ],
     "element": "water",
     "type": "pokemon",
@@ -54277,7 +54277,7 @@
     "rarity": "C",
     "image": "cPK_90_002810_00_EIEVUI_C.webp",
     "packs": [
-      "A系列第3波"
+      "特典卡牌包 A系列第3波"
     ],
     "element": "colorless",
     "type": "pokemon",
@@ -54294,7 +54294,7 @@
     "rarity": "C",
     "image": "cPK_90_002110_00_CHILLACCINO_C.webp",
     "packs": [
-      "A系列第3波"
+      "特典卡牌包 A系列第3波"
     ],
     "element": "colorless",
     "type": "pokemon",
@@ -54356,7 +54356,7 @@
     "rarity": "C",
     "image": "cPK_90_002910_00_NAETLE_C.webp",
     "packs": [
-      "A系列第4波"
+      "特典卡牌包 A系列第4波"
     ],
     "element": "grass",
     "type": "pokemon",
@@ -54373,7 +54373,7 @@
     "rarity": "R",
     "image": "cPK_90_003380_00_ELEKIBLE_R.webp",
     "packs": [
-      "A系列第4波"
+      "特典卡牌包 A系列第4波"
     ],
     "element": "lightning",
     "type": "pokemon",
@@ -54390,7 +54390,7 @@
     "rarity": "RR",
     "image": "cPK_90_004960_00_CRESSELIAex_RR.webp",
     "packs": [
-      "A系列第4波"
+      "特典卡牌包 A系列第4波"
     ],
     "element": "psychic",
     "type": "pokemon",
@@ -54407,7 +54407,7 @@
     "rarity": "C",
     "image": "cPK_90_004970_00_MUMA_C.webp",
     "packs": [
-      "A系列第4波"
+      "特典卡牌包 A系列第4波"
     ],
     "element": "psychic",
     "type": "pokemon",
@@ -54424,7 +54424,7 @@
     "rarity": "C",
     "image": "cPK_90_003920_00_AIRMD_C.webp",
     "packs": [
-      "A系列第4波"
+      "特典卡牌包 A系列第4波"
     ],
     "element": "metal",
     "type": "pokemon",
@@ -54437,7 +54437,7 @@
   {
     "set": "PROMO-A",
     "number": 40,
-    "name": "小��焰猴",
+    "name": "小火焰猴",
     "rarity": "R",
     "image": "cPK_90_003080_00_HIKOZARU_R.webp",
     "packs": [],
@@ -54486,7 +54486,7 @@
     "rarity": "C",
     "image": "cPK_90_004320_00_CHERRIM_C.webp",
     "packs": [
-      "A系列第5波"
+      "特典卡牌包 A系列第5波"
     ],
     "element": "grass",
     "type": "pokemon",
@@ -54503,7 +54503,7 @@
     "rarity": "R",
     "image": "cPK_90_004500_00_RAICHU_R.webp",
     "packs": [
-      "A系列第5波"
+      "特典卡牌包 A系列第5波"
     ],
     "element": "lightning",
     "type": "pokemon",
@@ -54520,7 +54520,7 @@
     "rarity": "C",
     "image": "cPK_90_004980_00_NOSEPASS_C.webp",
     "packs": [
-      "A系列第5波"
+      "特典卡牌包 A系列第5波"
     ],
     "element": "fighting",
     "type": "pokemon",
@@ -54537,7 +54537,7 @@
     "rarity": "AR",
     "image": "cPK_90_004690_00_FUKAMARU_AR.webp",
     "packs": [
-      "A系列第5波"
+      "特典卡牌包 A系列第5波"
     ],
     "element": "fighting",
     "type": "pokemon",
@@ -54554,7 +54554,7 @@
     "rarity": "C",
     "image": "cPK_90_004990_00_MUKUHAWK_C.webp",
     "packs": [
-      "A系列第5波"
+      "特典卡牌包 A系列第5波"
     ],
     "element": "colorless",
     "type": "pokemon",
@@ -54646,7 +54646,7 @@
     "rarity": "C",
     "image": "cPK_90_005000_00_FLOAZEL_C.webp",
     "packs": [
-      "A系列第6波"
+      "特典卡牌包 A系列第6波"
     ],
     "element": "water",
     "type": "pokemon",
@@ -54663,7 +54663,7 @@
     "rarity": "AR",
     "image": "cPK_90_005010_00_PARMOT_AR.webp",
     "packs": [
-      "A系列第6波"
+      "特典卡牌包 A系列第6波"
     ],
     "element": "lightning",
     "type": "pokemon",
@@ -54680,7 +54680,7 @@
     "rarity": "R",
     "image": "cPK_90_005020_00_KAIRIKY_R.webp",
     "packs": [
-      "A系列第6波"
+      "特典卡牌包 A系列第6波"
     ],
     "element": "fighting",
     "type": "pokemon",
@@ -54697,7 +54697,7 @@
     "rarity": "C",
     "image": "cPK_90_005030_00_ARBO_C.webp",
     "packs": [
-      "A系列第6波"
+      "特典卡牌包 A系列第6波"
     ],
     "element": "darkness",
     "type": "pokemon",
@@ -54714,7 +54714,7 @@
     "rarity": "C",
     "image": "cPK_90_005040_00_BIPPA_C.webp",
     "packs": [
-      "A系列第6波"
+      "特典卡牌包 A系列第6波"
     ],
     "element": "colorless",
     "type": "pokemon",
@@ -54761,7 +54761,7 @@
     "rarity": "C",
     "image": "cPK_90_002150_00_TAMATAMA_C.webp",
     "packs": [
-      "A系列第7波"
+      "特典卡牌包 A系列第7波"
     ],
     "element": "grass",
     "type": "pokemon",
@@ -54778,7 +54778,7 @@
     "rarity": "C",
     "image": "cPK_90_000870_00_KEROMATSU_C.webp",
     "packs": [
-      "A系列第7波"
+      "特典卡牌包 A系列第7波"
     ],
     "element": "water",
     "type": "pokemon",
@@ -54795,7 +54795,7 @@
     "rarity": "C",
     "image": "cPK_90_001980_00_KAMONEGI_C.webp",
     "packs": [
-      "A系列第7波"
+      "特典卡牌包 A系列第7波"
     ],
     "element": "colorless",
     "type": "pokemon",
@@ -54812,7 +54812,7 @@
     "rarity": "R",
     "image": "cPK_90_010810_00_RAYQUAZA_R.webp",
     "packs": [
-      "A系列第7波"
+      "特典卡牌包 A系列第7波"
     ],
     "element": "colorless",
     "type": "pokemon",
@@ -54829,7 +54829,7 @@
     "rarity": "RR",
     "image": "cPK_90_010820_00_RAYQUAZAex_RR.webp",
     "packs": [
-      "A系列第7波"
+      "特典卡牌包 A系列第7波"
     ],
     "element": "colorless",
     "type": "pokemon",
@@ -54902,11 +54902,11 @@
   {
     "set": "PROMO-A",
     "number": 69,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]椰蛋樹",
+    "name": "阿羅拉 椰蛋樹",
     "rarity": "R",
     "image": "cPK_90_005830_00_ALOLANASSY_R.webp",
     "packs": [
-      "A系列第8波"
+      "特典卡牌包 A系列第8波"
     ],
     "element": "grass",
     "type": "pokemon",
@@ -54919,11 +54919,11 @@
   {
     "set": "PROMO-A",
     "number": 70,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]九尾",
+    "name": "阿羅拉 九尾",
     "rarity": "AR",
     "image": "cPK_90_006220_00_ALOLAKYUKON_AR.webp",
     "packs": [
-      "A系列第8波"
+      "特典卡牌包 A系列第8波"
     ],
     "element": "water",
     "type": "pokemon",
@@ -54931,7 +54931,7 @@
     "health": 110,
     "retreatCost": 1,
     "weakness": "Metal",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]六尾"
+    "evolvesFrom": "阿羅拉 六尾"
   },
   {
     "set": "PROMO-A",
@@ -54940,7 +54940,7 @@
     "rarity": "C",
     "image": "cPK_90_006780_00_MAKENKANI_C.webp",
     "packs": [
-      "A系列第8波"
+      "特典卡牌包 A系列第8波"
     ],
     "element": "fighting",
     "type": "pokemon",
@@ -54953,11 +54953,11 @@
   {
     "set": "PROMO-A",
     "number": 72,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]臭泥",
+    "name": "阿羅拉 臭泥",
     "rarity": "C",
     "image": "cPK_90_007230_00_ALOLABETBETER_C.webp",
     "packs": [
-      "A系列第8波"
+      "特典卡牌包 A系列第8波"
     ],
     "element": "darkness",
     "type": "pokemon",
@@ -54974,7 +54974,7 @@
     "rarity": "C",
     "image": "cPK_90_007240_00_DODEKABASHI_C.webp",
     "packs": [
-      "A系列第8波"
+      "特典卡牌包 A系列第8波"
     ],
     "element": "colorless",
     "type": "pokemon",
@@ -55006,7 +55006,7 @@
     "rarity": "C",
     "image": "cPK_90_007250_00_KAMITURUGI_C.webp",
     "packs": [
-      "A系列第9波"
+      "特典卡牌包 A系列第9波"
     ],
     "element": "grass",
     "type": "pokemon",
@@ -55023,7 +55023,7 @@
     "rarity": "C",
     "image": "cPK_90_007260_00_ZUGADOON_C.webp",
     "packs": [
-      "A系列第9波"
+      "特典卡牌包 A系列第9波"
     ],
     "element": "fire",
     "type": "pokemon",
@@ -55040,7 +55040,7 @@
     "rarity": "C",
     "image": "cPK_90_007270_00_DENJYUMOKU_C.webp",
     "packs": [
-      "A系列第9波"
+      "特典卡牌包 A系列第9波"
     ],
     "element": "lightning",
     "type": "pokemon",
@@ -55053,11 +55053,11 @@
   {
     "set": "PROMO-A",
     "number": 78,
-    "name": "奈克洛茲瑪[Text:Char v=\"FOUR-PER-EM-SPACE\"][Text:AdditionalName v=\"ADDITIONAL_NAME_Akatsuki\" type=\"A\"]",
+    "name": "奈克洛茲瑪 拂曉之翼",
     "rarity": "R",
     "image": "cPK_90_007280_00_NECROZMAAKATSUKINOTSUBASA_R.webp",
     "packs": [
-      "A系列第9波"
+      "特典卡牌包 A系列第9波"
     ],
     "element": "psychic",
     "type": "pokemon",
@@ -55070,11 +55070,11 @@
   {
     "set": "PROMO-A",
     "number": 79,
-    "name": "奈克洛茲瑪[Text:Char v=\"FOUR-PER-EM-SPACE\"][Text:AdditionalName v=\"ADDITIONAL_NAME_Tasogare\" type=\"A\"]",
+    "name": "奈克洛茲瑪 黃昏之鬃",
     "rarity": "R",
     "image": "cPK_90_007290_00_NECROZMATASOGARENOTATEGAMI_R.webp",
     "packs": [
-      "A系列第9波"
+      "特典卡牌包 A系列第9波"
     ],
     "element": "metal",
     "type": "pokemon",
@@ -55091,7 +55091,7 @@
     "rarity": "C",
     "image": "cPK_90_007300_00_TUNDETUNDE_C.webp",
     "packs": [
-      "A系列第9波"
+      "特典卡牌包 A系列第9波"
     ],
     "element": "metal",
     "type": "pokemon",
@@ -55108,7 +55108,7 @@
     "rarity": "RR",
     "image": "cPK_90_007310_00_NECROZMAULTRANECROZMAex_RR.webp",
     "packs": [
-      "A系列第9波"
+      "特典卡牌包 A系列第9波"
     ],
     "element": "dragon",
     "type": "pokemon",
@@ -55151,7 +55151,7 @@
   {
     "set": "PROMO-A",
     "number": 84,
-    "name": "卡璞[Text:Char v=\"MIDDLE-DOT\" ]鳴鳴ex",
+    "name": "卡璞鳴鳴ex",
     "rarity": "RR",
     "image": "cPK_90_007420_00_KAPU-KOKEKOex_RR.webp",
     "packs": [],
@@ -55170,7 +55170,7 @@
     "rarity": "C",
     "image": "cPK_90_007320_00_VANIPETI_C.webp",
     "packs": [
-      "A系列第10波"
+      "特典卡牌包 A系列第10波"
     ],
     "element": "water",
     "type": "pokemon",
@@ -55187,7 +55187,7 @@
     "rarity": "R",
     "image": "cPK_90_007330_00_THUNDERS_R.webp",
     "packs": [
-      "A系列第10波"
+      "特典卡牌包 A系列第10波"
     ],
     "element": "lightning",
     "type": "pokemon",
@@ -55204,7 +55204,7 @@
     "rarity": "AR",
     "image": "cPK_90_007340_00_MAWHIP_AR.webp",
     "packs": [
-      "A系列第10波"
+      "特典卡牌包 A系列第10波"
     ],
     "element": "psychic",
     "type": "pokemon",
@@ -55221,7 +55221,7 @@
     "rarity": "C",
     "image": "cPK_90_007350_00_HAKURYU_C.webp",
     "packs": [
-      "A系列第10波"
+      "特典卡牌包 A系列第10波"
     ],
     "element": "dragon",
     "type": "pokemon",
@@ -55238,7 +55238,7 @@
     "rarity": "C",
     "image": "cPK_90_007360_00_TABUNNE_C.webp",
     "packs": [
-      "A系列第10波"
+      "特典卡牌包 A系列第10波"
     ],
     "element": "colorless",
     "type": "pokemon",
@@ -55315,7 +55315,7 @@
     "rarity": "C",
     "image": "cPK_90_010070_00_TATTU_C.webp",
     "packs": [
-      "A系列第11波"
+      "特典卡牌包 A系列第11波"
     ],
     "element": "water",
     "type": "pokemon",
@@ -55332,7 +55332,7 @@
     "rarity": "C",
     "image": "cPK_90_010080_00_CHONCHIE_C.webp",
     "packs": [
-      "A系列第11波"
+      "特典卡牌包 A系列第11波"
     ],
     "element": "lightning",
     "type": "pokemon",
@@ -55349,7 +55349,7 @@
     "rarity": "C",
     "image": "cPK_90_009740_00_HELLGAR_C.webp",
     "packs": [
-      "A系列第11波"
+      "特典卡牌包 A系列第11波"
     ],
     "element": "darkness",
     "type": "pokemon",
@@ -55366,7 +55366,7 @@
     "rarity": "R",
     "image": "cPK_90_009890_00_GARURA_R.webp",
     "packs": [
-      "A系列第11波"
+      "特典卡牌包 A系列第11波"
     ],
     "element": "colorless",
     "type": "pokemon",
@@ -55383,7 +55383,7 @@
     "rarity": "RR",
     "image": "cPK_90_010090_00_HAPPINASex_RR.webp",
     "packs": [
-      "A系列第11波"
+      "特典卡牌包 A系列第11波"
     ],
     "element": "colorless",
     "type": "pokemon",
@@ -55445,7 +55445,7 @@
     "rarity": "C",
     "image": "cPK_90_010100_00_TROPIUS_C.webp",
     "packs": [
-      "A系列第12波"
+      "特典卡牌包 A系列第12波"
     ],
     "element": "grass",
     "type": "pokemon",
@@ -55462,7 +55462,7 @@
     "rarity": "C",
     "image": "cPK_90_010110_00_NYOROMO_C.webp",
     "packs": [
-      "A系列第12波"
+      "特典卡牌包 A系列第12波"
     ],
     "element": "water",
     "type": "pokemon",
@@ -55479,7 +55479,7 @@
     "rarity": "R",
     "image": "cPK_90_010120_00_MILOKAROSS_R.webp",
     "packs": [
-      "A系列第12波"
+      "特典卡牌包 A系列第12波"
     ],
     "element": "water",
     "type": "pokemon",
@@ -55496,7 +55496,7 @@
     "rarity": "C",
     "image": "cPK_90_010130_00_ZORUA_C.webp",
     "packs": [
-      "A系列第12波"
+      "特典卡牌包 A系列第12波"
     ],
     "element": "darkness",
     "type": "pokemon",
@@ -55513,7 +55513,7 @@
     "rarity": "AR",
     "image": "cPK_90_010140_00_ZOROARK_AR.webp",
     "packs": [
-      "A系列第12波"
+      "特典卡牌包 A系列第12波"
     ],
     "element": "darkness",
     "type": "pokemon",
@@ -55590,7 +55590,7 @@
     "rarity": "C",
     "image": "cPK_90_010150_00_PIKACHU_C.webp",
     "packs": [
-      "A系列第13波"
+      "特典卡牌包 A系列第13波"
     ],
     "element": "lightning",
     "type": "pokemon",
@@ -55607,7 +55607,7 @@
     "rarity": "RR",
     "image": "cPK_90_010160_00_RAICHUex_RR.webp",
     "packs": [
-      "A系列第13波"
+      "特典卡牌包 A系列第13波"
     ],
     "element": "lightning",
     "type": "pokemon",
@@ -55624,7 +55624,7 @@
     "rarity": "C",
     "image": "cPK_90_008290_00_MIMIKKYU_C.webp",
     "packs": [
-      "A系列第13波"
+      "特典卡牌包 A系列第13波"
     ],
     "element": "psychic",
     "type": "pokemon",
@@ -55641,7 +55641,7 @@
     "rarity": "C",
     "image": "cPK_90_010170_00_KAIRIKY_C.webp",
     "packs": [
-      "A系列第13波"
+      "特典卡牌包 A系列第13波"
     ],
     "element": "fighting",
     "type": "pokemon",
@@ -55658,7 +55658,7 @@
     "rarity": "R",
     "image": "cPK_90_004240_00_REGIGIGAS_R.webp",
     "packs": [
-      "A系列第13波"
+      "特典卡牌包 A系列第13波"
     ],
     "element": "colorless",
     "type": "pokemon",
@@ -55720,7 +55720,7 @@
     "rarity": "C",
     "image": "cPK_90_012930_00_CHURINE_C.webp",
     "packs": [
-      "B系列第1波"
+      "特典卡牌包 B系列第1波"
     ],
     "element": "grass",
     "type": "pokemon",
@@ -55737,7 +55737,7 @@
     "rarity": "C",
     "image": "cPK_90_012940_00_KEROMATSU_C.webp",
     "packs": [
-      "B系列第1波"
+      "特典卡牌包 B系列第1波"
     ],
     "element": "water",
     "type": "pokemon",
@@ -55754,7 +55754,7 @@
     "rarity": "R",
     "image": "cPK_90_011700_00_RENTORAR_R.webp",
     "packs": [
-      "B系列第1波"
+      "特典卡牌包 B系列第1波"
     ],
     "element": "lightning",
     "type": "pokemon",
@@ -55771,7 +55771,7 @@
     "rarity": "C",
     "image": "cPK_90_012620_00_POPPO_C.webp",
     "packs": [
-      "B系列第1波"
+      "特典卡牌包 B系列第1波"
     ],
     "element": "colorless",
     "type": "pokemon",
@@ -55788,7 +55788,7 @@
     "rarity": "RR",
     "image": "cPK_90_012950_00_MEGAPIGEOTex_RR.webp",
     "packs": [
-      "B系列第1波"
+      "特典卡牌包 B系列第1波"
     ],
     "element": "colorless",
     "type": "pokemon",
@@ -55895,7 +55895,7 @@
     "rarity": "C",
     "image": "cPK_90_011110_00_WINDIE_C.webp",
     "packs": [
-      "B系列第2波"
+      "特典卡牌包 B系列第2波"
     ],
     "element": "fire",
     "type": "pokemon",
@@ -55912,7 +55912,7 @@
     "rarity": "C",
     "image": "cPK_90_012960_00_KOIKING_C.webp",
     "packs": [
-      "B系列第2波"
+      "特典卡牌包 B系列第2波"
     ],
     "element": "water",
     "type": "pokemon",
@@ -55929,7 +55929,7 @@
     "rarity": "AR",
     "image": "cPK_90_011640_00_MERRIEP_AR.webp",
     "packs": [
-      "B系列第2波"
+      "特典卡牌包 B系列第2波"
     ],
     "element": "lightning",
     "type": "pokemon",
@@ -55946,7 +55946,7 @@
     "rarity": "R",
     "image": "cPK_90_012140_00_WARUVIAL_R.webp",
     "packs": [
-      "B系列第2波"
+      "特典卡牌包 B系列第2波"
     ],
     "element": "fighting",
     "type": "pokemon",
@@ -55963,7 +55963,7 @@
     "rarity": "C",
     "image": "cPK_90_012970_00_TYLTTO_C.webp",
     "packs": [
-      "B系列第2波"
+      "特典卡牌包 B系列第2波"
     ],
     "element": "colorless",
     "type": "pokemon",
@@ -56010,7 +56010,7 @@
     "rarity": "C",
     "image": "cPK_90_012980_00_LIZARDO_C.webp",
     "packs": [
-      "B系列第3波"
+      "特典卡牌包 B系列第3波"
     ],
     "element": "fire",
     "type": "pokemon",
@@ -56027,7 +56027,7 @@
     "rarity": "C",
     "image": "cPK_90_012990_00_IWARK_C.webp",
     "packs": [
-      "B系列第3波"
+      "特典卡牌包 B系列第3波"
     ],
     "element": "fighting",
     "type": "pokemon",
@@ -56044,7 +56044,7 @@
     "rarity": "C",
     "image": "cPK_90_013000_00_LUCHABULL_C.webp",
     "packs": [
-      "B系列第3波"
+      "特典卡牌包 B系列第3波"
     ],
     "element": "fighting",
     "type": "pokemon",
@@ -56061,7 +56061,7 @@
     "rarity": "R",
     "image": "cPK_90_013010_00_GENESECT_R.webp",
     "packs": [
-      "B系列第3波"
+      "特典卡牌包 B系列第3波"
     ],
     "element": "metal",
     "type": "pokemon",
@@ -56078,7 +56078,7 @@
     "rarity": "RR",
     "image": "cPK_90_013020_00_MEGALATIOSex_RR.webp",
     "packs": [
-      "B系列第3波"
+      "特典卡牌包 B系列第3波"
     ],
     "element": "dragon",
     "type": "pokemon",
@@ -56110,7 +56110,7 @@
     "rarity": "C",
     "image": "cPK_90_015950_00_MIZUGOROU_C.webp",
     "packs": [
-      "B系列第4波"
+      "特典卡牌包 B系列第4波"
     ],
     "element": "water",
     "type": "pokemon",
@@ -56127,7 +56127,7 @@
     "rarity": "C",
     "image": "cPK_90_014180_00_PRASLE_C.webp",
     "packs": [
-      "B系列第4波"
+      "特典卡牌包 B系列第4波"
     ],
     "element": "lightning",
     "type": "pokemon",
@@ -56144,7 +56144,7 @@
     "rarity": "C",
     "image": "cPK_90_015960_00_RALTS_C.webp",
     "packs": [
-      "B系列第4波"
+      "特典卡牌包 B系列第4波"
     ],
     "element": "psychic",
     "type": "pokemon",
@@ -56161,7 +56161,7 @@
     "rarity": "RR",
     "image": "cPK_90_015970_00_MEGACHAREMex_RR.webp",
     "packs": [
-      "B系列第4波"
+      "特典卡牌包 B系列第4波"
     ],
     "element": "fighting",
     "type": "pokemon",
@@ -56178,7 +56178,7 @@
     "rarity": "R",
     "image": "cPK_90_015040_00_TORNELOS_R.webp",
     "packs": [
-      "B系列第4波"
+      "特典卡牌包 B系列第4波"
     ],
     "element": "colorless",
     "type": "pokemon",
@@ -56206,7 +56206,7 @@
   {
     "set": "PROMO-B",
     "number": 32,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Alora\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]六尾",
+    "name": "阿羅拉 六尾",
     "rarity": "R",
     "image": "cPK_90_013940_00_ALOLAROKON_R.webp",
     "packs": [],
@@ -56240,7 +56240,7 @@
     "rarity": "C",
     "image": "cPK_90_015980_00_MINIVE_C.webp",
     "packs": [
-      "B系列第5波"
+      "特典卡牌包 B系列第5波"
     ],
     "element": "grass",
     "type": "pokemon",
@@ -56257,7 +56257,7 @@
     "rarity": "AR",
     "image": "cPK_90_015280_00_CARBOU_AR.webp",
     "packs": [
-      "B系列第5波"
+      "特典卡牌包 B系列第5波"
     ],
     "element": "fire",
     "type": "pokemon",
@@ -56274,7 +56274,7 @@
     "rarity": "C",
     "image": "cPK_90_015420_00_SYARITATSU_C.webp",
     "packs": [
-      "B系列第5波"
+      "特典卡牌包 B系列第5波"
     ],
     "element": "water",
     "type": "pokemon",
@@ -56291,7 +56291,7 @@
     "rarity": "C",
     "image": "cPK_90_015990_00_SEBIE_C.webp",
     "packs": [
-      "B系列第5波"
+      "特典卡牌包 B系列第5波"
     ],
     "element": "water",
     "type": "pokemon",
@@ -56308,7 +56308,7 @@
     "rarity": "R",
     "image": "cPK_90_015830_00_DEKANUCHAN_R.webp",
     "packs": [
-      "B系列第5波"
+      "特典卡牌包 B系列第5波"
     ],
     "element": "metal",
     "type": "pokemon",
@@ -56336,7 +56336,7 @@
   {
     "set": "PROMO-B",
     "number": 40,
-    "name": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Paldea\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]土王",
+    "name": "帕底亞 土王",
     "rarity": "R",
     "image": "cPK_90_015740_00_PALDEADOOH_R.webp",
     "packs": [],
@@ -56346,7 +56346,7 @@
     "health": 120,
     "retreatCost": 3,
     "weakness": "Fighting",
-    "evolvesFrom": "[Text:AdditionalName v=\"ADDITIONAL_NAME_Paldea\" type=\"region\"][Text:Char v=\"FOUR-PER-EM-SPACE\"]烏波"
+    "evolvesFrom": "帕底亞 烏波"
   },
   {
     "set": "PROMO-B",
@@ -56370,7 +56370,7 @@
     "rarity": "AR",
     "image": "cPK_90_016000_00_YADON_AR.webp",
     "packs": [
-      "B系列第6波"
+      "特典卡牌包 B系列第6波"
     ],
     "element": "water",
     "type": "pokemon",
@@ -56387,7 +56387,7 @@
     "rarity": "C",
     "image": "cPK_90_016010_00_RAKURAI_C.webp",
     "packs": [
-      "B系列第6波"
+      "特典卡牌包 B系列第6波"
     ],
     "element": "lightning",
     "type": "pokemon",
@@ -56404,7 +56404,7 @@
     "rarity": "C",
     "image": "cPK_90_016020_00_BURORON_C.webp",
     "packs": [
-      "B系列第6波"
+      "特典卡牌包 B系列第6波"
     ],
     "element": "metal",
     "type": "pokemon",
@@ -56421,7 +56421,7 @@
     "rarity": "R",
     "image": "cPK_90_016030_00_ONONOKUS_R.webp",
     "packs": [
-      "B系列第6波"
+      "特典卡牌包 B系列第6波"
     ],
     "element": "dragon",
     "type": "pokemon",
@@ -56438,7 +56438,7 @@
     "rarity": "C",
     "image": "cPK_90_016040_00_PERAP_C.webp",
     "packs": [
-      "B系列第6波"
+      "特典卡牌包 B系列第6波"
     ],
     "element": "colorless",
     "type": "pokemon",
@@ -56500,7 +56500,7 @@
     "rarity": "U",
     "image": "cPK_90_014360_00_MELOETTA_U.webp",
     "packs": [
-      "B系列第7波"
+      "特典卡牌包 B系列第7波"
     ],
     "element": "psychic",
     "type": "pokemon",
@@ -56517,7 +56517,7 @@
     "rarity": "C",
     "image": "cPK_90_018860_00_ZYGARDE10％FORME_C.webp",
     "packs": [
-      "B系列第7波"
+      "特典卡牌包 B系列第7波"
     ],
     "element": "fighting",
     "type": "pokemon",
@@ -56534,7 +56534,7 @@
     "rarity": "R",
     "image": "cPK_90_018870_00_ZYGARDE50％FORME_R.webp",
     "packs": [
-      "B系列第7波"
+      "特典卡牌包 B系列第7波"
     ],
     "element": "fighting",
     "type": "pokemon",
@@ -56551,7 +56551,7 @@
     "rarity": "RR",
     "image": "cPK_90_018880_00_ZYGARDEPERFECTFORMEex_RR.webp",
     "packs": [
-      "B系列第7波"
+      "特典卡牌包 B系列第7波"
     ],
     "element": "fighting",
     "type": "pokemon",
@@ -56568,7 +56568,7 @@
     "rarity": "C",
     "image": "cPK_90_012660_01_EIEVUI_C.webp",
     "packs": [
-      "B系列第7波"
+      "特典卡牌包 B系列第7波"
     ],
     "element": "colorless",
     "type": "pokemon",
@@ -56600,7 +56600,7 @@
     "rarity": "RR",
     "image": "cPK_90_018900_00_MEGAHERACROSex_RR.webp",
     "packs": [
-      "B系列第8波"
+      "特典卡牌包 B系列第8波"
     ],
     "element": "grass",
     "type": "pokemon",
@@ -56613,11 +56613,11 @@
   {
     "set": "PROMO-B",
     "number": 57,
-    "name": "飄浮泡泡[Text:Char v=\"FOUR-PER-EM-SPACE\"][Text:AdditionalName v=\"ADDITIONAL_NAME_Taiyou\" type=\"A\"]",
+    "name": "飄浮泡泡 太陽的樣子",
     "rarity": "C",
     "image": "cPK_90_016890_00_POWALENTAIYOUNOSUGATA_C.webp",
     "packs": [
-      "B系列第8波"
+      "特典卡牌包 B系列第8波"
     ],
     "element": "fire",
     "type": "pokemon",
@@ -56634,7 +56634,7 @@
     "rarity": "C",
     "image": "cPK_90_018910_00_POKABU_C.webp",
     "packs": [
-      "B系列第8波"
+      "特典卡牌包 B系列第8波"
     ],
     "element": "fire",
     "type": "pokemon",
@@ -56651,7 +56651,7 @@
     "rarity": "C",
     "image": "cPK_90_018920_00_ISHIZUMAI_C.webp",
     "packs": [
-      "B系列第8波"
+      "特典卡牌包 B系列第8波"
     ],
     "element": "fighting",
     "type": "pokemon",
@@ -56668,7 +56668,7 @@
     "rarity": "R",
     "image": "cPK_90_017790_00_ZARUDE_R.webp",
     "packs": [
-      "B系列第8波"
+      "特典卡牌包 B系列第8波"
     ],
     "element": "darkness",
     "type": "pokemon",
@@ -56730,7 +56730,7 @@
     "rarity": "C",
     "image": "cPK_90_018930_00_CARBOU_C.webp",
     "packs": [
-      "B系列第9波"
+      "特典卡牌包 B系列第9波"
     ],
     "element": "fire",
     "type": "pokemon",
@@ -56747,7 +56747,7 @@
     "rarity": "C",
     "image": "cPK_90_018230_00_SHOWERS_C.webp",
     "packs": [
-      "B系列第9波"
+      "特典卡牌包 B系列第9波"
     ],
     "element": "water",
     "type": "pokemon",
@@ -56764,7 +56764,7 @@
     "rarity": "RR",
     "image": "cPK_90_018940_00_SOUBLADESex_RR.webp",
     "packs": [
-      "B系列第9波"
+      "特典卡牌包 B系列第9波"
     ],
     "element": "psychic",
     "type": "pokemon",
@@ -56781,7 +56781,7 @@
     "rarity": "C",
     "image": "cPK_90_018950_00_KOMATANA_C.webp",
     "packs": [
-      "B系列第9波"
+      "特典卡牌包 B系列第9波"
     ],
     "element": "darkness",
     "type": "pokemon",
@@ -56798,7 +56798,7 @@
     "rarity": "R",
     "image": "cPK_90_018750_00_NOKOKOCCHI_R.webp",
     "packs": [
-      "B系列第9波"
+      "特典卡牌包 B系列第9波"
     ],
     "element": "colorless",
     "type": "pokemon",
