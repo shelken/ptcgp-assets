@@ -61,12 +61,20 @@ def output_paths_for_pack(root: Path, sku_id: str) -> dict[str, list[Path]]:
     }
 
 
-def request_pack_images_raw(bridge_url: str, *, sku_id: str | None = None, limit: int | None = None) -> bytes:
+def request_pack_images_raw(
+    bridge_url: str,
+    *,
+    sku_id: str | None = None,
+    limit: int | None = None,
+    skip: int | None = None,
+) -> bytes:
     params: dict[str, Any] = {}
     if sku_id is not None:
         params["skuId"] = sku_id
     if limit is not None:
         params["limit"] = limit
+    if skip is not None:
+        params["skip"] = skip
     payload = json.dumps({"method": "ptcgp.packImages.raw", "params": params}).encode("utf-8")
     request = urllib.request.Request(
         f"{bridge_url.rstrip('/')}/ptcgp/run",
@@ -168,9 +176,10 @@ def logo_by_language(pack: dict[str, Any]) -> dict[str, str]:
     return result
 
 
-def convert_archive_bytes(archive_bytes: bytes, output_root: Path) -> None:
+def convert_archive_bytes(archive_bytes: bytes, output_root: Path) -> int:
     import tempfile
 
+    converted = 0
     with tempfile.TemporaryDirectory(prefix="ptcgp-pack-images-") as temp_dir:
         archive = extract_archive(archive_bytes, Path(temp_dir))
         for pack in archive.manifest["packs"]:
@@ -190,6 +199,32 @@ def convert_archive_bytes(archive_bytes: bytes, output_root: Path) -> None:
             for language in SUPPORTED_LANGUAGES:
                 logo_image = select_pack_logo(archive.root / logos[language])
                 write_webp(logo_image, output_root / "images" / language / "packs-logos" / f"{sku_id}.webp")
+            converted += 1
+    return converted
+
+
+def convert_from_bridge(
+    bridge_url: str,
+    output_root: Path,
+    *,
+    sku_id: str | None,
+    limit: int | None,
+    chunk_size: int,
+) -> None:
+    if chunk_size <= 0:
+        raise ValueError("chunk-size must be positive")
+    if sku_id is not None or limit is not None:
+        archive_bytes = request_pack_images_raw(bridge_url, sku_id=sku_id, limit=limit)
+        convert_archive_bytes(archive_bytes, output_root)
+        return
+
+    skip = 0
+    while True:
+        archive_bytes = request_pack_images_raw(bridge_url, limit=chunk_size, skip=skip)
+        converted = convert_archive_bytes(archive_bytes, output_root)
+        if converted == 0:
+            break
+        skip += converted
 
 
 def wait_for_bridge(bridge_url: str, process: subprocess.Popen[bytes]) -> None:
@@ -218,6 +253,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output", type=Path, default=Path("."))
     parser.add_argument("--sku-id", default=None, help="optional debug filter; default exports all packs")
     parser.add_argument("--limit", type=int, default=None, help="optional debug limit; default exports all packs")
+    parser.add_argument("--chunk-size", type=int, default=1, help="packs requested per bridge call when exporting all packs")
     return parser.parse_args()
 
 
@@ -226,14 +262,13 @@ def main() -> int:
     process: subprocess.Popen[bytes] | None = None
     try:
         try:
-            archive_bytes = request_pack_images_raw(args.bridge_url, sku_id=args.sku_id, limit=args.limit)
+            convert_from_bridge(args.bridge_url, args.output, sku_id=args.sku_id, limit=args.limit, chunk_size=args.chunk_size)
         except Exception:
             if args.bridge_command is None:
                 raise
             process = start_bridge(args.bridge_command, args.bridge_cwd)
             wait_for_bridge(args.bridge_url, process)
-            archive_bytes = request_pack_images_raw(args.bridge_url, sku_id=args.sku_id, limit=args.limit)
-        convert_archive_bytes(archive_bytes, args.output)
+            convert_from_bridge(args.bridge_url, args.output, sku_id=args.sku_id, limit=args.limit, chunk_size=args.chunk_size)
     finally:
         if process is not None and process.poll() is None:
             process.terminate()

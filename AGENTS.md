@@ -1,88 +1,12 @@
 # Agent 工作指南
 
-## 稀疏检出（Sparse Checkout）要求
+## 图片与稀疏检出规则
 
-本仓库包含大量图片文件（`images/` 目录，超过 5000 张图片）。为避免不必要的下载，**必须启用稀疏检出模式**。
-
-### 检查当前是否启用稀疏检出
-
-```bash
-# 检查 git config
-if git config --get core.sparseCheckout >/dev/null 2>&1; then
-    echo "稀疏检出已启用"
-else
-    echo "稀疏检出未启用，需要启用"
-fi
-```
-
-### 启用稀疏检出（排除模式）
-
-如果当前未启用，按以下步骤操作：
-
-```bash
-# 1. 如果已克隆完整仓库，先清理
-git checkout -- .
-git clean -fd
-
-# 2. 启用稀疏检出（非 cone 模式，支持排除语法）
-git sparse-checkout init
-
-# 3. 设置排除规则：只排除 images/ 目录，保留其他所有文件
-cat > .git/info/sparse-checkout << 'EOF'
-/*
-!images/
-EOF
-
-# 4. 重新检出
-git checkout main
-```
-
-**排除模式说明**：
-- `/*` - 包含所有文件和目录
-- `!images/` - 排除 images/ 目录
-- 这样会自动包含根目录下所有代码文件，无需逐个列出
-
-### 稀疏检出下的工作
-
-启用后，本地只会保留：
-- `fetch_cards.py` - 下载脚本
-- `README.md` - 项目文档  
-- `pyproject.toml` - 依赖配置
-- `.git/` - Git 仓库元数据
-
-**不包含** `images/` 目录的任何文件。
-
-### 允许的操作
-
-在稀疏检出模式下，你可以：
-- ✅ 修改代码文件（`fetch_cards.py`, `README.md` 等）
-- ✅ 添加新脚本或配置文件
-- ✅ 正常 commit 和 push
-- ✅ 运行下载脚本（图片会保存到本地 `images/` 目录，但不会被 Git 追踪）
-
-### 禁止的操作
-
-- ❌ 不要尝试 `git add images/` - 图片应该通过脚本生成，不应该手动添加到 Git
-- ❌ 不要禁用稀疏检出去下载整个仓库（除非特殊情况）
-
-### 需要查看图片时
-
-```bash
-# 临时添加特定卡包到本地（在排除模式下）
-cat > .git/info/sparse-checkout << 'EOF'
-/*
-!images/
-images/zh-TW/cards-by-set/A1/
-EOF
-git checkout main
-
-# 使用完成后恢复（可选）
-cat > .git/info/sparse-checkout << 'EOF'
-/*
-!images/
-EOF
-git checkout main
-```
+- 新 clone 可以用 sparse checkout 排除 `images/`，避免首次拉取全部图片。
+- 如果本地已经有 `images/`，不要擅自把它排除或收起。
+- 需要查看、生成、校验图片时，本地必须保留对应 `images/` 目录。
+- 只有用户明确要求减少本地图片时，才允许临时收窄 sparse 规则。
+- 临时收窄后，任务结束前要按用户需要恢复图片可见性。
 
 ## 项目背景
 
