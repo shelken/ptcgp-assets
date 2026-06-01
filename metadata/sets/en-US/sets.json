@@ -8,9 +8,18 @@
         "en": "Genetic Apex"
       },
       "packs": [
-        "Charizard",
-        "Mewtwo",
-        "Pikachu"
+        {
+          "name": "Charizard",
+          "skuId": "A1_2"
+        },
+        {
+          "name": "Mewtwo",
+          "skuId": "A1_1"
+        },
+        {
+          "name": "Pikachu",
+          "skuId": "A1_3"
+        }
       ]
     },
     {
@@ -21,7 +30,10 @@
         "en": "Mythical Island"
       },
       "packs": [
-        "Mythical Island"
+        {
+          "name": "Mythical Island",
+          "skuId": "A1a_1"
+        }
       ]
     },
     {
@@ -32,8 +44,14 @@
         "en": "Space-Time Smackdown"
       },
       "packs": [
-        "Dialga",
-        "Palkia"
+        {
+          "name": "Dialga",
+          "skuId": "A2_1"
+        },
+        {
+          "name": "Palkia",
+          "skuId": "A2_2"
+        }
       ]
     },
     {
@@ -44,7 +62,10 @@
         "en": "Triumphant Light"
       },
       "packs": [
-        "Triumphant Light"
+        {
+          "name": "Triumphant Light",
+          "skuId": "A2a_1"
+        }
       ]
     },
     {
@@ -55,7 +76,10 @@
         "en": "Shining Revelry"
       },
       "packs": [
-        "Shining Revelry"
+        {
+          "name": "Shining Revelry",
+          "skuId": "A2b_1"
+        }
       ]
     },
     {
@@ -66,8 +90,14 @@
         "en": "Celestial Guardians"
       },
       "packs": [
-        "Lunala",
-        "Solgaleo"
+        {
+          "name": "Lunala",
+          "skuId": "A3_2"
+        },
+        {
+          "name": "Solgaleo",
+          "skuId": "A3_1"
+        }
       ]
     },
     {
@@ -78,7 +108,10 @@
         "en": "Extradimensional Crisis"
       },
       "packs": [
-        "Extradimensional Crisis"
+        {
+          "name": "Extradimensional Crisis",
+          "skuId": "A3a_1"
+        }
       ]
     },
     {
@@ -89,7 +122,10 @@
         "en": "Eevee Grove"
       },
       "packs": [
-        "Eevee Grove"
+        {
+          "name": "Eevee Grove",
+          "skuId": "A3b_1"
+        }
       ]
     },
     {
@@ -100,8 +136,14 @@
         "en": "Wisdom of Sea and Sky"
       },
       "packs": [
-        "Ho-Oh",
-        "Lugia"
+        {
+          "name": "Ho-Oh",
+          "skuId": "A4_1"
+        },
+        {
+          "name": "Lugia",
+          "skuId": "A4_2"
+        }
       ]
     },
     {
@@ -112,7 +154,10 @@
         "en": "Secluded Springs"
       },
       "packs": [
-        "Secluded Springs"
+        {
+          "name": "Secluded Springs",
+          "skuId": "A4a_1"
+        }
       ]
     },
     {
@@ -123,7 +168,10 @@
         "en": "Deluxe Pack ex"
       },
       "packs": [
-        "Deluxe Pack ex"
+        {
+          "name": "Deluxe Pack ex",
+          "skuId": "A4b_1"
+        }
       ]
     }
   ],
@@ -136,9 +184,18 @@
         "en": "Mega Rising"
       },
       "packs": [
-        "Mega Altaria",
-        "Mega Blaziken",
-        "Mega Gyarados"
+        {
+          "name": "Mega Altaria",
+          "skuId": "B1_3"
+        },
+        {
+          "name": "Mega Blaziken",
+          "skuId": "B1_1"
+        },
+        {
+          "name": "Mega Gyarados",
+          "skuId": "B1_2"
+        }
       ]
     },
     {
@@ -149,7 +206,10 @@
         "en": "Crimson Blaze"
       },
       "packs": [
-        "Crimson Blaze"
+        {
+          "name": "Crimson Blaze",
+          "skuId": "B1a_1"
+        }
       ]
     },
     {
@@ -160,7 +220,10 @@
         "en": "Fantastical Parade"
       },
       "packs": [
-        "Fantastical Parade"
+        {
+          "name": "Fantastical Parade",
+          "skuId": "B2_1"
+        }
       ]
     },
     {
@@ -171,7 +234,10 @@
         "en": "Paldean Wonders"
       },
       "packs": [
-        "Paldean Wonders"
+        {
+          "name": "Paldean Wonders",
+          "skuId": "B2a_1"
+        }
       ]
     },
     {
@@ -182,7 +248,10 @@
         "en": "Mega Shine"
       },
       "packs": [
-        "Mega Shine"
+        {
+          "name": "Mega Shine",
+          "skuId": "B2b_1"
+        }
       ]
     },
     {
@@ -193,7 +262,10 @@
         "en": "Pulsing Aura"
       },
       "packs": [
-        "Pulsing Aura"
+        {
+          "name": "Pulsing Aura",
+          "skuId": "B3_1"
+        }
       ]
     },
     {
@@ -204,7 +276,10 @@
         "en": "Paradox Drive"
       },
       "packs": [
-        "Paradox Drive"
+        {
+          "name": "Paradox Drive",
+          "skuId": "B3a_1"
+        }
       ]
     }
   ],
@@ -217,19 +292,58 @@
         "en": "PROMO-A"
       },
       "packs": [
-        "Promo Pack A Series Vol. 1",
-        "Promo Pack A Series Vol. 2",
-        "Promo Pack A Series Vol. 3",
-        "Promo Pack A Series Vol. 4",
-        "Promo Pack A Series Vol. 5",
-        "Promo Pack A Series Vol. 6",
-        "Promo Pack A Series Vol. 7",
-        "Promo Pack A Series Vol. 8",
-        "Promo Pack A Series Vol. 9",
-        "Promo Pack A Series Vol. 10",
-        "Promo Pack A Series Vol. 11",
-        "Promo Pack A Series Vol. 12",
-        "Promo Pack A Series Vol. 13"
+        {
+          "name": "Promo Pack A Series Vol. 1",
+          "skuId": "PROMO-A_1"
+        },
+        {
+          "name": "Promo Pack A Series Vol. 2",
+          "skuId": "PROMO-A_2"
+        },
+        {
+          "name": "Promo Pack A Series Vol. 3",
+          "skuId": "PROMO-A_3"
+        },
+        {
+          "name": "Promo Pack A Series Vol. 4",
+          "skuId": "PROMO-A_4"
+        },
+        {
+          "name": "Promo Pack A Series Vol. 5",
+          "skuId": "PROMO-A_5"
+        },
+        {
+          "name": "Promo Pack A Series Vol. 6",
+          "skuId": "PROMO-A_6"
+        },
+        {
+          "name": "Promo Pack A Series Vol. 7",
+          "skuId": "PROMO-A_7"
+        },
+        {
+          "name": "Promo Pack A Series Vol. 8",
+          "skuId": "PROMO-A_8"
+        },
+        {
+          "name": "Promo Pack A Series Vol. 9",
+          "skuId": "PROMO-A_9"
+        },
+        {
+          "name": "Promo Pack A Series Vol. 10",
+          "skuId": "PROMO-A_10"
+        },
+        {
+          "name": "Promo Pack A Series Vol. 11",
+          "skuId": "PROMO-A_11"
+        },
+        {
+          "name": "Promo Pack A Series Vol. 12",
+          "skuId": "PROMO-A_12"
+        },
+        {
+          "name": "Promo Pack A Series Vol. 13",
+          "skuId": "PROMO-A_13"
+        }
       ]
     },
     {
@@ -240,15 +354,42 @@
         "en": "PROMO-B"
       },
       "packs": [
-        "Promo Pack B Series Vol. 1",
-        "Promo Pack B Series Vol. 2",
-        "Promo Pack B Series Vol. 3",
-        "Promo Pack B Series Vol. 4",
-        "Promo Pack B Series Vol. 5",
-        "Promo Pack B Series Vol. 6",
-        "Promo Pack B Series Vol. 7",
-        "Promo Pack B Series Vol. 8",
-        "Promo Pack B Series Vol. 9"
+        {
+          "name": "Promo Pack B Series Vol. 1",
+          "skuId": "PROMO-B_1"
+        },
+        {
+          "name": "Promo Pack B Series Vol. 2",
+          "skuId": "PROMO-B_2"
+        },
+        {
+          "name": "Promo Pack B Series Vol. 3",
+          "skuId": "PROMO-B_3"
+        },
+        {
+          "name": "Promo Pack B Series Vol. 4",
+          "skuId": "PROMO-B_4"
+        },
+        {
+          "name": "Promo Pack B Series Vol. 5",
+          "skuId": "PROMO-B_5"
+        },
+        {
+          "name": "Promo Pack B Series Vol. 6",
+          "skuId": "PROMO-B_6"
+        },
+        {
+          "name": "Promo Pack B Series Vol. 7",
+          "skuId": "PROMO-B_7"
+        },
+        {
+          "name": "Promo Pack B Series Vol. 8",
+          "skuId": "PROMO-B_8"
+        },
+        {
+          "name": "Promo Pack B Series Vol. 9",
+          "skuId": "PROMO-B_9"
+        }
       ]
     }
   ]

@@ -80,9 +80,16 @@ def raw_export(
     }
 
 
-def pack(pack_id: str, expansion_id: str, name: str, featured_card_ids: list[str] | None = None) -> dict:
+def pack(
+    pack_id: str,
+    expansion_id: str,
+    name: str,
+    featured_card_ids: list[str] | None = None,
+    sku_id: str | None = None,
+) -> dict:
     return {
         "packId": pack_id,
+        "skuId": sku_id or pack_id.removesuffix("_00_000"),
         "expansionId": expansion_id,
         "nameMSID": f"MSID_{pack_id}",
         "name": name,
@@ -125,6 +132,10 @@ def pokemon_card(
             "evolvesFromCharacterId": evolves_from_character_id,
         },
     }
+
+
+def pack_entry(name: str, sku_id: str) -> dict[str, str]:
+    return {"name": name, "skuId": sku_id}
 
 
 def trainer_card(*, packs: list[dict] | None = None) -> dict:
@@ -416,14 +427,17 @@ class UpdateCardsExtraTests(unittest.TestCase):
                         "releaseDate": None,
                         "count": 1,
                         "name": {"zh": "第二彈"},
-                        "packs": ["皮卡丘"],
+                        "packs": [pack_entry("皮卡丘", "A2_PIKACHU")],
                     },
                     {
                         "code": "A10",
                         "releaseDate": None,
                         "count": 2,
                         "name": {"zh": "第十彈"},
-                        "packs": ["噴火龍", "超夢"],
+                        "packs": [
+                            pack_entry("噴火龍", "A10_CHARIZARD"),
+                            pack_entry("超夢", "A10_MEWTWO"),
+                        ],
                     },
                 ],
                 "B": [
@@ -453,7 +467,14 @@ class UpdateCardsExtraTests(unittest.TestCase):
             {"set": "A1", "number": 2, "packs": ["噴火龍"]},
         ]
 
-        self.assertEqual(convert_sets(export, cards)["A"][0]["packs"], ["噴火龍", "皮卡丘", "超夢"])
+        self.assertEqual(
+            convert_sets(export, cards)["A"][0]["packs"],
+            [
+                pack_entry("噴火龍", "AN001_0020"),
+                pack_entry("皮卡丘", "AN001_0030"),
+                pack_entry("超夢", "AN001_0010"),
+            ],
+        )
 
     def test_convert_sets_a1a_single_pack_is_not_polluted_by_a1_card_sources(self):
         export = raw_export(
@@ -463,7 +484,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
         )
         cards = [{"set": "A1a", "number": 1, "packs": ["超夢", "幻遊島"]}]
 
-        self.assertEqual(convert_sets(export, cards)["A"][0]["packs"], ["幻遊島"])
+        self.assertEqual(convert_sets(export, cards)["A"][0]["packs"], [pack_entry("幻遊島", "A1a_MYTHICAL")])
 
     def test_convert_sets_a4b_reprint_rows_do_not_pull_old_packs(self):
         export = raw_export(
@@ -473,7 +494,10 @@ class UpdateCardsExtraTests(unittest.TestCase):
         )
         cards = [{"set": "A4b", "number": 1, "packs": ["Mewtwo", "Charizard", "Deluxe Pack ex"]}]
 
-        self.assertEqual(convert_sets(export, cards)["A"][0]["packs"], ["Deluxe Pack ex"])
+        self.assertEqual(
+            convert_sets(export, cards)["A"][0]["packs"],
+            [pack_entry("Deluxe Pack ex", "A4b_DELUXE")],
+        )
 
     def test_convert_sets_derives_multi_pack_set_name_from_pack_master_prefix(self):
         export = raw_export(
@@ -490,16 +514,23 @@ class UpdateCardsExtraTests(unittest.TestCase):
         [set_item] = convert_sets(export, cards)["A"]
 
         self.assertEqual(set_item["name"], {"zh": "Genetic Apex"})
-        self.assertEqual(set_item["packs"], ["Charizard", "Mewtwo", "Pikachu"])
+        self.assertEqual(
+            set_item["packs"],
+            [
+                pack_entry("Charizard", "AN001_0020"),
+                pack_entry("Mewtwo", "AN001_0010"),
+                pack_entry("Pikachu", "AN001_0030"),
+            ],
+        )
 
     def test_convert_sets_derives_b1_set_name_from_separated_pack_master_prefix(self):
         export = raw_export(
             [],
             expansions=[{"expansionId": "B1", "names": ["B1"]}],
             packs=[
-                pack("B1_BLAZIKEN_00_000", "B1", "Mega Rising: Mega Blaziken"),
-                pack("B1_GYARADOS_00_000", "B1", "Mega Rising: Mega Gyarados"),
-                pack("B1_ALTARIA_00_000", "B1", "Mega Rising: Mega Altaria"),
+                pack("B1_BLAZIKEN_00_000", "B1", "Mega Rising: Mega Blaziken", sku_id="B1_1"),
+                pack("B1_GYARADOS_00_000", "B1", "Mega Rising: Mega Gyarados", sku_id="B1_2"),
+                pack("B1_ALTARIA_00_000", "B1", "Mega Rising: Mega Altaria", sku_id="B1_3"),
             ],
         )
         cards = [{"set": "B1", "number": 1, "packs": []}]
@@ -507,7 +538,14 @@ class UpdateCardsExtraTests(unittest.TestCase):
         [set_item] = convert_sets(export, cards)["B"]
 
         self.assertEqual(set_item["name"], {"zh": "Mega Rising"})
-        self.assertEqual(set_item["packs"], ["Mega Altaria", "Mega Blaziken", "Mega Gyarados"])
+        self.assertEqual(
+            set_item["packs"],
+            [
+                {"name": "Mega Altaria", "skuId": "B1_3"},
+                {"name": "Mega Blaziken", "skuId": "B1_1"},
+                {"name": "Mega Gyarados", "skuId": "B1_2"},
+            ],
+        )
 
     def test_convert_sets_derives_single_pack_set_name_from_pack_master_name(self):
         export = raw_export(
@@ -537,7 +575,10 @@ class UpdateCardsExtraTests(unittest.TestCase):
         )
         cards = [{"set": "PROMO-A", "number": 1, "packs": ["Butterfree"]}]
 
-        self.assertEqual(convert_sets(export, cards)["P"][0]["packs"], ["Promo Pack A Series Vol. 1"])
+        self.assertEqual(
+            convert_sets(export, cards)["P"][0]["packs"],
+            [pack_entry("Promo Pack A Series Vol. 1", "PROMO_A_VOL1")],
+        )
 
     def test_convert_sets_promo_packs_never_strip_common_prefix_to_volume_number(self):
         export = raw_export(
@@ -555,7 +596,10 @@ class UpdateCardsExtraTests(unittest.TestCase):
 
         self.assertEqual(
             convert_sets(export, cards)["P"][0]["packs"],
-            ["Promo Pack A Series Vol. 1", "Promo Pack A Series Vol. 2"],
+            [
+                pack_entry("Promo Pack A Series Vol. 1", "PROMO_A_VOL1"),
+                pack_entry("Promo Pack A Series Vol. 2", "PROMO_A_VOL2"),
+            ],
         )
 
     def test_convert_sets_promo_packs_use_natural_sort(self):
@@ -573,9 +617,9 @@ class UpdateCardsExtraTests(unittest.TestCase):
         self.assertEqual(
             convert_sets(export, cards)["P"][0]["packs"],
             [
-                "Promo Pack A Series Vol. 1",
-                "Promo Pack A Series Vol. 2",
-                "Promo Pack A Series Vol. 10",
+                pack_entry("Promo Pack A Series Vol. 1", "PROMO_A_VOL1"),
+                pack_entry("Promo Pack A Series Vol. 2", "PROMO_A_VOL2"),
+                pack_entry("Promo Pack A Series Vol. 10", "PROMO_A_VOL10"),
             ],
         )
 
@@ -597,7 +641,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
         )
         cards = [{"set": "A1", "number": 1, "packs": ["高稀有度"]}]
 
-        self.assertEqual(convert_sets(export, cards)["A"][0]["packs"], ["超夢"])
+        self.assertEqual(convert_sets(export, cards)["A"][0]["packs"], [pack_entry("超夢", "AN001_0010")])
 
     def test_convert_sets_uses_second_name_when_long_name_is_empty(self):
         export = raw_export(

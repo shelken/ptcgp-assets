@@ -545,6 +545,21 @@ def convert_packs(value: Any, context: ConversionContext) -> list[str]:
     return sorted(names)
 
 
+def pack_sku_id(pack: dict[str, Any]) -> str:
+    # 变更原因：包图文件以游戏资源 skuId 命名，不能从展示名或排序推断。
+    return require_clean_str(pack.get("skuId"), "pack.skuId")
+
+
+def set_pack_entry(pack: dict[str, Any], context: ConversionContext, code: str, set_name: str) -> dict[str, str] | None:
+    name = set_pack_display_name(pack, context, code, set_name)
+    if not name:
+        return None
+    return {
+        "name": require_clean_str(name, "set pack name"),
+        "skuId": pack_sku_id(pack),
+    }
+
+
 def build_conversion_context(export: dict[str, Any], cards: list[dict[str, Any]]) -> ConversionContext:
     localization_texts = export.get("localizationTexts")
     if not isinstance(localization_texts, dict) or not all(
@@ -805,15 +820,16 @@ def convert_sets(export: dict[str, Any], cards: list[dict[str, Any]]) -> dict[st
 
         pack_names = pack_names_for_expansion(top_level_packs, context, code)
         display_name = set_display_name(expansion, pack_names)
+        pack_entries_by_name = {
+            entry["name"]: entry
+            for pack in top_level_packs
+            if pack_expansion_id(pack) == code and is_normal_pack(pack)
+            for entry in [set_pack_entry(pack, context, code, display_name)]
+            if entry is not None
+        }
         packs = sorted(
-            {
-                require_clean_str(pack_name, "set pack name")
-                for pack in top_level_packs
-                if pack_expansion_id(pack) == code and is_normal_pack(pack)
-                for pack_name in [set_pack_display_name(pack, context, code, display_name)]
-                if pack_name
-            },
-            key=natural_text_key,
+            pack_entries_by_name.values(),
+            key=lambda item: natural_text_key(item["name"]),
         )
         record = {
             "code": code,
