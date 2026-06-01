@@ -342,6 +342,25 @@ def common_featured_pack_name_prefix(pack_names: list[str]) -> str | None:
     return prefix
 
 
+def common_separated_pack_name_prefix(pack_names: list[str]) -> str | None:
+    prefixes = []
+    for pack_name in pack_names:
+        match = re.match(r"^(.+?)\s*[:：]\s*(.+)$", pack_name)
+        if not match:
+            return None
+
+        prefix, suffix = match.groups()
+        if not suffix.strip():
+            return None
+        prefixes.append(normalized_text(prefix))
+
+    unique_prefixes = set(prefixes)
+    if len(unique_prefixes) != 1:
+        return None
+
+    return prefixes[0]
+
+
 def display_name_from_separated_pack_name(pack_name: str, expansion_prefixes: list[str]) -> str | None:
     match = re.match(r"^(.+?)\s*[:：]\s*(.+)$", pack_name)
     if not match:
@@ -724,6 +743,12 @@ def set_pack_display_name(
 def inferred_set_name_from_pack_names(code: str, expansion: dict[str, Any], pack_names: list[str]) -> str | None:
     if code.startswith("PROMO-") or not pack_names:
         return None
+
+    if len(pack_names) > 1:
+        # 变更原因：B1 这类包名的冒号前缀才是系列名，先归一成空格会把后缀里的 Mega 误并入系列名。
+        separated_prefix = common_separated_pack_name_prefix(pack_names)
+        if separated_prefix:
+            return require_clean_str(separated_prefix, "set name")
 
     names = [require_clean_str(normalized_text(name), "pack name") for name in pack_names]
     if len(names) > 1:

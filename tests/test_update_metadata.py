@@ -492,6 +492,23 @@ class UpdateCardsExtraTests(unittest.TestCase):
         self.assertEqual(set_item["name"], {"zh": "Genetic Apex"})
         self.assertEqual(set_item["packs"], ["Charizard", "Mewtwo", "Pikachu"])
 
+    def test_convert_sets_derives_b1_set_name_from_separated_pack_master_prefix(self):
+        export = raw_export(
+            [],
+            expansions=[{"expansionId": "B1", "names": ["B1"]}],
+            packs=[
+                pack("B1_BLAZIKEN_00_000", "B1", "Mega Rising: Mega Blaziken"),
+                pack("B1_GYARADOS_00_000", "B1", "Mega Rising: Mega Gyarados"),
+                pack("B1_ALTARIA_00_000", "B1", "Mega Rising: Mega Altaria"),
+            ],
+        )
+        cards = [{"set": "B1", "number": 1, "packs": []}]
+
+        [set_item] = convert_sets(export, cards)["B"]
+
+        self.assertEqual(set_item["name"], {"zh": "Mega Rising"})
+        self.assertEqual(set_item["packs"], ["Mega Altaria", "Mega Blaziken", "Mega Gyarados"])
+
     def test_convert_sets_derives_single_pack_set_name_from_pack_master_name(self):
         export = raw_export(
             [],
