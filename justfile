@@ -35,3 +35,12 @@ download-custom series="a,b" langs="zh-TW,en-US" concurrency="20" max_retries="3
 # 从运行中的 PTCGP 游戏更新 cards.extra 与 sets metadata
 update-metadata frida_test_dir:
     uv run python scripts/update_metadata.py --frida-test-dir '{{ frida_test_dir }}'
+
+# 生成卡牌感知哈希 JSON（供 ptcgp-auto 游戏端拉取，免新用户下载全量卡图）
+# 修改算法后必须同步更新 _ALGO_VERSION 并跑 tests/test_hashes.py
+generate-hashes locale="zh-TW":
+    uv run python scripts/generate_hashes.py --locale '{{ locale }}'
+
+# 只生成指定 set 的哈希
+generate-hashes-set set locale="zh-TW":
+    uv run python scripts/generate_hashes.py --locale '{{ locale }}' --set '{{ set }}'
