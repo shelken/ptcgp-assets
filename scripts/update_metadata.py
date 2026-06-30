@@ -951,8 +951,18 @@ def write_sets(root: Path, language: str, sets: dict[str, list[dict[str, Any]]])
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Update PTCGP metadata from frida-test")
-    parser.add_argument("--frida-test-dir", required=True, type=Path)
+    parser.add_argument(
+        "--frida-test-dir",
+        type=Path,
+        default=None,
+        help="frida-test 仓库目录（缺省时自动探测，优先 FRIDA_TEST_DIR 环境变量）",
+    )
     args = parser.parse_args(argv)
+
+    # 缺省自动探测，避免硬编码路径
+    if args.frida_test_dir is None:
+        from scripts.resolve_env import resolve_frida_test_dir
+        args.frida_test_dir = resolve_frida_test_dir()
 
     try:
         export = run_exporter(args.frida_test_dir)
