@@ -6,11 +6,13 @@ from __future__ import annotations
 import argparse
 import io
 import json
+import socket
 import subprocess
 import sys
 import tarfile
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
@@ -232,16 +234,27 @@ def convert_from_bridge(
         skip += converted
 
 
+def _check_port_open(bridge_url: str, timeout: float = 2.0) -> bool:
+    # 只检测 TCP 端口连通，不调用业务接口——避免探活触发 frida attach 副作用，
+    # 也避免把 bridge 已启动但 frida 故障的 500 错误误判为"还没启动"而无限重试。
+    parsed = urllib.parse.urlparse(bridge_url)
+    host = parsed.hostname or "127.0.0.1"
+    port = parsed.port or 80
+    try:
+        with socket.create_connection((host, port), timeout=timeout):
+            return True
+    except OSError:
+        return False
+
+
 def wait_for_bridge(bridge_url: str, process: subprocess.Popen[bytes]) -> None:
     deadline = time.monotonic() + BRIDGE_START_TIMEOUT_SECONDS
     while time.monotonic() < deadline:
         if process.poll() is not None:
             raise RuntimeError(f"bridge process exited early with code {process.returncode}")
-        try:
-            request_pack_images_raw(bridge_url, limit=1)
+        if _check_port_open(bridge_url):
             return
-        except Exception:
-            time.sleep(1)
+        time.sleep(1)
     raise TimeoutError("bridge did not respond in time")
 
 
