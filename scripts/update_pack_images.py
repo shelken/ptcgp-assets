@@ -248,8 +248,8 @@ def start_bridge(command: str, cwd: Path | None) -> subprocess.Popen[bytes]:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--bridge-url", default="http://127.0.0.1:8765")
-    parser.add_argument("--bridge-command", default=None, help="optional command used when bridge-url is unavailable")
-    parser.add_argument("--bridge-cwd", type=Path, default=None)
+    parser.add_argument("--bridge-command", default=None, help="optional command used when bridge-url is unavailable（缺省自动探测）")
+    parser.add_argument("--bridge-cwd", type=Path, default=None, help="bridge 工作目录（缺省自动探测）")
     parser.add_argument("--output", type=Path, default=Path("."))
     parser.add_argument("--sku-id", default=None, help="optional debug filter; default exports all packs")
     parser.add_argument("--limit", type=int, default=None, help="optional debug limit; default exports all packs")
@@ -259,6 +259,15 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+
+    # 缺省自动探测 bridge command/cwd，避免手动构造
+    if args.bridge_command is None:
+        from scripts.resolve_env import resolve_frida_test_dir, resolve_bridge_command, resolve_bridge_cwd
+        frida_dir = resolve_frida_test_dir()
+        args.bridge_command = resolve_bridge_command(frida_dir)
+        if args.bridge_cwd is None:
+            args.bridge_cwd = resolve_bridge_cwd(frida_dir)
+
     process: subprocess.Popen[bytes] | None = None
     try:
         try:
