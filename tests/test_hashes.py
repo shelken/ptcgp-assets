@@ -20,18 +20,22 @@ ptcgp-auto 的 src/ptcgp_auto_v2/utils/perceptual_hash.py 算法产出完全一�
 import json
 import os
 import sys
+import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 from PIL import Image
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
+import scripts.generate_hashes as gh  # noqa: E402
 from scripts.generate_hashes import (  # noqa: E402
     ALGO_VERSION,
     calculate_perceptual_hash,
     encode_hash_to_base64,
+    generate_set_hashes,
     pil_to_color_pixels,
 )
 
@@ -135,6 +139,70 @@ class TestHashConsistency(unittest.TestCase):
                     game_hash,
                     f"A1/{number} JSON 中的 hash 与游戏端不一致",
                 )
+
+
+class TestH2IncrementalAndDiscovery(unittest.TestCase):
+    """H2 mtime 增量跳过与多语言自动发现（不依赖真实卡图/游戏端）。"""
+
+    def test_h2_skip_when_hash_newer_than_images(self):
+        with tempfile.TemporaryDirectory() as td:
+            tmp = Path(td)
+            set_dir = tmp / "A1"
+            set_dir.mkdir()
+            Image.new("RGB", (96, 96)).save(set_dir / "1.png")
+
+            output_path = tmp / "A1.json"
+            output_path.write_text(
+                json.dumps({"_algo_version": ALGO_VERSION, "cards": {"1": "old"}})
+            )
+            # hash json mtime 设为未来，确保比图片新
+            import time
+            future = time.time() + 100
+            os.utime(output_path, (future, future))
+
+            success, fail = generate_set_hashes(set_dir, output_path)
+
+            self.assertEqual(success, 0)
+            self.assertEqual(fail, 0)
+            # 未重算，内容不变
+            self.assertEqual(
+                json.loads(output_path.read_text())["cards"]["1"], "old"
+            )
+
+    def test_h2_recompute_when_image_newer(self):
+        with tempfile.TemporaryDirectory() as td:
+            tmp = Path(td)
+            set_dir = tmp / "A1"
+            set_dir.mkdir()
+            img_path = set_dir / "1.png"
+            Image.new("RGB", (96, 96)).save(img_path)
+
+            output_path = tmp / "A1.json"
+            output_path.write_text(
+                json.dumps({"_algo_version": ALGO_VERSION, "cards": {"1": "old"}})
+            )
+            # 图片 mtime 设为未来，比 hash json 新 → 应重算
+            import time
+            future = time.time() + 100
+            os.utime(img_path, (future, future))
+
+            success, fail = generate_set_hashes(set_dir, output_path)
+
+            self.assertEqual(success, 1)
+            self.assertEqual(fail, 0)
+            # 重算后 hash 变化（old 被真实值覆盖）
+            self.assertNotEqual(
+                json.loads(output_path.read_text())["cards"]["1"], "old"
+            )
+
+    def test_discover_locales(self):
+        with tempfile.TemporaryDirectory() as td:
+            tmp = Path(td)
+            for lang in ("zh-TW", "en-US"):
+                (tmp / "images" / lang / "cards-by-set" / "A1").mkdir(parents=True)
+            with mock.patch.object(gh, "REPO_ROOT", tmp):
+                locales = gh.discover_locales()
+            self.assertEqual(set(locales), {"zh-TW", "en-US"})
 
 
 if __name__ == "__main__":

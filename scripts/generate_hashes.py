@@ -140,13 +140,37 @@ def discover_sets(cards_dir: Path) -> List[str]:
     return sets
 
 
+def discover_locales() -> List[str]:
+    """发现 images/ 下所有含 cards-by-set 的语言目录（不写死语言集合）。"""
+    images_root = REPO_ROOT / "images"
+    if not images_root.exists():
+        return []
+    locales = []
+    for item in sorted(images_root.iterdir()):
+        if item.is_dir() and (item / "cards-by-set").is_dir():
+            locales.append(item.name)
+    return locales
+
+
 def generate_set_hashes(set_dir: Path, output_path: Path) -> tuple[int, int]:
     """为单个 set 生成哈希 JSON
 
+    H2 增量：hash json mtime >= set 内最新图片 mtime 时跳过重算。
     Returns:
         (success_count, fail_count)
     """
     set_code = set_dir.name
+
+    # H2 增量：hash json 比所有图片都新则跳过
+    if output_path.exists():
+        hash_mtime = output_path.stat().st_mtime
+        max_image_mtime = max(
+            (p.stat().st_mtime for p in set_dir.iterdir() if p.is_file()),
+            default=0.0,
+        )
+        if hash_mtime >= max_image_mtime:
+            print(f"  ⏭️  {set_code}: 未变动, 跳过")
+            return 0, 0
 
     card_files = []
     for ext in CARD_IMAGE_EXTS:
@@ -183,8 +207,8 @@ def main():
     parser = argparse.ArgumentParser(description="生成卡牌感知哈希 JSON")
     parser.add_argument(
         "--locale",
-        default=DEFAULT_LOCALE,
-        help=f"卡图 locale 目录名（默认 {DEFAULT_LOCALE}）",
+        default=None,
+        help="卡图 locale 目录名（缺省则处理 images/ 下所有语言）",
     )
     parser.add_argument(
         "--set",
@@ -192,43 +216,40 @@ def main():
     )
     args = parser.parse_args()
 
-    cards_root = REPO_ROOT / "images" / args.locale / "cards-by-set"
-    if not cards_root.exists():
-        print(f"❌ 卡图目录不存在: {cards_root}", file=sys.stderr)
+    locales = [args.locale] if args.locale else discover_locales()
+    if not locales:
+        print("❌ 未发现任何语言目录（images/<locale>/cards-by-set）", file=sys.stderr)
         print("💡 请确认 images/ 已检出（非 sparse 排除模式）", file=sys.stderr)
         sys.exit(1)
-
-    output_root = REPO_ROOT / "hashes" / args.locale
-
-    if args.set:
-        set_dir = cards_root / args.set
-        if not set_dir.exists():
-            print(f"❌ set 目录不存在: {set_dir}", file=sys.stderr)
-            sys.exit(1)
-        sets = [args.set]
-    else:
-        sets = discover_sets(cards_root)
-        if not sets:
-            print(f"❌ {cards_root} 下未发现任何 set 目录", file=sys.stderr)
-            sys.exit(1)
-
-    print(f"发现 {len(sets)} 个 set: {', '.join(sets)}")
-    print()
 
     total_success = 0
     total_fail = 0
     start = time.perf_counter()
 
-    for set_code in sets:
-        set_dir = cards_root / set_code
-        output_path = output_root / f"{set_code}.json"
-        success, fail = generate_set_hashes(set_dir, output_path)
-        total_success += success
-        total_fail += fail
-        print(f"  {set_code}: {success} 成功, {fail} 失败 -> {output_path.relative_to(REPO_ROOT)}")
+    for locale in locales:
+        cards_root = REPO_ROOT / "images" / locale / "cards-by-set"
+        if not cards_root.exists():
+            print(f"❌ 卡图目录不存在: {cards_root}", file=sys.stderr)
+            continue
+        output_root = REPO_ROOT / "hashes" / locale
+
+        if args.set:
+            sets = [args.set]
+        else:
+            sets = discover_sets(cards_root)
+
+        print(f"[{locale}] 发现 {len(sets)} 个 set: {', '.join(sets)}")
+        for set_code in sets:
+            set_dir = cards_root / set_code
+            output_path = output_root / f"{set_code}.json"
+            success, fail = generate_set_hashes(set_dir, output_path)
+            total_success += success
+            total_fail += fail
+            if success > 0:
+                print(f"  {set_code}: {success} 成功, {fail} 失败 -> {output_path.relative_to(REPO_ROOT)}")
+        print()
 
     elapsed = time.perf_counter() - start
-    print()
     print(f"✅ 完成: {total_success} 成功, {total_fail} 失败, 耗时 {elapsed:.1f}s")
 
 
