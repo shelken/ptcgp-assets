@@ -141,6 +141,37 @@ git push origin main
 
 脚本会自动处理这些差异，确保你获得完整的卡牌集合。
 
+## 新系列更新流程
+
+### 前置（手动，一次性）
+
+1. 开启 BlueStacks Air，更新 PTCGP 游戏到最新版本
+2. 进入游戏主页（MemoryDatabase 加载完成后才能导出 metadata）
+
+### 一键更新
+
+```bash
+just update-all
+```
+
+自动完成：下载卡牌图（已有跳过）→ 增量生成 hash → 导出 metadata（当前游戏语言）→ 导出卡包图片（全语言）→ 输出汇总报告。
+
+### 分步执行
+
+设备相关步骤失败率高（游戏未进主页/设备未连），可单独重跑：
+
+```bash
+just update-online    # 下载卡牌图 + hash（无设备依赖，可随时重跑）
+just update-device    # 导出 metadata + 卡包图 + 汇总（需设备+游戏主页）
+```
+
+### 注意事项
+
+- `metadata` 只导出当前游戏运行语言。其他语言缺失为预期，需切游戏语言后重跑 `just update-device`。
+- `frida-test` 目录自动探测（优先 `FRIDA_TEST_DIR` 环境变量，兜底 `~/Code/active/frida-test` 等），找不到时报错提示。
+- `bridge` 端口默认 8765，已在跑则复用，未跑则自动拉起。
+- 四个脚本天然幂等，`just update-all` 可安全重复执行。
+
 ## 协议
 
 本项目仅用于技术学习和个人使用。
