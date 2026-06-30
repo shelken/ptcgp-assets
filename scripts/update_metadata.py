@@ -14,6 +14,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, TextIO
 
+# 允许 `python scripts/update_metadata.py` 直接运行时 import 同级包
+REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT))
+
 EXPORT_COMMAND = [
     "./node_modules/.bin/tsx",
     "src/cli/index.ts",

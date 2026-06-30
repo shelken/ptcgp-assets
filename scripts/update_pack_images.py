@@ -7,6 +7,7 @@ import argparse
 import io
 import json
 import subprocess
+import sys
 import tarfile
 import time
 import urllib.error
@@ -17,6 +18,10 @@ from typing import Any
 
 import UnityPy
 from PIL import Image
+
+# 允许 `python scripts/update_pack_images.py` 直接运行时 import 同级包
+REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT))
 
 UnityPy.config.FALLBACK_UNITY_VERSION = "2022.3.22f1"
 
