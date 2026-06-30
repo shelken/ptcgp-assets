@@ -65,6 +65,24 @@ def bridge_port_open(port: int = DEFAULT_BRIDGE_PORT) -> bool:
         return sock.connect_ex(("127.0.0.1", port)) == 0
 
 
+# bridge 拉起命令：与 frida-test 的 npm bin 约定一致
+# ponytail: 硬编码 tsx 路径，frida-test 用 npm 管理无 bin 名冲突风险
+BRIDGE_COMMAND_TEMPLATE = (
+    "{frida_test_dir}/node_modules/.bin/tsx "
+    "{frida_test_dir}/src/cli/index.ts ptcgp bridge --port {port}"
+)
+
+
+def resolve_bridge_command(frida_test_dir: Path, port: int = DEFAULT_BRIDGE_PORT) -> str:
+    """返回拉起 bridge 的命令字符串，供 update_pack_images.py --bridge-command 使用。"""
+    return BRIDGE_COMMAND_TEMPLATE.format(frida_test_dir=frida_test_dir, port=port)
+
+
+def resolve_bridge_cwd(frida_test_dir: Path) -> Path:
+    """返回 bridge 工作目录（即 frida-test 目录本身）。"""
+    return frida_test_dir
+
+
 if __name__ == "__main__":
     import argparse
 
@@ -72,6 +90,8 @@ if __name__ == "__main__":
     parser.add_argument("--frida-test-dir", action="store_true", help="输出 frida-test 目录路径")
     parser.add_argument("--bridge-url", action="store_true", help="输出 bridge url")
     parser.add_argument("--bridge-port", type=int, default=DEFAULT_BRIDGE_PORT)
+    parser.add_argument("--bridge-command", action="store_true", help="输出拉起 bridge 的命令")
+    parser.add_argument("--bridge-cwd", action="store_true", help="输出 bridge 工作目录")
     args = parser.parse_args()
 
     if args.frida_test_dir:
@@ -80,3 +100,9 @@ if __name__ == "__main__":
         # bridge 是否在跑由 update_pack_images.py 的 wait_for_bridge 判断；
         # 这里只输出默认 url，未在跑时由其 --bridge-command 拉起
         print(f"http://127.0.0.1:{args.bridge_port}")
+    elif args.bridge_command:
+        frida_dir = resolve_frida_test_dir()
+        print(resolve_bridge_command(frida_dir, args.bridge_port))
+    elif args.bridge_cwd:
+        frida_dir = resolve_frida_test_dir()
+        print(resolve_bridge_cwd(frida_dir))

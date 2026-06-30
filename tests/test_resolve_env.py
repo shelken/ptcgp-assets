@@ -64,5 +64,18 @@ class ResolveFridaTestDirTest(unittest.TestCase):
                     resolve_env.resolve_frida_test_dir()
 
 
+class ResolveBridgeCommandTest(unittest.TestCase):
+    def test_resolve_bridge_command_and_cwd(self):
+        with tempfile.TemporaryDirectory() as td:
+            fake = _make_fake_frida_test(Path(td) / "fake-frida-test")
+            cmd = resolve_env.resolve_bridge_command(fake)
+            self.assertIn("tsx", cmd)
+            self.assertIn("bridge", cmd)
+            self.assertIn(str(fake), cmd)
+
+            cwd = resolve_env.resolve_bridge_cwd(fake)
+            self.assertEqual(cwd, fake)
+
+
 if __name__ == "__main__":
     unittest.main()
