@@ -2,7 +2,7 @@ import time
 import unittest
 from unittest.mock import MagicMock, patch
 
-from scripts.update_pack_images import wait_for_bridge
+from scripts.bridge_client import _wait_for_bridge
 
 
 class WaitForBridgeTest(unittest.TestCase):
@@ -12,8 +12,8 @@ class WaitForBridgeTest(unittest.TestCase):
         process.poll.return_value = None
         start = time.monotonic()
 
-        with patch("scripts.update_pack_images._check_port_open", return_value=True):
-            wait_for_bridge("http://127.0.0.1:8765", process)
+        with patch("scripts.bridge_client._check_port_open", return_value=True):
+            _wait_for_bridge("http://127.0.0.1:8765", process)
 
         elapsed = time.monotonic() - start
         self.assertLess(elapsed, 2.0, "should return immediately once port is open")
@@ -25,7 +25,7 @@ class WaitForBridgeTest(unittest.TestCase):
         process.returncode = 1
 
         with self.assertRaisesRegex(RuntimeError, "exited early"):
-            wait_for_bridge("http://127.0.0.1:8765", process)
+            _wait_for_bridge("http://127.0.0.1:8765", process)
 
     def test_times_out_when_port_never_opens(self) -> None:
         # 端口始终拒绝 → 超时报错，不刷屏调用业务接口
@@ -33,11 +33,11 @@ class WaitForBridgeTest(unittest.TestCase):
         process.poll.return_value = None
 
         with (
-            patch("scripts.update_pack_images._check_port_open", return_value=False),
-            patch("scripts.update_pack_images.BRIDGE_START_TIMEOUT_SECONDS", 0.5),
+            patch("scripts.bridge_client._check_port_open", return_value=False),
+            patch("scripts.bridge_client.BRIDGE_START_TIMEOUT_SECONDS", 0.5),
         ):
             with self.assertRaisesRegex(TimeoutError, "did not respond in time"):
-                wait_for_bridge("http://127.0.0.1:8765", process)
+                _wait_for_bridge("http://127.0.0.1:8765", process)
 
 
 if __name__ == "__main__":
