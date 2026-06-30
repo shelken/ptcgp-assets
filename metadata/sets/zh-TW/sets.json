@@ -1,0 +1,414 @@
+{
+  "A": [
+    {
+      "code": "A1",
+      "releaseDate": null,
+      "count": 286,
+      "name": {
+        "zh": "最強的基因"
+      },
+      "packs": [
+        {
+          "name": "噴火龍",
+          "skuId": "A1_2"
+        },
+        {
+          "name": "皮卡丘",
+          "skuId": "A1_3"
+        },
+        {
+          "name": "超夢",
+          "skuId": "A1_1"
+        }
+      ]
+    },
+    {
+      "code": "A1a",
+      "releaseDate": null,
+      "count": 86,
+      "name": {
+        "zh": "幻遊島"
+      },
+      "packs": [
+        {
+          "name": "幻遊島",
+          "skuId": "A1a_1"
+        }
+      ]
+    },
+    {
+      "code": "A2",
+      "releaseDate": null,
+      "count": 207,
+      "name": {
+        "zh": "時空激鬥"
+      },
+      "packs": [
+        {
+          "name": "帕路奇亞",
+          "skuId": "A2_2"
+        },
+        {
+          "name": "帝牙盧卡",
+          "skuId": "A2_1"
+        }
+      ]
+    },
+    {
+      "code": "A2a",
+      "releaseDate": null,
+      "count": 96,
+      "name": {
+        "zh": "超克之光"
+      },
+      "packs": [
+        {
+          "name": "超克之光",
+          "skuId": "A2a_1"
+        }
+      ]
+    },
+    {
+      "code": "A2b",
+      "releaseDate": null,
+      "count": 111,
+      "name": {
+        "zh": "嗨放異彩"
+      },
+      "packs": [
+        {
+          "name": "嗨放異彩",
+          "skuId": "A2b_1"
+        }
+      ]
+    },
+    {
+      "code": "A3",
+      "releaseDate": null,
+      "count": 239,
+      "name": {
+        "zh": "雙天之守護者"
+      },
+      "packs": [
+        {
+          "name": "索爾迦雷歐",
+          "skuId": "A3_1"
+        },
+        {
+          "name": "露奈雅拉",
+          "skuId": "A3_2"
+        }
+      ]
+    },
+    {
+      "code": "A3a",
+      "releaseDate": null,
+      "count": 103,
+      "name": {
+        "zh": "異次元危機"
+      },
+      "packs": [
+        {
+          "name": "異次元危機",
+          "skuId": "A3a_1"
+        }
+      ]
+    },
+    {
+      "code": "A3b",
+      "releaseDate": null,
+      "count": 107,
+      "name": {
+        "zh": "伊布花園"
+      },
+      "packs": [
+        {
+          "name": "伊布花園",
+          "skuId": "A3b_1"
+        }
+      ]
+    },
+    {
+      "code": "A4",
+      "releaseDate": null,
+      "count": 241,
+      "name": {
+        "zh": "天與海的指引"
+      },
+      "packs": [
+        {
+          "name": "洛奇亞",
+          "skuId": "A4_2"
+        },
+        {
+          "name": "鳳王",
+          "skuId": "A4_1"
+        }
+      ]
+    },
+    {
+      "code": "A4a",
+      "releaseDate": null,
+      "count": 105,
+      "name": {
+        "zh": "未知水域"
+      },
+      "packs": [
+        {
+          "name": "未知水域",
+          "skuId": "A4a_1"
+        }
+      ]
+    },
+    {
+      "code": "A4b",
+      "releaseDate": null,
+      "count": 379,
+      "name": {
+        "zh": "高級擴充包ex"
+      },
+      "packs": [
+        {
+          "name": "高級擴充包ex",
+          "skuId": "A4b_1"
+        }
+      ]
+    }
+  ],
+  "B": [
+    {
+      "code": "B1",
+      "releaseDate": null,
+      "count": 331,
+      "name": {
+        "zh": "超級崛起 超級"
+      },
+      "packs": [
+        {
+          "name": "超級崛起 超級七夕青鳥",
+          "skuId": "B1_3"
+        },
+        {
+          "name": "超級崛起 超級暴鯉龍",
+          "skuId": "B1_2"
+        },
+        {
+          "name": "超級崛起 超級火焰雞",
+          "skuId": "B1_1"
+        }
+      ]
+    },
+    {
+      "code": "B1a",
+      "releaseDate": null,
+      "count": 103,
+      "name": {
+        "zh": "紅蓮烈焰"
+      },
+      "packs": [
+        {
+          "name": "紅蓮烈焰",
+          "skuId": "B1a_1"
+        }
+      ]
+    },
+    {
+      "code": "B2",
+      "releaseDate": null,
+      "count": 234,
+      "name": {
+        "zh": "幻夢遊行"
+      },
+      "packs": [
+        {
+          "name": "幻夢遊行",
+          "skuId": "B2_1"
+        }
+      ]
+    },
+    {
+      "code": "B2a",
+      "releaseDate": null,
+      "count": 131,
+      "name": {
+        "zh": "帕底亞驚奇"
+      },
+      "packs": [
+        {
+          "name": "帕底亞驚奇",
+          "skuId": "B2a_1"
+        }
+      ]
+    },
+    {
+      "code": "B2b",
+      "releaseDate": null,
+      "count": 117,
+      "name": {
+        "zh": "超級異彩"
+      },
+      "packs": [
+        {
+          "name": "超級異彩",
+          "skuId": "B2b_1"
+        }
+      ]
+    },
+    {
+      "code": "B3",
+      "releaseDate": null,
+      "count": 234,
+      "name": {
+        "zh": "波導奏動"
+      },
+      "packs": [
+        {
+          "name": "波導奏動",
+          "skuId": "B3_1"
+        }
+      ]
+    },
+    {
+      "code": "B3a",
+      "releaseDate": null,
+      "count": 109,
+      "name": {
+        "zh": "進擊悖謬"
+      },
+      "packs": [
+        {
+          "name": "進擊悖謬",
+          "skuId": "B3a_1"
+        }
+      ]
+    },
+    {
+      "code": "B3b",
+      "releaseDate": null,
+      "count": 106,
+      "name": {
+        "zh": "奇跡日常"
+      },
+      "packs": [
+        {
+          "name": "奇跡日常",
+          "skuId": "B3b_1"
+        }
+      ]
+    }
+  ],
+  "P": [
+    {
+      "code": "PROMO-A",
+      "releaseDate": null,
+      "count": 117,
+      "name": {
+        "zh": "PROMO-A"
+      },
+      "packs": [
+        {
+          "name": "特典卡牌包 A系列第1波",
+          "skuId": "PROMO-A_1"
+        },
+        {
+          "name": "特典卡牌包 A系列第2波",
+          "skuId": "PROMO-A_2"
+        },
+        {
+          "name": "特典卡牌包 A系列第3波",
+          "skuId": "PROMO-A_3"
+        },
+        {
+          "name": "特典卡牌包 A系列第4波",
+          "skuId": "PROMO-A_4"
+        },
+        {
+          "name": "特典卡牌包 A系列第5波",
+          "skuId": "PROMO-A_5"
+        },
+        {
+          "name": "特典卡牌包 A系列第6波",
+          "skuId": "PROMO-A_6"
+        },
+        {
+          "name": "特典卡牌包 A系列第7波",
+          "skuId": "PROMO-A_7"
+        },
+        {
+          "name": "特典卡牌包 A系列第8波",
+          "skuId": "PROMO-A_8"
+        },
+        {
+          "name": "特典卡牌包 A系列第9波",
+          "skuId": "PROMO-A_9"
+        },
+        {
+          "name": "特典卡牌包 A系列第10波",
+          "skuId": "PROMO-A_10"
+        },
+        {
+          "name": "特典卡牌包 A系列第11波",
+          "skuId": "PROMO-A_11"
+        },
+        {
+          "name": "特典卡牌包 A系列第12波",
+          "skuId": "PROMO-A_12"
+        },
+        {
+          "name": "特典卡牌包 A系列第13波",
+          "skuId": "PROMO-A_13"
+        }
+      ]
+    },
+    {
+      "code": "PROMO-B",
+      "releaseDate": null,
+      "count": 78,
+      "name": {
+        "zh": "PROMO-B"
+      },
+      "packs": [
+        {
+          "name": "特典卡牌包 B系列第1波",
+          "skuId": "PROMO-B_1"
+        },
+        {
+          "name": "特典卡牌包 B系列第2波",
+          "skuId": "PROMO-B_2"
+        },
+        {
+          "name": "特典卡牌包 B系列第3波",
+          "skuId": "PROMO-B_3"
+        },
+        {
+          "name": "特典卡牌包 B系列第4波",
+          "skuId": "PROMO-B_4"
+        },
+        {
+          "name": "特典卡牌包 B系列第5波",
+          "skuId": "PROMO-B_5"
+        },
+        {
+          "name": "特典卡牌包 B系列第6波",
+          "skuId": "PROMO-B_6"
+        },
+        {
+          "name": "特典卡牌包 B系列第7波",
+          "skuId": "PROMO-B_7"
+        },
+        {
+          "name": "特典卡牌包 B系列第8波",
+          "skuId": "PROMO-B_8"
+        },
+        {
+          "name": "特典卡牌包 B系列第9波",
+          "skuId": "PROMO-B_9"
+        },
+        {
+          "name": "特典卡牌包 B系列第10波",
+          "skuId": "PROMO-B_10"
+        }
+      ]
+    }
+  ]
+}
