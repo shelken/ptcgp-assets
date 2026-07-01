@@ -1,0 +1,414 @@
+{
+  "A": [
+    {
+      "code": "A1",
+      "releaseDate": null,
+      "count": 286,
+      "name": {
+        "de": "Unschlagbare Gene"
+      },
+      "packs": [
+        {
+          "name": "Glurak",
+          "skuId": "A1_2"
+        },
+        {
+          "name": "Mewtu",
+          "skuId": "A1_1"
+        },
+        {
+          "name": "Pikachu",
+          "skuId": "A1_3"
+        }
+      ]
+    },
+    {
+      "code": "A1a",
+      "releaseDate": null,
+      "count": 86,
+      "name": {
+        "de": "Mysteriöse Insel"
+      },
+      "packs": [
+        {
+          "name": "Mysteriöse Insel",
+          "skuId": "A1a_1"
+        }
+      ]
+    },
+    {
+      "code": "A2",
+      "releaseDate": null,
+      "count": 207,
+      "name": {
+        "de": "Kollision von Raum und Zeit"
+      },
+      "packs": [
+        {
+          "name": "Dialga",
+          "skuId": "A2_1"
+        },
+        {
+          "name": "Palkia",
+          "skuId": "A2_2"
+        }
+      ]
+    },
+    {
+      "code": "A2a",
+      "releaseDate": null,
+      "count": 96,
+      "name": {
+        "de": "Licht des Triumphs"
+      },
+      "packs": [
+        {
+          "name": "Licht des Triumphs",
+          "skuId": "A2a_1"
+        }
+      ]
+    },
+    {
+      "code": "A2b",
+      "releaseDate": null,
+      "count": 111,
+      "name": {
+        "de": "Glänzendes Festival"
+      },
+      "packs": [
+        {
+          "name": "Glänzendes Festival",
+          "skuId": "A2b_1"
+        }
+      ]
+    },
+    {
+      "code": "A3",
+      "releaseDate": null,
+      "count": 239,
+      "name": {
+        "de": "Hüter des Firmaments"
+      },
+      "packs": [
+        {
+          "name": "Lunala",
+          "skuId": "A3_2"
+        },
+        {
+          "name": "Solgaleo",
+          "skuId": "A3_1"
+        }
+      ]
+    },
+    {
+      "code": "A3a",
+      "releaseDate": null,
+      "count": 103,
+      "name": {
+        "de": "Dimensionale Krise"
+      },
+      "packs": [
+        {
+          "name": "Dimensionale Krise",
+          "skuId": "A3a_1"
+        }
+      ]
+    },
+    {
+      "code": "A3b",
+      "releaseDate": null,
+      "count": 107,
+      "name": {
+        "de": "Evoli-Hain"
+      },
+      "packs": [
+        {
+          "name": "Evoli-Hain",
+          "skuId": "A3b_1"
+        }
+      ]
+    },
+    {
+      "code": "A4",
+      "releaseDate": null,
+      "count": 241,
+      "name": {
+        "de": "Weisheit von Meer und Himmel"
+      },
+      "packs": [
+        {
+          "name": "Ho-Oh",
+          "skuId": "A4_1"
+        },
+        {
+          "name": "Lugia",
+          "skuId": "A4_2"
+        }
+      ]
+    },
+    {
+      "code": "A4a",
+      "releaseDate": null,
+      "count": 105,
+      "name": {
+        "de": "Verborgene Quelle"
+      },
+      "packs": [
+        {
+          "name": "Verborgene Quelle",
+          "skuId": "A4a_1"
+        }
+      ]
+    },
+    {
+      "code": "A4b",
+      "releaseDate": null,
+      "count": 379,
+      "name": {
+        "de": "Deluxepack-ex-Boosterpack"
+      },
+      "packs": [
+        {
+          "name": "Deluxepack-ex-Boosterpack",
+          "skuId": "A4b_1"
+        }
+      ]
+    }
+  ],
+  "B": [
+    {
+      "code": "B1",
+      "releaseDate": null,
+      "count": 331,
+      "name": {
+        "de": "Mega-Aufstieg"
+      },
+      "packs": [
+        {
+          "name": "Mega-Altaria",
+          "skuId": "B1_3"
+        },
+        {
+          "name": "Mega-Garados",
+          "skuId": "B1_2"
+        },
+        {
+          "name": "Mega-Lohgock",
+          "skuId": "B1_1"
+        }
+      ]
+    },
+    {
+      "code": "B1a",
+      "releaseDate": null,
+      "count": 103,
+      "name": {
+        "de": "Feuerrote Flammen"
+      },
+      "packs": [
+        {
+          "name": "Feuerrote Flammen",
+          "skuId": "B1a_1"
+        }
+      ]
+    },
+    {
+      "code": "B2",
+      "releaseDate": null,
+      "count": 234,
+      "name": {
+        "de": "Traumhafte Parade"
+      },
+      "packs": [
+        {
+          "name": "Traumhafte Parade",
+          "skuId": "B2_1"
+        }
+      ]
+    },
+    {
+      "code": "B2a",
+      "releaseDate": null,
+      "count": 131,
+      "name": {
+        "de": "Wundervolles Paldea"
+      },
+      "packs": [
+        {
+          "name": "Wundervolles Paldea",
+          "skuId": "B2a_1"
+        }
+      ]
+    },
+    {
+      "code": "B2b",
+      "releaseDate": null,
+      "count": 117,
+      "name": {
+        "de": "Mega-Schillern"
+      },
+      "packs": [
+        {
+          "name": "Mega-Schillern",
+          "skuId": "B2b_1"
+        }
+      ]
+    },
+    {
+      "code": "B3",
+      "releaseDate": null,
+      "count": 234,
+      "name": {
+        "de": "Pulsierende Aura"
+      },
+      "packs": [
+        {
+          "name": "Pulsierende Aura",
+          "skuId": "B3_1"
+        }
+      ]
+    },
+    {
+      "code": "B3a",
+      "releaseDate": null,
+      "count": 109,
+      "name": {
+        "de": "Paradoxansturm"
+      },
+      "packs": [
+        {
+          "name": "Paradoxansturm",
+          "skuId": "B3a_1"
+        }
+      ]
+    },
+    {
+      "code": "B3b",
+      "releaseDate": null,
+      "count": 106,
+      "name": {
+        "de": "Wunder des Alltags"
+      },
+      "packs": [
+        {
+          "name": "Wunder des Alltags",
+          "skuId": "B3b_1"
+        }
+      ]
+    }
+  ],
+  "P": [
+    {
+      "code": "PROMO-A",
+      "releaseDate": null,
+      "count": 117,
+      "name": {
+        "de": "PROMO-A"
+      },
+      "packs": [
+        {
+          "name": "Ein Promopack aus Serie A, Vol. 13",
+          "skuId": "PROMO-A_13"
+        },
+        {
+          "name": "Promopack Serie A, Vol. 1",
+          "skuId": "PROMO-A_1"
+        },
+        {
+          "name": "Promopack Serie A, Vol. 2",
+          "skuId": "PROMO-A_2"
+        },
+        {
+          "name": "Promopack Serie A, Vol. 3",
+          "skuId": "PROMO-A_3"
+        },
+        {
+          "name": "Promopack Serie A, Vol. 4",
+          "skuId": "PROMO-A_4"
+        },
+        {
+          "name": "Promopack Serie A, Vol. 5",
+          "skuId": "PROMO-A_5"
+        },
+        {
+          "name": "Promopack Serie A, Vol. 6",
+          "skuId": "PROMO-A_6"
+        },
+        {
+          "name": "Promopack Serie A, Vol. 7",
+          "skuId": "PROMO-A_7"
+        },
+        {
+          "name": "Promopack Serie A, Vol. 8",
+          "skuId": "PROMO-A_8"
+        },
+        {
+          "name": "Promopack Serie A, Vol. 9",
+          "skuId": "PROMO-A_9"
+        },
+        {
+          "name": "Promopack Serie A, Vol. 10",
+          "skuId": "PROMO-A_10"
+        },
+        {
+          "name": "Promopack Serie A, Vol. 11",
+          "skuId": "PROMO-A_11"
+        },
+        {
+          "name": "Promopack Serie A, Vol. 12",
+          "skuId": "PROMO-A_12"
+        }
+      ]
+    },
+    {
+      "code": "PROMO-B",
+      "releaseDate": null,
+      "count": 78,
+      "name": {
+        "de": "PROMO-B"
+      },
+      "packs": [
+        {
+          "name": "Promopack aus Serie B, Vol. 1",
+          "skuId": "PROMO-B_1"
+        },
+        {
+          "name": "Promopack aus Serie B, Vol. 2",
+          "skuId": "PROMO-B_2"
+        },
+        {
+          "name": "Promopack aus Serie B, Vol. 3",
+          "skuId": "PROMO-B_3"
+        },
+        {
+          "name": "Promopack aus Serie B, Vol. 4",
+          "skuId": "PROMO-B_4"
+        },
+        {
+          "name": "Promopack aus Serie B, Vol. 5",
+          "skuId": "PROMO-B_5"
+        },
+        {
+          "name": "Promopack aus Serie B, Vol. 6",
+          "skuId": "PROMO-B_6"
+        },
+        {
+          "name": "Promopack aus Serie B, Vol. 7",
+          "skuId": "PROMO-B_7"
+        },
+        {
+          "name": "Promopack aus Serie B, Vol. 8",
+          "skuId": "PROMO-B_8"
+        },
+        {
+          "name": "Promopack aus Serie B, Vol. 9",
+          "skuId": "PROMO-B_9"
+        },
+        {
+          "name": "Promopack aus Serie B, Vol. 10",
+          "skuId": "PROMO-B_10"
+        }
+      ]
+    }
+  ]
+}

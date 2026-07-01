@@ -27,6 +27,13 @@ EXPORT_COMMAND = [
     "-",
 ]
 EXPORT_TIMEOUT_SECONDS = 120
+# 全量导出时分批调用 frida-test，避免单次 RPC 返回 9 语言数据导致游戏进程 OOM。
+# 单批上限：3 语言（实测 3 语言返回稳定，9 语言返回期 OOM）。
+METADATA_BATCH_SIZE = 3
+# 游戏支持的全部语言（LanguageType 枚举名）。与 images/*/cards-by-set 目录一一对应。
+ALL_GAME_LOCALES = [
+    "en_US", "ja_JP", "zh_TW", "de_DE", "es_ES", "fr_FR", "it_IT", "ko_KR", "pt_BR",
+]
 GAME_LAUNCHED_MESSAGE = (
     "Game was launched. Enter the game home screen, then run export again. "
     "Cold-start attach can freeze Unity/IL2CPP before MemoryDatabase is loaded."
@@ -998,6 +1005,31 @@ def write_sets(
     return out_path
 
 
+def run_exporter_batched(frida_test_dir: Path, languages: str | None = None) -> dict[str, Any]:
+    """分批调用 frida-test 导出 metadata。
+
+    不传 languages 时按 ALL_GAME_LOCALES 分批（每批 METADATA_BATCH_SIZE 个），
+    避免单次 RPC 返回全部语言数据导致游戏进程 OOM。传 languages 时不分批。
+    """
+    if languages:
+        return run_exporter(frida_test_dir, languages=languages)
+
+    locales: dict[str, Any] = {}
+    skipped: list[str] = []
+    batches = [
+        ALL_GAME_LOCALES[i:i + METADATA_BATCH_SIZE]
+        for i in range(0, len(ALL_GAME_LOCALES), METADATA_BATCH_SIZE)
+    ]
+    for i, batch in enumerate(batches, 1):
+        batch_str = ",".join(batch)
+        print(f"[update-metadata] 批次 {i}/{len(batches)}: {batch_str}", file=sys.stderr)
+        export = run_exporter(frida_test_dir, languages=batch_str)
+        locales.update(export.get("locales", {}))
+        skipped.extend(export.get("skippedLocales", []))
+
+    return {"schemaVersion": 4, "locales": locales, "skippedLocales": skipped}
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Update PTCGP metadata from frida-test")
     parser.add_argument(
@@ -1024,7 +1056,7 @@ def main(argv: list[str] | None = None) -> int:
         args.frida_test_dir = resolve_frida_test_dir()
 
     try:
-        export = run_exporter(args.frida_test_dir, languages=args.languages)
+        export = run_exporter_batched(args.frida_test_dir, languages=args.languages)
     except ExportDeferred as error:
         print(error, file=sys.stderr)
         return 0

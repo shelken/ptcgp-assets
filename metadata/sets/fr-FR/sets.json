@@ -1,0 +1,414 @@
+{
+  "A": [
+    {
+      "code": "A1",
+      "releaseDate": null,
+      "count": 286,
+      "name": {
+        "fr": "Puissance Génétique"
+      },
+      "packs": [
+        {
+          "name": "Dracaufeu",
+          "skuId": "A1_2"
+        },
+        {
+          "name": "Mewtwo",
+          "skuId": "A1_1"
+        },
+        {
+          "name": "Pikachu",
+          "skuId": "A1_3"
+        }
+      ]
+    },
+    {
+      "code": "A1a",
+      "releaseDate": null,
+      "count": 86,
+      "name": {
+        "fr": "L'Île Fabuleuse"
+      },
+      "packs": [
+        {
+          "name": "L'Île Fabuleuse",
+          "skuId": "A1a_1"
+        }
+      ]
+    },
+    {
+      "code": "A2",
+      "releaseDate": null,
+      "count": 207,
+      "name": {
+        "fr": "Choc Spatio-Temporel"
+      },
+      "packs": [
+        {
+          "name": "Dialga",
+          "skuId": "A2_1"
+        },
+        {
+          "name": "Palkia",
+          "skuId": "A2_2"
+        }
+      ]
+    },
+    {
+      "code": "A2a",
+      "releaseDate": null,
+      "count": 96,
+      "name": {
+        "fr": "Lumière Triomphale"
+      },
+      "packs": [
+        {
+          "name": "Lumière Triomphale",
+          "skuId": "A2a_1"
+        }
+      ]
+    },
+    {
+      "code": "A2b",
+      "releaseDate": null,
+      "count": 111,
+      "name": {
+        "fr": "Réjouissances Rayonnantes"
+      },
+      "packs": [
+        {
+          "name": "Réjouissances Rayonnantes",
+          "skuId": "A2b_1"
+        }
+      ]
+    },
+    {
+      "code": "A3",
+      "releaseDate": null,
+      "count": 239,
+      "name": {
+        "fr": "Gardiens[C"
+      },
+      "packs": [
+        {
+          "name": "Nbsp ]Astraux[C Nbsp ] Lunala",
+          "skuId": "A3_2"
+        },
+        {
+          "name": "Nbsp ]Astraux[C Nbsp ] Solgaleo",
+          "skuId": "A3_1"
+        }
+      ]
+    },
+    {
+      "code": "A3a",
+      "releaseDate": null,
+      "count": 103,
+      "name": {
+        "fr": "Crise Interdimensionnelle"
+      },
+      "packs": [
+        {
+          "name": "Crise Interdimensionnelle",
+          "skuId": "A3a_1"
+        }
+      ]
+    },
+    {
+      "code": "A3b",
+      "releaseDate": null,
+      "count": 107,
+      "name": {
+        "fr": "La Clairière d'Évoli"
+      },
+      "packs": [
+        {
+          "name": "La Clairière d'Évoli",
+          "skuId": "A3b_1"
+        }
+      ]
+    },
+    {
+      "code": "A4",
+      "releaseDate": null,
+      "count": 241,
+      "name": {
+        "fr": "Sagesse entre Ciel et Mer[C"
+      },
+      "packs": [
+        {
+          "name": "Nbsp ] Ho-Oh",
+          "skuId": "A4_1"
+        },
+        {
+          "name": "Nbsp ] Lugia",
+          "skuId": "A4_2"
+        }
+      ]
+    },
+    {
+      "code": "A4a",
+      "releaseDate": null,
+      "count": 105,
+      "name": {
+        "fr": "Source Secrète"
+      },
+      "packs": [
+        {
+          "name": "Source Secrète",
+          "skuId": "A4a_1"
+        }
+      ]
+    },
+    {
+      "code": "A4b",
+      "releaseDate": null,
+      "count": 379,
+      "name": {
+        "fr": "Booster de Luxe ex"
+      },
+      "packs": [
+        {
+          "name": "Booster de Luxe ex",
+          "skuId": "A4b_1"
+        }
+      ]
+    }
+  ],
+  "B": [
+    {
+      "code": "B1",
+      "releaseDate": null,
+      "count": 331,
+      "name": {
+        "fr": "Méga[C"
+      },
+      "packs": [
+        {
+          "name": "Nbh ]Ascension[C Nbsp id=\"0\" ref=\"0\" ] Méga[C Nbh ]Altaria",
+          "skuId": "B1_3"
+        },
+        {
+          "name": "Nbh ]Ascension[C Nbsp id=\"0\" ref=\"0\" ] Méga[C Nbh ]Braségali",
+          "skuId": "B1_1"
+        },
+        {
+          "name": "Nbh ]Ascension[C Nbsp id=\"0\" ref=\"0\" ] Méga[C Nbh ]Léviator",
+          "skuId": "B1_2"
+        }
+      ]
+    },
+    {
+      "code": "B1a",
+      "releaseDate": null,
+      "count": 103,
+      "name": {
+        "fr": "Embrasement Écarlate"
+      },
+      "packs": [
+        {
+          "name": "Embrasement Écarlate",
+          "skuId": "B1a_1"
+        }
+      ]
+    },
+    {
+      "code": "B2",
+      "releaseDate": null,
+      "count": 234,
+      "name": {
+        "fr": "Parade Onirique"
+      },
+      "packs": [
+        {
+          "name": "Parade Onirique",
+          "skuId": "B2_1"
+        }
+      ]
+    },
+    {
+      "code": "B2a",
+      "releaseDate": null,
+      "count": 131,
+      "name": {
+        "fr": "Merveilles de Paldea"
+      },
+      "packs": [
+        {
+          "name": "Merveilles de Paldea",
+          "skuId": "B2a_1"
+        }
+      ]
+    },
+    {
+      "code": "B2b",
+      "releaseDate": null,
+      "count": 117,
+      "name": {
+        "fr": "Méga[C Nbh ]Rayonnement"
+      },
+      "packs": [
+        {
+          "name": "Méga[C Nbh ]Rayonnement",
+          "skuId": "B2b_1"
+        }
+      ]
+    },
+    {
+      "code": "B3",
+      "releaseDate": null,
+      "count": 234,
+      "name": {
+        "fr": "Aura Palpitante"
+      },
+      "packs": [
+        {
+          "name": "Aura Palpitante",
+          "skuId": "B3_1"
+        }
+      ]
+    },
+    {
+      "code": "B3a",
+      "releaseDate": null,
+      "count": 109,
+      "name": {
+        "fr": "Propulsion Paradoxe"
+      },
+      "packs": [
+        {
+          "name": "Propulsion Paradoxe",
+          "skuId": "B3a_1"
+        }
+      ]
+    },
+    {
+      "code": "B3b",
+      "releaseDate": null,
+      "count": 106,
+      "name": {
+        "fr": "Jours Heureux"
+      },
+      "packs": [
+        {
+          "name": "Jours Heureux",
+          "skuId": "B3b_1"
+        }
+      ]
+    }
+  ],
+  "P": [
+    {
+      "code": "PROMO-A",
+      "releaseDate": null,
+      "count": 117,
+      "name": {
+        "fr": "PROMO-A"
+      },
+      "packs": [
+        {
+          "name": "Booster promo Série A, vol. 4",
+          "skuId": "PROMO-A_4"
+        },
+        {
+          "name": "Booster promo série A, vol. 1",
+          "skuId": "PROMO-A_1"
+        },
+        {
+          "name": "Booster promo série A, vol. 2",
+          "skuId": "PROMO-A_2"
+        },
+        {
+          "name": "Booster promo série A, vol. 3",
+          "skuId": "PROMO-A_3"
+        },
+        {
+          "name": "Booster promo série A, vol. 5",
+          "skuId": "PROMO-A_5"
+        },
+        {
+          "name": "Booster promo série A, vol. 6",
+          "skuId": "PROMO-A_6"
+        },
+        {
+          "name": "Booster promo série A, vol. 7",
+          "skuId": "PROMO-A_7"
+        },
+        {
+          "name": "Booster promo série A, vol. 8",
+          "skuId": "PROMO-A_8"
+        },
+        {
+          "name": "Booster promo série A, vol. 9",
+          "skuId": "PROMO-A_9"
+        },
+        {
+          "name": "Booster promo série A, vol. 10",
+          "skuId": "PROMO-A_10"
+        },
+        {
+          "name": "Booster promo série A, vol. 11",
+          "skuId": "PROMO-A_11"
+        },
+        {
+          "name": "Booster promo série A, vol. 12",
+          "skuId": "PROMO-A_12"
+        },
+        {
+          "name": "Booster promo série A, vol. 13",
+          "skuId": "PROMO-A_13"
+        }
+      ]
+    },
+    {
+      "code": "PROMO-B",
+      "releaseDate": null,
+      "count": 78,
+      "name": {
+        "fr": "PROMO-B"
+      },
+      "packs": [
+        {
+          "name": "Booster promo série B, vol. 1",
+          "skuId": "PROMO-B_1"
+        },
+        {
+          "name": "Booster promo série B, vol. 2",
+          "skuId": "PROMO-B_2"
+        },
+        {
+          "name": "Booster promo série B, vol. 3",
+          "skuId": "PROMO-B_3"
+        },
+        {
+          "name": "Booster promo série B, vol. 4",
+          "skuId": "PROMO-B_4"
+        },
+        {
+          "name": "Booster promo série B, vol. 5",
+          "skuId": "PROMO-B_5"
+        },
+        {
+          "name": "Booster promo série B, vol. 6",
+          "skuId": "PROMO-B_6"
+        },
+        {
+          "name": "Booster promo série B, vol. 7",
+          "skuId": "PROMO-B_7"
+        },
+        {
+          "name": "Booster promo série B, vol. 8",
+          "skuId": "PROMO-B_8"
+        },
+        {
+          "name": "Booster promo série B, vol. 9",
+          "skuId": "PROMO-B_9"
+        },
+        {
+          "name": "Booster promo série B, vol. 10",
+          "skuId": "PROMO-B_10"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,414 @@
+{
+  "A": [
+    {
+      "code": "A1",
+      "releaseDate": null,
+      "count": 286,
+      "name": {
+        "ko": "최강의 유전자"
+      },
+      "packs": [
+        {
+          "name": "리자몽",
+          "skuId": "A1_2"
+        },
+        {
+          "name": "뮤츠",
+          "skuId": "A1_1"
+        },
+        {
+          "name": "피카츄",
+          "skuId": "A1_3"
+        }
+      ]
+    },
+    {
+      "code": "A1a",
+      "releaseDate": null,
+      "count": 86,
+      "name": {
+        "ko": "환상이 있는 섬"
+      },
+      "packs": [
+        {
+          "name": "환상이 있는 섬",
+          "skuId": "A1a_1"
+        }
+      ]
+    },
+    {
+      "code": "A2",
+      "releaseDate": null,
+      "count": 207,
+      "name": {
+        "ko": "시공의 격투"
+      },
+      "packs": [
+        {
+          "name": "디아루가",
+          "skuId": "A2_1"
+        },
+        {
+          "name": "펄기아",
+          "skuId": "A2_2"
+        }
+      ]
+    },
+    {
+      "code": "A2a",
+      "releaseDate": null,
+      "count": 96,
+      "name": {
+        "ko": "초극의 빛"
+      },
+      "packs": [
+        {
+          "name": "초극의 빛",
+          "skuId": "A2a_1"
+        }
+      ]
+    },
+    {
+      "code": "A2b",
+      "releaseDate": null,
+      "count": 111,
+      "name": {
+        "ko": "샤이닝 하이"
+      },
+      "packs": [
+        {
+          "name": "샤이닝 하이",
+          "skuId": "A2b_1"
+        }
+      ]
+    },
+    {
+      "code": "A3",
+      "releaseDate": null,
+      "count": 239,
+      "name": {
+        "ko": "쌍천의 수호자"
+      },
+      "packs": [
+        {
+          "name": "루나아라",
+          "skuId": "A3_2"
+        },
+        {
+          "name": "솔가레오",
+          "skuId": "A3_1"
+        }
+      ]
+    },
+    {
+      "code": "A3a",
+      "releaseDate": null,
+      "count": 103,
+      "name": {
+        "ko": "이차원 크라이시스"
+      },
+      "packs": [
+        {
+          "name": "이차원 크라이시스",
+          "skuId": "A3a_1"
+        }
+      ]
+    },
+    {
+      "code": "A3b",
+      "releaseDate": null,
+      "count": 107,
+      "name": {
+        "ko": "이브이 가든"
+      },
+      "packs": [
+        {
+          "name": "이브이 가든",
+          "skuId": "A3b_1"
+        }
+      ]
+    },
+    {
+      "code": "A4",
+      "releaseDate": null,
+      "count": 241,
+      "name": {
+        "ko": "하늘과 바다의 인도"
+      },
+      "packs": [
+        {
+          "name": "루기아",
+          "skuId": "A4_2"
+        },
+        {
+          "name": "칠색조",
+          "skuId": "A4_1"
+        }
+      ]
+    },
+    {
+      "code": "A4a",
+      "releaseDate": null,
+      "count": 105,
+      "name": {
+        "ko": "미지의 수역"
+      },
+      "packs": [
+        {
+          "name": "미지의 수역",
+          "skuId": "A4a_1"
+        }
+      ]
+    },
+    {
+      "code": "A4b",
+      "releaseDate": null,
+      "count": 379,
+      "name": {
+        "ko": "하이클래스팩 ex"
+      },
+      "packs": [
+        {
+          "name": "하이클래스팩 ex",
+          "skuId": "A4b_1"
+        }
+      ]
+    }
+  ],
+  "B": [
+    {
+      "code": "B1",
+      "releaseDate": null,
+      "count": 331,
+      "name": {
+        "ko": "메가라이징 메가"
+      },
+      "packs": [
+        {
+          "name": "메가라이징 메가갸라도스",
+          "skuId": "B1_2"
+        },
+        {
+          "name": "메가라이징 메가번치코",
+          "skuId": "B1_1"
+        },
+        {
+          "name": "메가라이징 메가파비코리",
+          "skuId": "B1_3"
+        }
+      ]
+    },
+    {
+      "code": "B1a",
+      "releaseDate": null,
+      "count": 103,
+      "name": {
+        "ko": "홍련 블레이즈"
+      },
+      "packs": [
+        {
+          "name": "홍련 블레이즈",
+          "skuId": "B1a_1"
+        }
+      ]
+    },
+    {
+      "code": "B2",
+      "releaseDate": null,
+      "count": 234,
+      "name": {
+        "ko": "몽환 퍼레이드"
+      },
+      "packs": [
+        {
+          "name": "몽환 퍼레이드",
+          "skuId": "B2_1"
+        }
+      ]
+    },
+    {
+      "code": "B2a",
+      "releaseDate": null,
+      "count": 131,
+      "name": {
+        "ko": "팔데아 원더"
+      },
+      "packs": [
+        {
+          "name": "팔데아 원더",
+          "skuId": "B2a_1"
+        }
+      ]
+    },
+    {
+      "code": "B2b",
+      "releaseDate": null,
+      "count": 117,
+      "name": {
+        "ko": "샤이닝 메가"
+      },
+      "packs": [
+        {
+          "name": "샤이닝 메가",
+          "skuId": "B2b_1"
+        }
+      ]
+    },
+    {
+      "code": "B3",
+      "releaseDate": null,
+      "count": 234,
+      "name": {
+        "ko": "파동 비트"
+      },
+      "packs": [
+        {
+          "name": "파동 비트",
+          "skuId": "B3_1"
+        }
+      ]
+    },
+    {
+      "code": "B3a",
+      "releaseDate": null,
+      "count": 109,
+      "name": {
+        "ko": "진격 패러독스"
+      },
+      "packs": [
+        {
+          "name": "진격 패러독스",
+          "skuId": "B3a_1"
+        }
+      ]
+    },
+    {
+      "code": "B3b",
+      "releaseDate": null,
+      "count": 106,
+      "name": {
+        "ko": "미라클 데이즈"
+      },
+      "packs": [
+        {
+          "name": "미라클 데이즈",
+          "skuId": "B3b_1"
+        }
+      ]
+    }
+  ],
+  "P": [
+    {
+      "code": "PROMO-A",
+      "releaseDate": null,
+      "count": 117,
+      "name": {
+        "ko": "PROMO-A"
+      },
+      "packs": [
+        {
+          "name": "프로모 카드 팩 A시리즈 제1탄",
+          "skuId": "PROMO-A_1"
+        },
+        {
+          "name": "프로모 카드 팩 A시리즈 제2탄",
+          "skuId": "PROMO-A_2"
+        },
+        {
+          "name": "프로모 카드 팩 A시리즈 제3탄",
+          "skuId": "PROMO-A_3"
+        },
+        {
+          "name": "프로모 카드 팩 A시리즈 제4탄",
+          "skuId": "PROMO-A_4"
+        },
+        {
+          "name": "프로모 카드 팩 A시리즈 제5탄",
+          "skuId": "PROMO-A_5"
+        },
+        {
+          "name": "프로모 카드 팩 A시리즈 제6탄",
+          "skuId": "PROMO-A_6"
+        },
+        {
+          "name": "프로모 카드 팩 A시리즈 제7탄",
+          "skuId": "PROMO-A_7"
+        },
+        {
+          "name": "프로모 카드 팩 A시리즈 제8탄",
+          "skuId": "PROMO-A_8"
+        },
+        {
+          "name": "프로모 카드 팩 A시리즈 제9탄",
+          "skuId": "PROMO-A_9"
+        },
+        {
+          "name": "프로모 카드 팩 A시리즈 제10탄",
+          "skuId": "PROMO-A_10"
+        },
+        {
+          "name": "프로모 카드 팩 A시리즈 제11탄",
+          "skuId": "PROMO-A_11"
+        },
+        {
+          "name": "프로모 카드 팩 A시리즈 제12탄",
+          "skuId": "PROMO-A_12"
+        },
+        {
+          "name": "프로모 카드 팩 A시리즈 제13탄",
+          "skuId": "PROMO-A_13"
+        }
+      ]
+    },
+    {
+      "code": "PROMO-B",
+      "releaseDate": null,
+      "count": 78,
+      "name": {
+        "ko": "PROMO-B"
+      },
+      "packs": [
+        {
+          "name": "프로모 카드 팩 B시리즈 제1탄",
+          "skuId": "PROMO-B_1"
+        },
+        {
+          "name": "프로모 카드 팩 B시리즈 제2탄",
+          "skuId": "PROMO-B_2"
+        },
+        {
+          "name": "프로모 카드 팩 B시리즈 제3탄",
+          "skuId": "PROMO-B_3"
+        },
+        {
+          "name": "프로모 카드 팩 B시리즈 제4탄",
+          "skuId": "PROMO-B_4"
+        },
+        {
+          "name": "프로모 카드 팩 B시리즈 제5탄",
+          "skuId": "PROMO-B_5"
+        },
+        {
+          "name": "프로모 카드 팩 B시리즈 제6탄",
+          "skuId": "PROMO-B_6"
+        },
+        {
+          "name": "프로모 카드 팩 B시리즈 제7탄",
+          "skuId": "PROMO-B_7"
+        },
+        {
+          "name": "프로모 카드 팩 B시리즈 제8탄",
+          "skuId": "PROMO-B_8"
+        },
+        {
+          "name": "프로모 카드 팩 B시리즈 제9탄",
+          "skuId": "PROMO-B_9"
+        },
+        {
+          "name": "프로모 카드 팩 B시리즈 제10탄",
+          "skuId": "PROMO-B_10"
+        }
+      ]
+    }
+  ]
+}
