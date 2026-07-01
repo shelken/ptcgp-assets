@@ -174,7 +174,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
         )
 
         self.assertEqual(
-            convert_cards_extra(export),
+            convert_cards_extra(export, export["language"]),
             [
                 {
                     "set": "A1",
@@ -217,7 +217,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
             localization_texts={"ADDITIONAL_NAME_Paldea": "Paldean"},
         )
 
-        [card] = convert_cards_extra(export)
+        [card] = convert_cards_extra(export, export["language"])
 
         self.assertEqual(card["name"], "Paldean Wooper")
         self.assertEqual(card["evolvesFrom"], "Paldean Wooper")
@@ -247,7 +247,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
             expansions=[{"expansionId": "B1", "names": ["Mega Rising"]}],
         )
 
-        cards = convert_cards_extra(export)
+        cards = convert_cards_extra(export, export["language"])
         target = next(card for card in cards if card["number"] == 1)
 
         self.assertEqual(target["packs"], ["Mega Blaziken", "Mega Gyarados"])
@@ -262,7 +262,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
             expansions=[{"expansionId": "A4b", "names": ["A4b"]}],
         )
 
-        [card] = convert_cards_extra(export)
+        [card] = convert_cards_extra(export, export["language"])
 
         self.assertEqual(card["packs"], ["Deluxe Pack ex"])
 
@@ -281,7 +281,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
             expansions=[{"expansionId": "A4a", "names": ["A4a"]}],
         )
 
-        cards = convert_cards_extra(export)
+        cards = convert_cards_extra(export, export["language"])
 
         self.assertEqual([card["packs"] for card in cards], [["未知水域"], ["未知水域"]])
 
@@ -293,7 +293,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
             ]
         )
 
-        cards = convert_cards_extra(export)
+        cards = convert_cards_extra(export, export["language"])
 
         self.assertEqual([card["name"] for card in cards], ["超夢", "超夢"])
 
@@ -301,7 +301,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
         export = raw_export([pokemon_card(name="���夢")])
 
         with self.assertRaisesRegex(ValueError, "name contains replacement characters"):
-            convert_cards_extra(export)
+            convert_cards_extra(export, export["language"])
 
     def test_parses_exporter_stdout_with_leading_tool_noise(self):
         export = {"schemaVersion": 3, "language": "zh-TW", "cards": []}
@@ -326,7 +326,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
         )
 
         with self.assertRaisesRegex(ValueError, "duplicate card key: A1 #216"):
-            convert_cards_extra(export)
+            convert_cards_extra(export, export["language"])
 
     def test_run_exporter_fails_fast_on_timeout(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -419,7 +419,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
         ]
 
         self.assertEqual(
-            convert_sets(export, cards),
+            convert_sets(export, cards, export["language"]),
             {
                 "A": [
                     {
@@ -468,7 +468,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
         ]
 
         self.assertEqual(
-            convert_sets(export, cards)["A"][0]["packs"],
+            convert_sets(export, cards, export["language"])["A"][0]["packs"],
             [
                 pack_entry("噴火龍", "AN001_0020"),
                 pack_entry("皮卡丘", "AN001_0030"),
@@ -484,7 +484,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
         )
         cards = [{"set": "A1a", "number": 1, "packs": ["超夢", "幻遊島"]}]
 
-        self.assertEqual(convert_sets(export, cards)["A"][0]["packs"], [pack_entry("幻遊島", "A1a_MYTHICAL")])
+        self.assertEqual(convert_sets(export, cards, export["language"])["A"][0]["packs"], [pack_entry("幻遊島", "A1a_MYTHICAL")])
 
     def test_convert_sets_a4b_reprint_rows_do_not_pull_old_packs(self):
         export = raw_export(
@@ -495,7 +495,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
         cards = [{"set": "A4b", "number": 1, "packs": ["Mewtwo", "Charizard", "Deluxe Pack ex"]}]
 
         self.assertEqual(
-            convert_sets(export, cards)["A"][0]["packs"],
+            convert_sets(export, cards, export["language"])["A"][0]["packs"],
             [pack_entry("Deluxe Pack ex", "A4b_DELUXE")],
         )
 
@@ -511,7 +511,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
         )
         cards = [{"set": "A1", "number": 1, "packs": []}]
 
-        [set_item] = convert_sets(export, cards)["A"]
+        [set_item] = convert_sets(export, cards, export["language"])["A"]
 
         self.assertEqual(set_item["name"], {"zh": "Genetic Apex"})
         self.assertEqual(
@@ -535,7 +535,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
         )
         cards = [{"set": "B1", "number": 1, "packs": []}]
 
-        [set_item] = convert_sets(export, cards)["B"]
+        [set_item] = convert_sets(export, cards, export["language"])["B"]
 
         self.assertEqual(set_item["name"], {"zh": "Mega Rising"})
         self.assertEqual(
@@ -555,7 +555,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
         )
         cards = [{"set": "A1a", "number": 1, "packs": []}]
 
-        self.assertEqual(convert_sets(export, cards)["A"][0]["name"], {"zh": "Mythical Island"})
+        self.assertEqual(convert_sets(export, cards, export["language"])["A"][0]["name"], {"zh": "Mythical Island"})
 
     def test_convert_sets_promo_name_falls_back_to_code_instead_of_pack_master_name(self):
         export = raw_export(
@@ -565,7 +565,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
         )
         cards = [{"set": "PROMO-A", "number": 1, "packs": []}]
 
-        self.assertEqual(convert_sets(export, cards)["P"][0]["name"], {"zh": "PROMO-A"})
+        self.assertEqual(convert_sets(export, cards, export["language"])["P"][0]["name"], {"zh": "PROMO-A"})
 
     def test_convert_sets_promo_keeps_pack_master_name_instead_of_featured_card_name(self):
         export = raw_export(
@@ -576,7 +576,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
         cards = [{"set": "PROMO-A", "number": 1, "packs": ["Butterfree"]}]
 
         self.assertEqual(
-            convert_sets(export, cards)["P"][0]["packs"],
+            convert_sets(export, cards, export["language"])["P"][0]["packs"],
             [pack_entry("Promo Pack A Series Vol. 1", "PROMO_A_VOL1")],
         )
 
@@ -595,7 +595,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
         cards = [{"set": "PROMO-A", "number": 1, "packs": ["Butterfree"]}]
 
         self.assertEqual(
-            convert_sets(export, cards)["P"][0]["packs"],
+            convert_sets(export, cards, export["language"])["P"][0]["packs"],
             [
                 pack_entry("Promo Pack A Series Vol. 1", "PROMO_A_VOL1"),
                 pack_entry("Promo Pack A Series Vol. 2", "PROMO_A_VOL2"),
@@ -615,7 +615,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
         cards = [{"set": "PROMO-A", "number": 1, "packs": []}]
 
         self.assertEqual(
-            convert_sets(export, cards)["P"][0]["packs"],
+            convert_sets(export, cards, export["language"])["P"][0]["packs"],
             [
                 pack_entry("Promo Pack A Series Vol. 1", "PROMO_A_VOL1"),
                 pack_entry("Promo Pack A Series Vol. 2", "PROMO_A_VOL2"),
@@ -628,7 +628,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
         del export["packs"]
 
         with self.assertRaisesRegex(ValueError, "packs must be an array of objects"):
-            convert_sets(export, [{"set": "A1", "number": 1, "packs": ["超夢"]}])
+            convert_sets(export, [{"set": "A1", "number": 1, "packs": ["超夢"]}], export["language"])
 
     def test_convert_sets_only_uses_normal_pack_rows(self):
         export = raw_export(
@@ -641,7 +641,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
         )
         cards = [{"set": "A1", "number": 1, "packs": ["高稀有度"]}]
 
-        self.assertEqual(convert_sets(export, cards)["A"][0]["packs"], [pack_entry("超夢", "AN001_0010")])
+        self.assertEqual(convert_sets(export, cards, export["language"])["A"][0]["packs"], [pack_entry("超夢", "AN001_0010")])
 
     def test_convert_sets_uses_second_name_when_long_name_is_empty(self):
         export = raw_export(
@@ -650,7 +650,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
         )
         cards = [{"set": "A1", "number": 1, "packs": []}]
 
-        self.assertEqual(convert_sets(export, cards)["A"][0]["name"], {"zh": "最強的基因"})
+        self.assertEqual(convert_sets(export, cards, export["language"])["A"][0]["name"], {"zh": "最強的基因"})
 
     def test_convert_sets_uses_expansion_code_when_promo_name_is_missing(self):
         export = raw_export(
@@ -659,7 +659,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
         )
         cards = [{"set": "PROMO-A", "number": 1, "packs": []}]
 
-        self.assertEqual(convert_sets(export, cards)["P"][0]["name"], {"zh": "PROMO-A"})
+        self.assertEqual(convert_sets(export, cards, export["language"])["P"][0]["name"], {"zh": "PROMO-A"})
 
     def test_convert_sets_rejects_unknown_language_key(self):
         export = {
@@ -668,7 +668,7 @@ class UpdateCardsExtraTests(unittest.TestCase):
         }
 
         with self.assertRaisesRegex(ValueError, "unsupported language"):
-            convert_sets(export, [{"set": "A1", "number": 1, "packs": []}])
+            convert_sets(export, [{"set": "A1", "number": 1, "packs": []}], export["language"])
 
     def test_writes_sets_to_language_directory_atomically(self):
         with tempfile.TemporaryDirectory() as tmp:

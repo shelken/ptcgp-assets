@@ -667,11 +667,7 @@ def natural_text_key(value: str) -> list[int | str]:
     return natural_code_key(value)
 
 
-def convert_cards_extra(export: dict[str, Any]) -> list[dict[str, Any]]:
-    if export.get("schemaVersion") != 3:
-        raise ValueError("frida-test exporter schemaVersion must be 3 raw metadata")
-
-    language = require_str(export.get("language"), "language")
+def convert_cards_extra(export: dict[str, Any], language: str) -> list[dict[str, Any]]:
     if "_" in language:
         raise ValueError(f"language must use hyphen form: {language}")
 
@@ -704,6 +700,11 @@ def convert_cards_extra(export: dict[str, Any]) -> list[dict[str, Any]]:
         raise ValueError("converted cards must not be empty")
 
     return sorted(converted, key=natural_key)
+
+
+def locale_to_dirname(locale: str) -> str:
+    """游戏枚举名 en_US 转 repo 目录名 en-US"""
+    return locale.replace("_", "-")
 
 
 def language_key(language: str) -> str:
@@ -796,9 +797,10 @@ def set_display_name(expansion: dict[str, Any], pack_names: list[str]) -> str:
     return expansion_display_name(expansion)
 
 
-def convert_sets(export: dict[str, Any], cards: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+def convert_sets(
+    export: dict[str, Any], cards: list[dict[str, Any]], language: str
+) -> dict[str, list[dict[str, Any]]]:
     """從 raw export 和已轉換 cards 生成 sets.json 結構。"""
-    language = require_str(export.get("language"), "language")
     name_key = language_key(language)
     expansions = require_object_list(export.get("expansions"), "expansions")
     # 变更原因：sets.json.packs 必须来自 PackMaster 顶层列表，缺失时不能回退到错误的 card.packs 聚合。
@@ -861,7 +863,7 @@ def collect_stream(stream: TextIO, chunks: list[str], echo: bool) -> None:
         stream.close()
 
 
-def run_exporter(frida_test_dir: Path) -> dict[str, Any]:
+def run_exporter(frida_test_dir: Path, languages: str | None = None) -> dict[str, Any]:
     if not frida_test_dir.is_dir():
         raise ValueError(f"frida-test dir does not exist: {frida_test_dir}")
     if not (frida_test_dir / "package.json").is_file():
@@ -869,13 +871,16 @@ def run_exporter(frida_test_dir: Path) -> dict[str, Any]:
     if not (frida_test_dir / "src/cli/index.ts").is_file():
         raise ValueError(f"frida-test dir missing src/cli/index.ts: {frida_test_dir}")
 
-    command_display = " ".join(EXPORT_COMMAND)
+    command = list(EXPORT_COMMAND)
+    if languages:
+        command += ["--languages", languages]
+    command_display = " ".join(command)
     # Frida 卡住时必须实时看到内层阶段日志；capture_output 会把关键 stderr 吞到超时后。
     sys.stderr.write(f"[update-metadata] running: {command_display}\n")
     sys.stderr.flush()
     started_at = time.monotonic()
     process = subprocess.Popen(
-        EXPORT_COMMAND,
+        command,
         cwd=frida_test_dir,
         text=True,
         stdout=subprocess.PIPE,
@@ -1006,6 +1011,11 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="按 expansion code 过滤，逗号分隔（如 B3b,A1）；不传则全量",
     )
+    parser.add_argument(
+        "--languages",
+        default=None,
+        help="限定语言（游戏枚举名，逗号分隔，如 en_US,zh_TW）；不传则全量",
+    )
     args = parser.parse_args(argv)
 
     # 缺省自动探测，避免硬编码路径
@@ -1014,27 +1024,41 @@ def main(argv: list[str] | None = None) -> int:
         args.frida_test_dir = resolve_frida_test_dir()
 
     try:
-        export = run_exporter(args.frida_test_dir)
+        export = run_exporter(args.frida_test_dir, languages=args.languages)
     except ExportDeferred as error:
         print(error, file=sys.stderr)
         return 0
 
-    cards = convert_cards_extra(export)
+    if export.get("schemaVersion") != 4:
+        raise ValueError("expected schemaVersion 4")
+
+    locales = export.get("locales", {})
+    if not isinstance(locales, dict) or not locales:
+        raise ValueError("locales missing or empty")
+
+    skipped = export.get("skippedLocales", [])
+    if skipped:
+        print(f"跳过未加载的语言: {skipped}", file=sys.stderr)
+
     # 按 expansion code 过滤：只保留指定系列的卡牌，sets 随之只含过滤后的系列
     expansions_set: set[str] | None = None
     if args.expansions:
         wanted = {e.strip() for e in args.expansions.split(",") if e.strip()}
-        cards = [card for card in cards if card.get("set") in wanted]
         expansions_set = wanted
-        print(f"按 expansion code 过滤后: {len(cards)} 张卡牌")
-    sets = convert_sets(export, cards)
-    language = require_str(export.get("language"), "language")
-    cards_output = write_cards_extra(Path.cwd(), language, cards, replace_sets=expansions_set)
-    sets_output = write_sets(Path.cwd(), language, sets, replace_codes=expansions_set)
+
+    for locale, block in locales.items():
+        language = locale_to_dirname(locale)
+        cards = convert_cards_extra(block, language)
+        if expansions_set:
+            cards = [card for card in cards if card.get("set") in expansions_set]
+            print(f"[{language}] 按 expansion code 过滤后: {len(cards)} 张卡牌")
+        sets = convert_sets(block, cards, language)
+        cards_output = write_cards_extra(Path.cwd(), language, cards, replace_sets=expansions_set)
+        sets_output = write_sets(Path.cwd(), language, sets, replace_codes=expansions_set)
+        print(f"[{language}] wrote {cards_output}")
+        print(f"[{language}] wrote {sets_output}")
     if expansions_set:
         print(f"增量合并: cards/sets 已保留其他系列，仅替换 {sorted(expansions_set)}")
-    print(f"wrote {cards_output}")
-    print(f"wrote {sets_output}")
     return 0
 
 
