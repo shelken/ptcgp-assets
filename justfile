@@ -6,25 +6,40 @@ default:
 
 # === 一键全流程：下载卡牌 + hash + metadata + 卡包图 + 汇总 ===
 # 前置：bs air 游戏已更新到最新版本并进入游戏主页
-update-all:
-    just update-online
-    just update-device
+# expansions 为空时 update-device 自动对比缺失系列；传 code（如 B3b,A1）只处理指定系列
+update-all expansions="":
+    just update-online '{{ expansions }}'
+    just update-device '{{ expansions }}'
 
 # === 无设备依赖（可随时重跑）：下载卡牌图 + 增量生成 hash ===
-update-online:
-    uv run fetch_cards.py
-    uv run python scripts/generate_hashes.py
+# expansions 传 code 时只处理指定系列；空则全量
+update-online expansions="":
+    uv run fetch_cards.py {{ if expansions != "" { "--expansions " + expansions } else { "" } }}
+    uv run python scripts/generate_hashes.py {{ if expansions != "" { "--expansions " + expansions } else { "" } }}
     @echo "✅ online 完成（卡牌图下载 + hash 生成）"
 
 # === 需设备 + 游戏进主页：导出 metadata + 卡包图 + 汇总 ===
-update-device:
+# expansions 为空时自动对比游戏与 repo，只更新缺失系列；传 code 只处理指定系列
+update-device expansions="":
     #!/usr/bin/env bash
     set -euo pipefail
-    echo "=== 导出 metadata ==="
-    uv run python scripts/update_metadata.py
+    EXPANSIONS='{{ expansions }}'
+    # 空则自动对比缺失系列
+    if [ -z "$EXPANSIONS" ]; then
+        echo "=== 自动对比缺失系列 ==="
+        EXPANSIONS=$(uv run python scripts/list_missing_expansions.py --print-only)
+        if [ -z "$EXPANSIONS" ]; then
+            echo "✅ 无缺失系列，跳过设备更新"
+            just _summary
+            exit 0
+        fi
+        echo "缺失系列: $EXPANSIONS"
+    fi
+    echo "=== 导出 metadata（expansions=${EXPANSIONS}）==="
+    uv run python scripts/update_metadata.py --expansions "$EXPANSIONS"
     echo ""
-    echo "=== 导出卡包图片 ==="
-    uv run python scripts/update_pack_images.py
+    echo "=== 导出卡包图片（expansions=${EXPANSIONS}）==="
+    uv run python scripts/update_pack_images.py --expansions "$EXPANSIONS"
     echo ""
     echo "=== 产出汇总 ==="
     just _summary

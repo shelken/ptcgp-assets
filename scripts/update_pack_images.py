@@ -6,17 +6,13 @@ from __future__ import annotations
 import argparse
 import io
 import json
-import socket
-import subprocess
 import sys
 import tarfile
-import time
 import urllib.error
-import urllib.parse
 import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import UnityPy
 from PIL import Image
@@ -24,6 +20,9 @@ from PIL import Image
 # 允许 `python scripts/update_pack_images.py` 直接运行时 import 同级包
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
+
+if TYPE_CHECKING:
+    from scripts.bridge_client import BridgeSession
 
 UnityPy.config.FALLBACK_UNITY_VERSION = "2022.3.22f1"
 
@@ -39,7 +38,6 @@ SUPPORTED_LANGUAGES = [
     "pt-BR",
 ]
 REQUEST_TIMEOUT_SECONDS = 180
-BRIDGE_START_TIMEOUT_SECONDS = 45
 
 
 @dataclass(frozen=True)
@@ -74,10 +72,13 @@ def request_pack_images_raw(
     sku_id: str | None = None,
     limit: int | None = None,
     skip: int | None = None,
+    expansions: list[str] | None = None,
 ) -> bytes:
     params: dict[str, Any] = {}
     if sku_id is not None:
         params["skuId"] = sku_id
+    if expansions is not None:
+        params["expansions"] = expansions
     if limit is not None:
         params["limit"] = limit
     if skip is not None:
@@ -217,50 +218,52 @@ def convert_from_bridge(
     sku_id: str | None,
     limit: int | None,
     chunk_size: int,
+    expansions: list[str] | None = None,
+    session: "BridgeSession | None" = None,
 ) -> None:
     if chunk_size <= 0:
         raise ValueError("chunk-size must be positive")
+
+    def fetch(params: dict[str, Any]) -> bytes:
+        if session is not None:
+            return session.request("ptcgp.packImages.raw", params)
+        return request_pack_images_raw(bridge_url, **params)
+
+    def build_params(**kw: Any) -> dict[str, Any]:
+        params: dict[str, Any] = {}
+        if kw.get("sku_id") is not None:
+            params["sku_id"] = kw["sku_id"]
+        if kw.get("limit") is not None:
+            params["limit"] = kw["limit"]
+        if kw.get("skip") is not None:
+            params["skip"] = kw["skip"]
+        if kw.get("expansions") is not None:
+            params["expansions"] = kw["expansions"]
+        return params
+
     if sku_id is not None or limit is not None:
-        archive_bytes = request_pack_images_raw(bridge_url, sku_id=sku_id, limit=limit)
+        archive_bytes = fetch(build_params(sku_id=sku_id, limit=limit, expansions=expansions))
         convert_archive_bytes(archive_bytes, output_root)
+        return
+
+    # 指定系列时按 expansion 过滤，不再全量分页
+    if expansions is not None:
+        skip = 0
+        while True:
+            archive_bytes = fetch(build_params(limit=chunk_size, skip=skip, expansions=expansions))
+            converted = convert_archive_bytes(archive_bytes, output_root)
+            if converted == 0:
+                break
+            skip += converted
         return
 
     skip = 0
     while True:
-        archive_bytes = request_pack_images_raw(bridge_url, limit=chunk_size, skip=skip)
+        archive_bytes = fetch(build_params(limit=chunk_size, skip=skip))
         converted = convert_archive_bytes(archive_bytes, output_root)
         if converted == 0:
             break
         skip += converted
-
-
-def _check_port_open(bridge_url: str, timeout: float = 2.0) -> bool:
-    # 只检测 TCP 端口连通，不调用业务接口——避免探活触发 frida attach 副作用，
-    # 也避免把 bridge 已启动但 frida 故障的 500 错误误判为"还没启动"而无限重试。
-    parsed = urllib.parse.urlparse(bridge_url)
-    host = parsed.hostname or "127.0.0.1"
-    port = parsed.port or 80
-    try:
-        with socket.create_connection((host, port), timeout=timeout):
-            return True
-    except OSError:
-        return False
-
-
-def wait_for_bridge(bridge_url: str, process: subprocess.Popen[bytes]) -> None:
-    deadline = time.monotonic() + BRIDGE_START_TIMEOUT_SECONDS
-    while time.monotonic() < deadline:
-        if process.poll() is not None:
-            raise RuntimeError(f"bridge process exited early with code {process.returncode}")
-        if _check_port_open(bridge_url):
-            return
-        time.sleep(1)
-    raise TimeoutError("bridge did not respond in time")
-
-
-def start_bridge(command: str, cwd: Path | None) -> subprocess.Popen[bytes]:
-    print(f"[pack-images] starting bridge command={command}")
-    return subprocess.Popen(command.split(), cwd=cwd)
 
 
 def parse_args() -> argparse.Namespace:
@@ -272,34 +275,37 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--sku-id", default=None, help="optional debug filter; default exports all packs")
     parser.add_argument("--limit", type=int, default=None, help="optional debug limit; default exports all packs")
     parser.add_argument("--chunk-size", type=int, default=1, help="packs requested per bridge call when exporting all packs")
+    parser.add_argument("--expansions", default=None, help="按 expansion code 过滤，逗号分隔（如 B3b,A1）；不传则全量")
     return parser.parse_args()
+
+
+def parse_expansions(raw: str | None) -> list[str] | None:
+    if raw is None:
+        return None
+    codes = [code.strip() for code in raw.split(",") if code.strip()]
+    return codes or None
 
 
 def main() -> int:
     args = parse_args()
+    expansions = parse_expansions(args.expansions)
 
-    # 缺省自动探测 bridge command/cwd，避免手动构造
-    if args.bridge_command is None:
-        from scripts.resolve_env import resolve_frida_test_dir, resolve_bridge_command, resolve_bridge_cwd
-        frida_dir = resolve_frida_test_dir()
-        args.bridge_command = resolve_bridge_command(frida_dir)
-        if args.bridge_cwd is None:
-            args.bridge_cwd = resolve_bridge_cwd(frida_dir)
+    from scripts.bridge_client import BridgeSession
 
-    process: subprocess.Popen[bytes] | None = None
-    try:
-        try:
-            convert_from_bridge(args.bridge_url, args.output, sku_id=args.sku_id, limit=args.limit, chunk_size=args.chunk_size)
-        except Exception:
-            if args.bridge_command is None:
-                raise
-            process = start_bridge(args.bridge_command, args.bridge_cwd)
-            wait_for_bridge(args.bridge_url, process)
-            convert_from_bridge(args.bridge_url, args.output, sku_id=args.sku_id, limit=args.limit, chunk_size=args.chunk_size)
-    finally:
-        if process is not None and process.poll() is None:
-            process.terminate()
-            process.wait(timeout=10)
+    with BridgeSession(
+        args.bridge_url,
+        bridge_command=args.bridge_command,
+        bridge_cwd=args.bridge_cwd,
+    ) as session:
+        convert_from_bridge(
+            args.bridge_url,
+            args.output,
+            sku_id=args.sku_id,
+            limit=args.limit,
+            chunk_size=args.chunk_size,
+            expansions=expansions,
+            session=session,
+        )
     return 0
 
 

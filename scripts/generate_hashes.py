@@ -214,6 +214,11 @@ def main():
         "--set",
         help="只处理指定 set（如 A1），不指定则处理全部",
     )
+    parser.add_argument(
+        "--expansions",
+        default=None,
+        help="按 expansion code 过滤，逗号分隔（如 B3b,A1）；与 --set 合并",
+    )
     args = parser.parse_args()
 
     locales = [args.locale] if args.locale else discover_locales()
@@ -233,8 +238,17 @@ def main():
             continue
         output_root = REPO_ROOT / "hashes" / locale
 
-        if args.set:
-            sets = [args.set]
+        # --set 与 --expansions 合并为目标 set 列表
+        expansions = (
+            [e.strip() for e in args.expansions.split(",") if e.strip()]
+            if args.expansions
+            else []
+        )
+        if args.set or expansions:
+            wanted = set(expansions)
+            if args.set:
+                wanted.add(args.set)
+            sets = sorted(s for s in discover_sets(cards_root) if s in wanted)
         else:
             sets = discover_sets(cards_root)
 

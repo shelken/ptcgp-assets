@@ -933,20 +933,60 @@ def run_exporter(frida_test_dir: Path) -> dict[str, Any]:
     return parse_exporter_stdout(stdout, stderr, command_display)
 
 
-def write_cards_extra(root: Path, language: str, cards: list[dict[str, Any]]) -> Path:
+def write_cards_extra(
+    root: Path,
+    language: str,
+    cards: list[dict[str, Any]],
+    replace_sets: set[str] | None = None,
+) -> Path:
+    """写出 cards.extra.json。
+
+    全量模式（replace_sets 为空）直接覆盖；增量模式（传入 code 集合）保留
+    已有文件中其他系列的卡牌，仅替换指定系列的条目，避免增量更新清空历史数据。
+    """
     require_str(language, "language")
     out_path = root / "metadata" / "cards" / language / "cards.extra.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
+    if replace_sets:
+        existing = json.loads(out_path.read_text(encoding="utf-8")) if out_path.exists() else []
+        kept = [c for c in existing if c.get("set") not in replace_sets]
+        cards = [*kept, *cards]
     temp_path = out_path.with_suffix(out_path.suffix + ".tmp")
     temp_path.write_text(json.dumps(cards, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     temp_path.replace(out_path)
     return out_path
 
 
-def write_sets(root: Path, language: str, sets: dict[str, list[dict[str, Any]]]) -> Path:
+def write_sets(
+    root: Path,
+    language: str,
+    sets: dict[str, list[dict[str, Any]]],
+    replace_codes: set[str] | None = None,
+) -> Path:
+    """写出 sets.json。
+
+    全量模式（replace_codes 为空）直接覆盖；增量模式（传入 code 集合）保留
+    已有文件中其他系列的 set 记录，仅替换指定 code 的条目。
+    """
     require_str(language, "language")
     out_path = root / "metadata" / "sets" / language / "sets.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
+    if replace_codes:
+        existing = json.loads(out_path.read_text(encoding="utf-8")) if out_path.exists() else {}
+        for series, items in existing.items():
+            kept = [s for s in items if s.get("code") not in replace_codes]
+            if series in sets:
+                # 新数据里同 series 的条目追加在末尾，后续写入前会重新按 code 排序
+                existing[series] = [*kept, *sets.pop(series, [])]
+            else:
+                existing[series] = kept
+        # 剩下 series key（新数据有但旧文件没有的大组）直接加入
+        for series, items in sets.items():
+            existing.setdefault(series, []).extend(items)
+        sets = {
+            group: sorted(items, key=lambda item: natural_code_key(item["code"]))
+            for group, items in sorted(existing.items())
+        }
     temp_path = out_path.with_suffix(out_path.suffix + ".tmp")
     temp_path.write_text(json.dumps(sets, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     temp_path.replace(out_path)
@@ -960,6 +1000,11 @@ def main(argv: list[str] | None = None) -> int:
         type=Path,
         default=None,
         help="frida-test 仓库目录（缺省时自动探测，优先 FRIDA_TEST_DIR 环境变量）",
+    )
+    parser.add_argument(
+        "--expansions",
+        default=None,
+        help="按 expansion code 过滤，逗号分隔（如 B3b,A1）；不传则全量",
     )
     args = parser.parse_args(argv)
 
@@ -975,10 +1020,19 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     cards = convert_cards_extra(export)
+    # 按 expansion code 过滤：只保留指定系列的卡牌，sets 随之只含过滤后的系列
+    expansions_set: set[str] | None = None
+    if args.expansions:
+        wanted = {e.strip() for e in args.expansions.split(",") if e.strip()}
+        cards = [card for card in cards if card.get("set") in wanted]
+        expansions_set = wanted
+        print(f"按 expansion code 过滤后: {len(cards)} 张卡牌")
     sets = convert_sets(export, cards)
     language = require_str(export.get("language"), "language")
-    cards_output = write_cards_extra(Path.cwd(), language, cards)
-    sets_output = write_sets(Path.cwd(), language, sets)
+    cards_output = write_cards_extra(Path.cwd(), language, cards, replace_sets=expansions_set)
+    sets_output = write_sets(Path.cwd(), language, sets, replace_codes=expansions_set)
+    if expansions_set:
+        print(f"增量合并: cards/sets 已保留其他系列，仅替换 {sorted(expansions_set)}")
     print(f"wrote {cards_output}")
     print(f"wrote {sets_output}")
     return 0

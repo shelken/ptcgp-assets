@@ -6,12 +6,11 @@ PTCGP 卡牌图片爬虫
 
 import argparse
 import asyncio
-import os
 import sys
 from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Dict, List, Set, Tuple
 
 import aiofiles
 import aiohttp
@@ -62,6 +61,7 @@ class PTCGPDownloader:
         max_concurrency: int = 20,
         max_retries: int = 3,
         verbose: bool = False,
+        expansions: List[str] | None = None,
     ):
         self.base_dir = base_dir
         self.languages = languages
@@ -69,6 +69,8 @@ class PTCGPDownloader:
         self.max_concurrency = max_concurrency
         self.max_retries = max_retries
         self.verbose = verbose
+        # expansions: 按 expansion code 精确过滤（如 ["B3b","A1"]），不传则不过滤
+        self.expansions = set(expansions) if expansions else None
 
         # 并发控制
         self.semaphore = asyncio.Semaphore(max_concurrency)
@@ -565,6 +567,14 @@ class PTCGPDownloader:
                 print("没有找到任何卡牌集合")
                 return
 
+            # 按 expansion code 精确过滤
+            if self.expansions:
+                all_sets = [s for s in all_sets if s.set_code in self.expansions]
+                print(f"按 expansion code 过滤后: {len(all_sets)} 个集合 {[s.set_code for s in all_sets]}")
+                if not all_sets:
+                    print("过滤后无匹配集合")
+                    return
+
             print(f"\n总共 {len(all_sets)} 个集合待处理")
             print()
 
@@ -732,7 +742,13 @@ def main():
         "--series",
         type=str,
         default="a,b",
-        help="要下载的系列，逗号分隔 (默认: a,b)",
+        help="要下载的系列大组，逗号分隔 (默认: a,b)",
+    )
+    parser.add_argument(
+        "--expansions",
+        type=str,
+        default=None,
+        help="按 expansion code 精确过滤，逗号分隔（如 B3b,A1）；不传则下载 series 全部",
     )
     parser.add_argument(
         "--langs",
@@ -764,6 +780,11 @@ def main():
     base_dir = Path(args.base_dir).resolve()
     languages = [lang.strip() for lang in args.langs.split(",")]
     series_list = [s.strip() for s in args.series.split(",")]
+    expansions = (
+        [e.strip() for e in args.expansions.split(",") if e.strip()]
+        if args.expansions
+        else None
+    )
 
     # 创建下载器并运行
     downloader = PTCGPDownloader(
@@ -773,6 +794,7 @@ def main():
         max_concurrency=args.concurrency,
         max_retries=args.max_retries,
         verbose=args.verbose,
+        expansions=expansions,
     )
 
     try:
