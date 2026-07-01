@@ -156,6 +156,24 @@ just update-all
 
 自动完成：下载卡牌图（已有跳过）→ 增量生成 hash → 导出 metadata（当前游戏语言）→ 导出卡包图片（全语言）→ 输出汇总报告。
 
+### 增量更新指定系列
+
+只更新某个新系列（如 `B3b`），跳过已有系列：
+
+```bash
+just update-device B3b       # 只导出 B3b 的 metadata + 卡包图
+just update-online B3b       # 只下载 B3b 卡牌图 + hash
+just update-all B3b          # 以上两者组合
+```
+
+不传 code 时，`update-device` 会自动对比游戏与 repo，只更新缺失系列：
+
+```bash
+just update-device           # 自动对比，无缺失则跳过
+```
+
+多个 code 用逗号分隔：`just update-all B3b,A1`。
+
 ### 分步执行
 
 设备相关步骤失败率高（游戏未进主页/设备未连），可单独重跑：
@@ -171,6 +189,8 @@ just update-device    # 导出 metadata + 卡包图 + 汇总（需设备+游戏�
 - `frida-test` 目录自动探测（优先 `FRIDA_TEST_DIR` 环境变量，兜底 `~/Code/active/frida-test` 等），找不到时报错提示。
 - `bridge` 端口默认 8765，已在跑则复用，未跑则自动拉起。
 - 四个脚本天然幂等，`just update-all` 可安全重复执行。
+- 各脚本均支持 `--expansions` 按 expansion code（如 `B3b`）过滤；`update-device` 空参时自动对比缺失系列。
+- 当前主库使用的使用en-US的metadata, 确保每次更新必须应该en-US更新, 主要因为packs相关的都是用英文名字
 
 ## 协议
 
