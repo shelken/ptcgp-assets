@@ -5,20 +5,20 @@
       "releaseDate": null,
       "count": 286,
       "name": {
-        "en": "Genetic Apex"
+        "ja": "最強の遺伝子"
       },
       "packs": [
         {
-          "name": "Charizard",
-          "skuId": "A1_2"
+          "name": "ピカチュウ",
+          "skuId": "A1_3"
         },
         {
-          "name": "Mewtwo",
+          "name": "ミュウツー",
           "skuId": "A1_1"
         },
         {
-          "name": "Pikachu",
-          "skuId": "A1_3"
+          "name": "リザードン",
+          "skuId": "A1_2"
         }
       ]
     },
@@ -27,11 +27,11 @@
       "releaseDate": null,
       "count": 86,
       "name": {
-        "en": "Mythical Island"
+        "ja": "幻のいる島"
       },
       "packs": [
         {
-          "name": "Mythical Island",
+          "name": "幻のいる島",
           "skuId": "A1a_1"
         }
       ]
@@ -41,15 +41,15 @@
       "releaseDate": null,
       "count": 207,
       "name": {
-        "en": "Space-Time Smackdown"
+        "ja": "時空の激闘"
       },
       "packs": [
         {
-          "name": "Dialga",
+          "name": "ディアルガ",
           "skuId": "A2_1"
         },
         {
-          "name": "Palkia",
+          "name": "パルキア",
           "skuId": "A2_2"
         }
       ]
@@ -59,11 +59,11 @@
       "releaseDate": null,
       "count": 96,
       "name": {
-        "en": "Triumphant Light"
+        "ja": "超克の光"
       },
       "packs": [
         {
-          "name": "Triumphant Light",
+          "name": "超克の光",
           "skuId": "A2a_1"
         }
       ]
@@ -73,11 +73,11 @@
       "releaseDate": null,
       "count": 111,
       "name": {
-        "en": "Shining Revelry"
+        "ja": "シャイニングハイ"
       },
       "packs": [
         {
-          "name": "Shining Revelry",
+          "name": "シャイニングハイ",
           "skuId": "A2b_1"
         }
       ]
@@ -87,16 +87,16 @@
       "releaseDate": null,
       "count": 239,
       "name": {
-        "en": "Celestial Guardians"
+        "ja": "双天の守護者"
       },
       "packs": [
         {
-          "name": "Lunala",
-          "skuId": "A3_2"
+          "name": "ソルガレオ",
+          "skuId": "A3_1"
         },
         {
-          "name": "Solgaleo",
-          "skuId": "A3_1"
+          "name": "ルナアーラ",
+          "skuId": "A3_2"
         }
       ]
     },
@@ -105,11 +105,11 @@
       "releaseDate": null,
       "count": 103,
       "name": {
-        "en": "Extradimensional Crisis"
+        "ja": "異次元クライシス"
       },
       "packs": [
         {
-          "name": "Extradimensional Crisis",
+          "name": "異次元クライシス",
           "skuId": "A3a_1"
         }
       ]
@@ -119,11 +119,11 @@
       "releaseDate": null,
       "count": 107,
       "name": {
-        "en": "Eevee Grove"
+        "ja": "イーブイガーデン"
       },
       "packs": [
         {
-          "name": "Eevee Grove",
+          "name": "イーブイガーデン",
           "skuId": "A3b_1"
         }
       ]
@@ -133,15 +133,15 @@
       "releaseDate": null,
       "count": 241,
       "name": {
-        "en": "Wisdom of Sea and Sky"
+        "ja": "空と海の導き"
       },
       "packs": [
         {
-          "name": "Ho-Oh",
+          "name": "ホウオウ",
           "skuId": "A4_1"
         },
         {
-          "name": "Lugia",
+          "name": "ルギア",
           "skuId": "A4_2"
         }
       ]
@@ -151,11 +151,11 @@
       "releaseDate": null,
       "count": 105,
       "name": {
-        "en": "Secluded Springs"
+        "ja": "未知なる水域"
       },
       "packs": [
         {
-          "name": "Secluded Springs",
+          "name": "未知なる水域",
           "skuId": "A4a_1"
         }
       ]
@@ -165,11 +165,11 @@
       "releaseDate": null,
       "count": 379,
       "name": {
-        "en": "Deluxe Pack ex"
+        "ja": "ハイクラスパック ex"
       },
       "packs": [
         {
-          "name": "Deluxe Pack ex",
+          "name": "ハイクラスパック ex",
           "skuId": "A4b_1"
         }
       ]
@@ -181,20 +181,20 @@
       "releaseDate": null,
       "count": 331,
       "name": {
-        "en": "Mega Rising"
+        "ja": "メガライジング メガ"
       },
       "packs": [
         {
-          "name": "Mega Altaria",
+          "name": "メガライジング メガギャラドス",
+          "skuId": "B1_2"
+        },
+        {
+          "name": "メガライジング メガチルタリス",
           "skuId": "B1_3"
         },
         {
-          "name": "Mega Blaziken",
+          "name": "メガライジング メガバシャーモ",
           "skuId": "B1_1"
-        },
-        {
-          "name": "Mega Gyarados",
-          "skuId": "B1_2"
         }
       ]
     },
@@ -203,11 +203,11 @@
       "releaseDate": null,
       "count": 103,
       "name": {
-        "en": "Crimson Blaze"
+        "ja": "紅蓮ブレイズ"
       },
       "packs": [
         {
-          "name": "Crimson Blaze",
+          "name": "紅蓮ブレイズ",
           "skuId": "B1a_1"
         }
       ]
@@ -217,11 +217,11 @@
       "releaseDate": null,
       "count": 234,
       "name": {
-        "en": "Fantastical Parade"
+        "ja": "夢幻パレード"
       },
       "packs": [
         {
-          "name": "Fantastical Parade",
+          "name": "夢幻パレード",
           "skuId": "B2_1"
         }
       ]
@@ -231,11 +231,11 @@
       "releaseDate": null,
       "count": 131,
       "name": {
-        "en": "Paldean Wonders"
+        "ja": "パルデアワンダー"
       },
       "packs": [
         {
-          "name": "Paldean Wonders",
+          "name": "パルデアワンダー",
           "skuId": "B2a_1"
         }
       ]
@@ -245,11 +245,11 @@
       "releaseDate": null,
       "count": 117,
       "name": {
-        "en": "Mega Shine"
+        "ja": "シャイニングメガ"
       },
       "packs": [
         {
-          "name": "Mega Shine",
+          "name": "シャイニングメガ",
           "skuId": "B2b_1"
         }
       ]
@@ -259,11 +259,11 @@
       "releaseDate": null,
       "count": 234,
       "name": {
-        "en": "Pulsing Aura"
+        "ja": "波動ビート"
       },
       "packs": [
         {
-          "name": "Pulsing Aura",
+          "name": "波動ビート",
           "skuId": "B3_1"
         }
       ]
@@ -273,11 +273,11 @@
       "releaseDate": null,
       "count": 109,
       "name": {
-        "en": "Paradox Drive"
+        "ja": "進撃パラドックス"
       },
       "packs": [
         {
-          "name": "Paradox Drive",
+          "name": "進撃パラドックス",
           "skuId": "B3a_1"
         }
       ]
@@ -287,11 +287,11 @@
       "releaseDate": null,
       "count": 106,
       "name": {
-        "en": "Everyday Wonders"
+        "ja": "ミラクルデイズ"
       },
       "packs": [
         {
-          "name": "Everyday Wonders",
+          "name": "ミラクルデイズ",
           "skuId": "B3b_1"
         }
       ]
@@ -303,59 +303,59 @@
       "releaseDate": null,
       "count": 117,
       "name": {
-        "en": "PROMO-A"
+        "ja": "PROMO-A"
       },
       "packs": [
         {
-          "name": "Promo Pack A Series Vol. 1",
+          "name": "プロモカードパック Aシリーズ 第1弾",
           "skuId": "PROMO-A_1"
         },
         {
-          "name": "Promo Pack A Series Vol. 2",
+          "name": "プロモカードパック Aシリーズ 第2弾",
           "skuId": "PROMO-A_2"
         },
         {
-          "name": "Promo Pack A Series Vol. 3",
+          "name": "プロモカードパック Aシリーズ 第3弾",
           "skuId": "PROMO-A_3"
         },
         {
-          "name": "Promo Pack A Series Vol. 4",
+          "name": "プロモカードパック Aシリーズ 第4弾",
           "skuId": "PROMO-A_4"
         },
         {
-          "name": "Promo Pack A Series Vol. 5",
+          "name": "プロモカードパック Aシリーズ 第5弾",
           "skuId": "PROMO-A_5"
         },
         {
-          "name": "Promo Pack A Series Vol. 6",
+          "name": "プロモカードパック Aシリーズ 第6弾",
           "skuId": "PROMO-A_6"
         },
         {
-          "name": "Promo Pack A Series Vol. 7",
+          "name": "プロモカードパック Aシリーズ 第7弾",
           "skuId": "PROMO-A_7"
         },
         {
-          "name": "Promo Pack A Series Vol. 8",
+          "name": "プロモカードパック Aシリーズ 第8弾",
           "skuId": "PROMO-A_8"
         },
         {
-          "name": "Promo Pack A Series Vol. 9",
+          "name": "プロモカードパック Aシリーズ 第9弾",
           "skuId": "PROMO-A_9"
         },
         {
-          "name": "Promo Pack A Series Vol. 10",
+          "name": "プロモカードパック Aシリーズ 第10弾",
           "skuId": "PROMO-A_10"
         },
         {
-          "name": "Promo Pack A Series Vol. 11",
+          "name": "プロモカードパック Aシリーズ 第11弾",
           "skuId": "PROMO-A_11"
         },
         {
-          "name": "Promo Pack A Series Vol. 12",
+          "name": "プロモカードパック Aシリーズ 第12弾",
           "skuId": "PROMO-A_12"
         },
         {
-          "name": "Promo Pack A Series Vol. 13",
+          "name": "プロモカードパック Aシリーズ 第13弾",
           "skuId": "PROMO-A_13"
         }
       ]
@@ -365,47 +365,47 @@
       "releaseDate": null,
       "count": 78,
       "name": {
-        "en": "PROMO-B"
+        "ja": "PROMO-B"
       },
       "packs": [
         {
-          "name": "Promo Pack B Series Vol. 1",
+          "name": "プロモカードパック Bシリーズ 第1弾",
           "skuId": "PROMO-B_1"
         },
         {
-          "name": "Promo Pack B Series Vol. 2",
+          "name": "プロモカードパック Bシリーズ 第2弾",
           "skuId": "PROMO-B_2"
         },
         {
-          "name": "Promo Pack B Series Vol. 3",
+          "name": "プロモカードパック Bシリーズ 第3弾",
           "skuId": "PROMO-B_3"
         },
         {
-          "name": "Promo Pack B Series Vol. 4",
+          "name": "プロモカードパック Bシリーズ 第4弾",
           "skuId": "PROMO-B_4"
         },
         {
-          "name": "Promo Pack B Series Vol. 5",
+          "name": "プロモカードパック Bシリーズ 第5弾",
           "skuId": "PROMO-B_5"
         },
         {
-          "name": "Promo Pack B Series Vol. 6",
+          "name": "プロモカードパック Bシリーズ 第6弾",
           "skuId": "PROMO-B_6"
         },
         {
-          "name": "Promo Pack B Series Vol. 7",
+          "name": "プロモカードパック Bシリーズ 第7弾",
           "skuId": "PROMO-B_7"
         },
         {
-          "name": "Promo Pack B Series Vol. 8",
+          "name": "プロモカードパック Bシリーズ 第8弾",
           "skuId": "PROMO-B_8"
         },
         {
-          "name": "Promo Pack B Series Vol. 9",
+          "name": "プロモカードパック Bシリーズ 第9弾",
           "skuId": "PROMO-B_9"
         },
         {
-          "name": "Promo Pack B Series Vol. 10",
+          "name": "プロモカードパック Bシリーズ 第10弾",
           "skuId": "PROMO-B_10"
         }
       ]
