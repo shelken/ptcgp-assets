@@ -61,7 +61,8 @@ _summary:
         printf "%-7s | %10s | %9s | %8s | %s\n" "$lang" "$card_sets" "$hash_sets" "$meta" "$packs"
     done
     echo ""
-    echo "提示: metadata 只导出当前游戏运行语言（方案A）。其他语言 metadata 缺失为预期，需切游戏语言后单独 just update-device。"
+    echo "提示: metadata 一次导出全语言（schemaVersion 4），pack 图按 expansion code 增量。"
+    echo "       空参 update-device 无缺失系列时跳过；强制全量刷新请直接 uv run python scripts/update_metadata.py"
 
 # === 只生成指定 set 的哈希（调试用）===
 generate-hashes-set set locale="zh-TW":

@@ -34,4 +34,4 @@
 - 增量更新统一以 expansion code 为粒度：所有脚本支持 `--expansions A1,B3b`（逗号分隔 code），`--series`（大组 a/b）保留但 code 是新标准。`update-device` 空参时自动调 `list_missing_expansions.py` 对比游戏与 repo 缺失系列。
 - justfile shebang recipe 里 bash 变量与中文全角括号紧邻时必须用 `${VAR}` 显式定界（如 `${EXPANSIONS}）`），否则 `set -u` 下会把全角字符并入变量名报未绑定。
 - 四个脚本天然幂等（文件存在跳过 / 覆盖写 / tmp+replace），`update-all` 可安全重复执行，不要为幂等加额外防护代码。
-- metadata 只导出当前游戏运行语言（方案 A），其他语言 metadata 缺失是预期状态，不是故障，汇总报告中用「—」而非「❌」表示。
+- metadata 一次导出全语言（schemaVersion 4）：frida 侧 `metadata.raw` 经 `loadAllLocaleContexts` 并行加载各语言 context，python 侧遍历 `locales` 写各语言目录。不再需要切游戏语言单独跑。强制全量刷新直接 `uv run python scripts/update_metadata.py`（不走 update-device 的缺失对比）。
